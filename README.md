@@ -93,3 +93,22 @@ uploads always take precedence over the baked-in default on a given device.
 - Possible follow-ups: persistent catches/score, rarity tiers, sound + haptics
   on catch, and shared (server-backed) rosters so one admin's upload reaches all
   players.
+
+## Adding AriMon cards (no code edits)
+
+Card art lives in `public/assets/cards/` and the game reads
+`public/data/cards.json` as the source of truth. To register new cards:
+
+1. Drop the PNG(s) into `public/assets/cards/`. Either naming style works:
+   - `001-turtwig-ari.png`  → id `001`, name "Turtwig Ari"
+   - `007_SquirtAri.png`    → id `007`, name "Squirt Ari"
+   (the first three digits become the id and the `###/151` number).
+2. Regenerate the manifest:
+   ```bash
+   npm run build:cards
+   ```
+3. (Optional) Curate `name`, `type`, `rarity` in `public/data/cards.json` —
+   those manual values are preserved across re-runs. Add `"lockName": true`
+   to keep a hand-tuned name even if the file is later renamed.
+
+`npm run check:cards` verifies the manifest matches the files (handy in CI).

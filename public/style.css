@@ -270,3 +270,85 @@ a-scene { position: fixed; inset: 0; z-index: 1; background: transparent; }
   55% { opacity: 1; transform: translateY(-8px) scale(1.06) rotate(1deg); filter: brightness(1.15); }
   100% { opacity: 1; transform: translateY(0) scale(1) rotate(0); filter: brightness(1); }
 }
+
+/* ===== v2 UX polish: HUD brand, binder album, catch flash ===== */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  padding: 8px 13px;
+  border-radius: 999px;
+  font-weight: 900;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  color: #fff;
+  background: var(--glass);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  white-space: nowrap;
+}
+.brand-mark {
+  color: var(--accent);
+  font-size: 17px;
+  line-height: 1;
+}
+.score { font-weight: 800; white-space: nowrap; }
+.score-sep { opacity: 0.45; margin: 0 1px; }
+
+/* Binder album */
+.binder-page { margin: 0 0 16px; }
+.binder-page + .binder-page { border-top: 1px solid rgba(255, 255, 255, 0.07); padding-top: 14px; }
+.binder-page-title {
+  position: sticky;
+  top: -2px;
+  z-index: 1;
+  margin: 0 0 9px;
+  padding: 6px 2px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #9fb0d8;
+  background: linear-gradient(180deg, rgba(8, 12, 28, 0.96), rgba(8, 12, 28, 0.55));
+  backdrop-filter: blur(4px);
+}
+.binder-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.binder-slot.registered { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06); }
+.binder-slot.empty { opacity: 0.42; }
+.card-back.muted {
+  background: rgba(255, 255, 255, 0.05);
+  color: #6c7aa0;
+  font-size: 26px;
+}
+
+/* keep the binder modal scrollable + within safe area on iPhone Safari */
+.panel-card {
+  -webkit-overflow-scrolling: touch;
+  max-height: min(88vh, 760px);
+  padding-bottom: max(18px, env(safe-area-inset-bottom, 0px));
+}
+
+/* Catch flash — sits above the scene, below reveal/toast */
+.flash {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(circle at 50% 45%,
+    rgba(255, 255, 255, 0.55),
+    rgba(127, 216, 255, 0.20) 34%,
+    transparent 62%);
+}
+.flash.flash-go { animation: flashPulse 0.34s ease-out; }
+@keyframes flashPulse {
+  0% { opacity: 0; transform: scale(1.04); }
+  28% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1); }
+}

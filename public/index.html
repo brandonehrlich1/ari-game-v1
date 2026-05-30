@@ -29,13 +29,14 @@
   </div>
 
   <div id="hud" class="hud hidden">
-    <div id="status" class="status">Loading…</div>
-    <button id="gallery-open" class="pillbtn">Gallery</button>
-    <div id="score" class="score">Collection <b id="count">0</b> / <span id="total">151</span></div>
-    <button id="regen" class="regen" title="Reshuffle nearby Ari Balls">⟲</button>
+    <div class="brand"><span class="brand-mark">◓</span>AriMon</div>
+    <div id="score" class="score" aria-label="Collection progress">🎴 <b id="count">0</b><span class="score-sep">/</span><span id="total">151</span></div>
+    <button id="gallery-open" class="pillbtn" type="button">Binder</button>
+    <button id="regen" class="regen" type="button" title="Refresh hunt" aria-label="Refresh hunt">⟲</button>
   </div>
 
   <div id="reticle" class="reticle hidden"></div>
+  <div id="flash" class="flash hidden" aria-hidden="true"></div>
   <div id="toast" class="toast hidden"></div>
 
   <div id="reveal" class="reveal hidden" role="dialog" aria-modal="true" aria-labelledby="reveal-title">
@@ -52,9 +53,9 @@
       <div class="panel-head">
         <div>
           <div class="panel-kicker">AriMon Collection</div>
-          <h2 id="gallery-title">My Gallery</h2>
+          <h2 id="gallery-title">Binder</h2>
         </div>
-        <button id="gallery-close" class="iconbtn" aria-label="Close gallery">×</button>
+        <button id="gallery-close" class="iconbtn" type="button" aria-label="Close binder">×</button>
       </div>
       <div id="gallery-progress" class="panel-progress">0 collected</div>
       <div id="gallery-grid" class="gallery-grid"></div>

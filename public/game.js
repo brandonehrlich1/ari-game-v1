@@ -22,7 +22,7 @@ const els = {
   hud: document.getElementById('hud'),
   scene: document.getElementById('scene'),
   cam: document.getElementById('cam'),
-  status: document.getElementById('status'),
+  flash: document.getElementById('flash'),
   count: document.getElementById('count'),
   total: document.getElementById('total'),
   regen: document.getElementById('regen'),
@@ -201,19 +201,28 @@ function renderSpawns() {
 
     els.scene.appendChild(wrap);
   }
-  els.status.textContent = `${state.spawns.length} Ari Balls hidden for Ari · ${state.cards.length} cards loaded`;
 }
 
 function tryCatch(spawn, entity) {
   if (state.found.has(spawn.id)) return;
   state.found.add(spawn.id);
-  entity.setAttribute('animation__catch', 'property: scale; to: 0.01 0.01 0.01; dur: 320; easing: easeInBack');
-  setTimeout(() => entity.remove(), 340);
+  entity.setAttribute('animation__catch', 'property: scale; to: 0.01 0.01 0.01; dur: 280; easing: easeInBack');
+  setTimeout(() => entity.remove(), 300);
+  flashScreen();
   const wasNew = !state.collection.has(spawn.card.id);
   state.collection.add(spawn.card.id);
   saveCollection();
   updateCollectionCount();
-  setTimeout(() => showReveal(spawn.card, wasNew), 360);
+  setTimeout(() => showReveal(spawn.card, wasNew), 300);
+}
+
+// Lightweight catch pulse — a quick screen flash, no dependencies.
+function flashScreen() {
+  if (!els.flash) return;
+  els.flash.classList.remove('hidden', 'flash-go');
+  void els.flash.offsetWidth; // restart the animation
+  els.flash.classList.add('flash-go');
+  setTimeout(() => els.flash.classList.add('hidden'), 360);
 }
 
 function showReveal(card, wasNew) {
@@ -252,9 +261,10 @@ function closeGallery() { els.gallery?.classList.add('hidden'); }
 function renderGallery() {
   if (!els.galleryGrid) return;
   const cardById = new Map(state.cards.map((card) => [String(card.id).padStart(3, '0'), card]));
-  const loadedCollected = state.cards.filter((c) => state.collection.has(c.id)).length;
   if (els.galleryProgress) {
-    els.galleryProgress.textContent = `${loadedCollected}/${state.cards.length} loaded cards caught · ${state.collection.size}/${state.totalCards} total collection`;
+    const caught = state.collection.size;
+    const pct = Math.round((caught / state.totalCards) * 100);
+    els.galleryProgress.textContent = `${caught} of ${state.totalCards} caught · ${pct}% complete`;
   }
   els.galleryGrid.innerHTML = '';
 
@@ -352,7 +362,7 @@ async function startPassthrough() {
     els.video.srcObject = stream;
     els.video.classList.remove('hidden');
   } catch (e) {
-    els.status.textContent = 'Camera blocked — enable camera access and reload.';
+    toast('Camera blocked — allow camera access and reload.');
   }
 }
 
@@ -388,7 +398,7 @@ async function start() {
 }
 
 els.start.addEventListener('click', start);
-els.regen.addEventListener('click', () => { generateSpawns(); renderSpawns(); toast('Ari Balls reshuffled for Ari'); });
+els.regen.addEventListener('click', () => { generateSpawns(); renderSpawns(); toast('Fresh Ari Balls hidden nearby'); });
 els.revealClose?.addEventListener('click', hideReveal);
 els.reveal?.addEventListener('click', (e) => { if (e.target === els.reveal) hideReveal(); });
 els.galleryOpen?.addEventListener('click', openGallery);
