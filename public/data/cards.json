@@ -83,6 +83,70 @@
       "rarity": "Common"
     },
     {
+      "id": "011",
+      "number": "011/151",
+      "name": "CaterAri",
+      "src": "assets/cards/011_CaterAri.png",
+      "type": "Grass",
+      "rarity": "Common"
+    },
+    {
+      "id": "012",
+      "number": "012/151",
+      "name": "MetapodAri",
+      "src": "assets/cards/012_MetapodAri.png",
+      "type": "Grass",
+      "rarity": "Uncommon"
+    },
+    {
+      "id": "013",
+      "number": "013/151",
+      "name": "ButterAri",
+      "src": "assets/cards/013_ButterAri.png",
+      "type": "Grass",
+      "rarity": "Rare"
+    },
+    {
+      "id": "014",
+      "number": "014/151",
+      "name": "WeedAri",
+      "src": "assets/cards/014_WeedAri.png",
+      "type": "Grass",
+      "rarity": "Common"
+    },
+    {
+      "id": "015",
+      "number": "015/151",
+      "name": "KakunAri",
+      "src": "assets/cards/015_KakunAri.png",
+      "type": "Grass",
+      "rarity": "Uncommon"
+    },
+    {
+      "id": "016",
+      "number": "016/151",
+      "name": "BeedrAri",
+      "src": "assets/cards/016_BeedrAri.png",
+      "type": "Grass",
+      "rarity": "Rare"
+    },
+    {
+      "id": "017",
+      "number": "017/151",
+      "name": "PidgeAri",
+      "src": "assets/cards/017_PidgeAri.png",
+      "type": "Colorless",
+      "rarity": "Common"
+    },
+    {
+      "id": "018",
+      "number": "018/151",
+      "name": "PidgeottAri",
+      "src": "assets/cards/018_PidgeottAri.png",
+      "type": "Colorless",
+      "rarity": "Uncommon"
+    },
+    {
       "id": "025",
       "number": "025/151",
       "name": "PikAriChu",
@@ -96,6 +160,14 @@
       "name": "EveAri",
       "src": "assets/cards/133_EveAri.png",
       "type": "Colorless",
+      "rarity": "Rare"
+    },
+    {
+      "id": "150",
+      "number": "150/151",
+      "name": "MewtwoAri",
+      "src": "assets/cards/150_MewtwoAri.png",
+      "type": "Psychic",
       "rarity": "Rare"
     }
   ]
