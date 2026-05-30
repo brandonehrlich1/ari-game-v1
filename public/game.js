@@ -4,10 +4,10 @@ import { resolveConfig } from './storage.js';
 const FT_PER_M = 3.28084;
 const ARI_SPHERE_ASSET = 'assets/F5BAFFD4-8565-45B8-8E75-AEC99FAD12BB.png';
 const TENNIS_BALL_RADIUS_M = 0.0335;
-const FALLBACK_BALL_RADIUS_M = 0.0075;
+const FALLBACK_BALL_RADIUS_M = 0.0065;
 const MIN_TAP_TARGET_RADIUS_M = 0.20;
 const XR_AUTO_CATCH_RADIUS_M = 0.45;
-const SCREEN_TAP_RADIUS_PX = 100;
+const SCREEN_TAP_RADIUS_PX = 105;
 const COLLECTION_KEY = 'arimon.collection.v1';
 
 const FALLBACK_CARDS = [
@@ -53,8 +53,12 @@ let xrSupported = false;
 
 navigator.xr?.isSessionSupported?.('immersive-ar').then((ok) => {
   xrSupported = ok;
-  els.mode.textContent = ok ? 'Full AR supported — walk around to find Ari Balls.' : 'Look-around AR mode — pan to find Ari Balls.';
-}).catch(() => { els.mode.textContent = 'Look-around AR mode — pan around to find Ari Balls.'; });
+  els.mode.textContent = ok
+    ? 'Full AR supported — walk around to find Ari Balls.'
+    : 'Look-around AR mode — pan slowly in a full circle to find Ari Balls.';
+}).catch(() => {
+  els.mode.textContent = 'Look-around AR mode — pan slowly in a full circle to find Ari Balls.';
+});
 
 async function loadData() {
   state.config = await resolveConfig();
@@ -63,7 +67,11 @@ async function loadData() {
   els.total.textContent = state.totalCards;
   updateCollectionCount();
 }
-async function ensureDataLoaded() { if (!state.config) await loadData(); }
+
+async function ensureDataLoaded() {
+  if (!state.config) await loadData();
+}
+
 async function loadCards() {
   try {
     const res = await fetch(`data/cards.json?v=${Date.now()}`, { cache: 'no-store' });
@@ -79,13 +87,19 @@ async function loadCards() {
     state.totalCards = 151;
   }
 }
+
 function loadCollection() {
   try {
     const parsed = JSON.parse(localStorage.getItem(COLLECTION_KEY) || '[]');
     return new Set(Array.isArray(parsed) ? parsed : []);
-  } catch { return new Set(); }
+  } catch {
+    return new Set();
+  }
 }
-function saveCollection() { localStorage.setItem(COLLECTION_KEY, JSON.stringify([...state.collection])); }
+
+function saveCollection() {
+  localStorage.setItem(COLLECTION_KEY, JSON.stringify([...state.collection]));
+}
 function updateCollectionCount() { els.count.textContent = state.collection.size; }
 function pickCard() {
   const unseen = state.cards.filter((c) => !state.collection.has(c.id));
@@ -97,8 +111,9 @@ function sphereStyle() { return state.config?.defaultSphere || {}; }
 function generateSpawns() {
   const sp = state.config?.spawn || {};
   const configuredCount = sp.count ?? 12;
-  const count = state.xr ? configuredCount : Math.min(configuredCount, 5);
+  const count = state.xr ? configuredCount : Math.min(Math.max(configuredCount, 6), 8);
   const pts = [];
+
   if (state.xr) {
     const minM = (sp.minSpacingFeet ?? 10) / FT_PER_M;
     const radiusM = (sp.spreadRadiusFeet ?? 60) / FT_PER_M;
@@ -110,17 +125,18 @@ function generateSpawns() {
       const x = Math.cos(angle) * dist;
       const z = Math.sin(angle) * dist;
       if (pts.some((p) => Math.hypot(p.x - x, p.z - z) < minM)) continue;
-      pts.push({ x, z, y: 0.55 + Math.random() * 0.85 });
+      pts.push({ x, z, y: 0.48 + Math.random() * 0.9 });
     }
   } else {
-    // Wide Room-Sector Layout v2: intentionally spread across a larger arc so
-    // the player must pan around the room instead of seeing a tight cluster.
     const layout = [
-      { angle: -78, dist: 9.2, y: 0.55 },
-      { angle: -38, dist: 6.8, y: 1.05 },
-      { angle: 6, dist: 8.6, y: 0.48 },
-      { angle: 44, dist: 7.4, y: 1.18 },
-      { angle: 82, dist: 10.4, y: 0.62 }
+      { angle: -160, dist: 7.8, y: 0.60 },
+      { angle: -108, dist: 9.6, y: 1.12 },
+      { angle: -48, dist: 6.8, y: 0.52 },
+      { angle: 0, dist: 8.4, y: 1.02 },
+      { angle: 42, dist: 7.2, y: 0.55 },
+      { angle: 96, dist: 10.0, y: 1.20 },
+      { angle: 154, dist: 8.8, y: 0.66 },
+      { angle: 178, dist: 11.0, y: 0.90 }
     ];
     for (let i = 0; i < count; i++) {
       const l = layout[i % layout.length];
@@ -128,15 +144,21 @@ function generateSpawns() {
       pts.push({ x: Math.sin(a) * l.dist, z: -Math.cos(a) * l.dist, y: l.y });
     }
   }
+
   state.spawns = pts.map((p, i) => ({
     id: `spawn-${Date.now()}-${i}`,
     x: p.x,
     z: p.z,
-    y: p.y ?? (0.7 + (i % 3) * 0.22),
+    y: p.y ?? 0.7,
     card: pickCard()
   }));
 }
-function clearSpawns() { document.querySelectorAll('.spawn-entity').forEach((e) => e.remove()); state.found.clear(); }
+
+function clearSpawns() {
+  document.querySelectorAll('.spawn-entity').forEach((e) => e.remove());
+  state.found.clear();
+}
+
 function renderSpawns() {
   clearSpawns();
   const style = sphereStyle();
@@ -149,8 +171,8 @@ function renderSpawns() {
     wrap.dataset.spawnId = s.id;
 
     const glow = document.createElement('a-sphere');
-    glow.setAttribute('radius', visualRadius * 1.45);
-    glow.setAttribute('material', 'color: #7fd8ff; opacity: 0.045; transparent: true; depthWrite: false');
+    glow.setAttribute('radius', visualRadius * 1.35);
+    glow.setAttribute('material', 'color: #7fd8ff; opacity: 0.035; transparent: true; depthWrite: false');
     wrap.appendChild(glow);
 
     const ball = document.createElement('a-image');
@@ -160,7 +182,7 @@ function renderSpawns() {
     ball.setAttribute('height', visualRadius * 2);
     ball.setAttribute('transparent', 'true');
     ball.setAttribute('look-at', '#cam');
-    ball.setAttribute('animation', 'property: position; dir: alternate; dur: 3800; easing: easeInOutSine; loop: true; to: 0 0.006 0');
+    ball.setAttribute('animation', 'property: position; dir: alternate; dur: 4400; easing: easeInOutSine; loop: true; to: 0 0.004 0');
     ball.addEventListener('click', (e) => { e.stopPropagation(); tryCatch(s, wrap); });
     wrap.appendChild(ball);
 
@@ -173,8 +195,9 @@ function renderSpawns() {
 
     els.scene.appendChild(wrap);
   }
-  els.status.textContent = `${state.spawns.length} Ari Balls hidden nearby · ${state.cards.length} cards loaded`;
+  els.status.textContent = `${state.spawns.length} Ari Balls hidden in 360° · ${state.cards.length} cards loaded`;
 }
+
 function tryCatch(spawn, entity) {
   if (state.found.has(spawn.id)) return;
   state.found.add(spawn.id);
@@ -186,6 +209,7 @@ function tryCatch(spawn, entity) {
   updateCollectionCount();
   setTimeout(() => showReveal(spawn.card, wasNew), 360);
 }
+
 function showReveal(card, wasNew) {
   closeGallery();
   els.revealTitle.textContent = card.name;
@@ -204,14 +228,19 @@ function toast(msg) {
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => els.toast.classList.add('hidden'), 1800);
 }
+
 async function openGallery(e) {
-  e?.preventDefault?.(); e?.stopPropagation?.();
+  e?.preventDefault?.();
+  e?.stopPropagation?.();
   try {
     await ensureDataLoaded();
     state.collection = loadCollection();
     renderGallery();
     els.gallery?.classList.remove('hidden');
-  } catch (err) { toast('Gallery failed to load'); console.error(err); }
+  } catch (err) {
+    toast('Gallery failed to load');
+    console.error(err);
+  }
 }
 function closeGallery() { els.gallery?.classList.add('hidden'); }
 function renderGallery() {
@@ -234,6 +263,7 @@ function renderGallery() {
     els.galleryGrid.appendChild(item);
   });
 }
+
 function catchNearestScreenBall(clientX, clientY) {
   if (!state.running || !els.reveal.classList.contains('hidden') || !els.gallery.classList.contains('hidden')) return false;
   const camera = els.cam.getObject3D('camera');
@@ -260,6 +290,7 @@ function catchNearestScreenBall(clientX, clientY) {
   tryCatch(spawn, best);
   return true;
 }
+
 function installScreenTapFallback() {
   window.addEventListener('pointerup', (e) => {
     if (!state.running) return;
@@ -267,6 +298,7 @@ function installScreenTapFallback() {
     if (catchNearestScreenBall(e.clientX, e.clientY)) e.preventDefault();
   }, { passive: false });
 }
+
 AFRAME.registerComponent('proximity-catcher', {
   tick() {
     if (!state.xr) return;
@@ -284,13 +316,17 @@ AFRAME.registerComponent('proximity-catcher', {
     });
   }
 });
+
 async function startPassthrough() {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' } }, audio: false });
     els.video.srcObject = stream;
     els.video.classList.remove('hidden');
-  } catch (e) { els.status.textContent = 'Camera blocked — enable camera access and reload.'; }
+  } catch (e) {
+    els.status.textContent = 'Camera blocked — enable camera access and reload.';
+  }
 }
+
 async function start() {
   els.start.disabled = true;
   els.start.textContent = 'Starting…';
@@ -321,8 +357,9 @@ async function start() {
   els.reticle.classList.remove('hidden');
   begin();
 }
+
 els.start.addEventListener('click', start);
-els.regen.addEventListener('click', () => { generateSpawns(); renderSpawns(); toast('Ari Balls reshuffled'); });
+els.regen.addEventListener('click', () => { generateSpawns(); renderSpawns(); toast('Ari Balls reshuffled across 360°'); });
 els.revealClose?.addEventListener('click', hideReveal);
 els.reveal?.addEventListener('click', (e) => { if (e.target === els.reveal) hideReveal(); });
 els.galleryOpen?.addEventListener('click', openGallery);
