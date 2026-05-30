@@ -7,7 +7,9 @@
     "start": "node server/server.js",
     "dev": "node --watch server/server.js",
     "seed": "node scripts/seed.js",
-    "sync": "node scripts/sync-drive.js"
+    "sync": "node scripts/sync-drive.js",
+    "build:cards": "node scripts/build-cards-manifest.mjs",
+    "check:cards": "node scripts/build-cards-manifest.mjs --check"
   },
   "dependencies": {
     "express": "^4.19.2",

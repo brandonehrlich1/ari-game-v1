@@ -2,17 +2,101 @@
   "setId": "arimon-151-v1",
   "total": 151,
   "cards": [
-    { "id": "001", "number": "001/151", "name": "Turtwig Ari", "type": "Grass", "rarity": "Common", "src": "assets/cards/001-turtwig-ari.png" },
-    { "id": "002", "number": "002/151", "name": "Ivysari", "type": "Grass", "rarity": "Common", "src": "assets/cards/002-ivysari.png" },
-    { "id": "003", "number": "003/151", "name": "Venusari", "type": "Grass", "rarity": "Rare", "src": "assets/cards/003-venusari.png" },
-    { "id": "004", "number": "004/151", "name": "Charari", "type": "Fire", "rarity": "Common", "src": "assets/cards/004-charari.png" },
-    { "id": "005", "number": "005/151", "name": "Charmeleari", "type": "Fire", "rarity": "Uncommon", "src": "assets/cards/005-charmeleari.png" },
-    { "id": "006", "number": "006/151", "name": "Charizari", "type": "Fire/Flying", "rarity": "Rare", "src": "assets/cards/006-charizari.png" },
-    { "id": "007", "number": "007/151", "name": "SquirtAri", "type": "Water", "rarity": "Common", "src": "assets/cards/007_SquirtAri.png" },
-    { "id": "008", "number": "008/151", "name": "WartortAri", "type": "Water", "rarity": "Uncommon", "src": "assets/cards/008_WartortAri.png" },
-    { "id": "009", "number": "009/151", "name": "BlastAri", "type": "Water", "rarity": "Rare", "src": "assets/cards/009_BlastAri.png" },
-    { "id": "010", "number": "010/151", "name": "BulbausAri", "type": "Grass", "rarity": "Common", "src": "assets/cards/010_BulbausAri.png" },
-    { "id": "025", "number": "025/151", "name": "PikAriChu", "type": "Electric", "rarity": "Rare", "src": "assets/cards/025_PikAriChu.png" },
-    { "id": "133", "number": "133/151", "name": "EveAri", "type": "Colorless", "rarity": "Rare", "src": "assets/cards/133_EveAri.png" }
+    {
+      "id": "001",
+      "number": "001/151",
+      "name": "Turtwig Ari",
+      "src": "assets/cards/001-turtwig-ari.png",
+      "type": "Grass",
+      "rarity": "Common"
+    },
+    {
+      "id": "002",
+      "number": "002/151",
+      "name": "Ivysari",
+      "src": "assets/cards/002-ivysari.png",
+      "type": "Grass",
+      "rarity": "Common"
+    },
+    {
+      "id": "003",
+      "number": "003/151",
+      "name": "Venusari",
+      "src": "assets/cards/003-venusari.png",
+      "type": "Grass",
+      "rarity": "Rare"
+    },
+    {
+      "id": "004",
+      "number": "004/151",
+      "name": "Charari",
+      "src": "assets/cards/004-charari.png",
+      "type": "Fire",
+      "rarity": "Common"
+    },
+    {
+      "id": "005",
+      "number": "005/151",
+      "name": "Charmeleari",
+      "src": "assets/cards/005-charmeleari.png",
+      "type": "Fire",
+      "rarity": "Uncommon"
+    },
+    {
+      "id": "006",
+      "number": "006/151",
+      "name": "Charizari",
+      "src": "assets/cards/006-charizari.png",
+      "type": "Fire/Flying",
+      "rarity": "Rare"
+    },
+    {
+      "id": "007",
+      "number": "007/151",
+      "name": "SquirtAri",
+      "src": "assets/cards/007_SquirtAri.png",
+      "type": "Water",
+      "rarity": "Common"
+    },
+    {
+      "id": "008",
+      "number": "008/151",
+      "name": "WartortAri",
+      "src": "assets/cards/008_WartortAri.png",
+      "type": "Water",
+      "rarity": "Uncommon"
+    },
+    {
+      "id": "009",
+      "number": "009/151",
+      "name": "BlastAri",
+      "src": "assets/cards/009_BlastAri.png",
+      "type": "Water",
+      "rarity": "Rare"
+    },
+    {
+      "id": "010",
+      "number": "010/151",
+      "name": "BulbausAri",
+      "src": "assets/cards/010_BulbausAri.png",
+      "type": "Grass",
+      "rarity": "Common"
+    },
+    {
+      "id": "025",
+      "number": "025/151",
+      "name": "PikAriChu",
+      "src": "assets/cards/025_PikAriChu.png",
+      "type": "Electric",
+      "rarity": "Rare"
+    },
+    {
+      "id": "133",
+      "number": "133/151",
+      "name": "EveAri",
+      "src": "assets/cards/133_EveAri.png",
+      "type": "Colorless",
+      "rarity": "Rare"
+    }
   ]
 }
