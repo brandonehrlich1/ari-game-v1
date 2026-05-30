@@ -68,6 +68,10 @@ async function loadData() {
   updateCollectionCount();
 }
 
+async function ensureDataLoaded() {
+  if (!state.config) await loadData();
+}
+
 async function loadCards() {
   try {
     const res = await fetch(`data/cards.json?v=${Date.now()}`, { cache: 'no-store' });
@@ -100,14 +104,13 @@ function pickCard() {
   const pool = unseen.length && Math.random() < 0.72 ? unseen : state.cards;
   return pool[(Math.random() * pool.length) | 0];
 }
-function sphereStyle() { return state.config.defaultSphere || {}; }
+function sphereStyle() { return state.config?.defaultSphere || {}; }
 
 function generateSpawns() {
-  const sp = state.config.spawn || {};
+  const sp = state.config?.spawn || {};
   const configuredCount = sp.count ?? 12;
   const count = state.xr ? configuredCount : Math.min(configuredCount, 6);
   const pts = [];
-
   if (state.xr) {
     const minM = (sp.minSpacingFeet ?? 10) / FT_PER_M;
     const radiusM = (sp.spreadRadiusFeet ?? 60) / FT_PER_M;
@@ -123,12 +126,8 @@ function generateSpawns() {
     }
   } else {
     const layout = [
-      { angle: -34, dist: 4.2 },
-      { angle: -18, dist: 5.6 },
-      { angle: 0, dist: 4.8 },
-      { angle: 18, dist: 5.6 },
-      { angle: 34, dist: 4.2 },
-      { angle: 52, dist: 6.2 }
+      { angle: -34, dist: 4.2 }, { angle: -18, dist: 5.6 }, { angle: 0, dist: 4.8 },
+      { angle: 18, dist: 5.6 }, { angle: 34, dist: 4.2 }, { angle: 52, dist: 6.2 }
     ];
     for (let i = 0; i < count; i++) {
       const l = layout[i % layout.length];
@@ -136,12 +135,10 @@ function generateSpawns() {
       pts.push({ x: Math.sin(a) * l.dist, z: -Math.cos(a) * l.dist });
     }
   }
-
   state.spawns = pts.map((p, i) => ({
     id: `spawn-${Date.now()}-${i}`,
     x: p.x,
     z: p.z,
-    bearing: Math.atan2(p.x, -p.z),
     y: 1.05 + (i % 3) * 0.22,
     card: pickCard()
   }));
@@ -199,6 +196,7 @@ function tryCatch(spawn, entity) {
 }
 
 function showReveal(card, wasNew) {
+  closeGallery();
   els.revealTitle.textContent = card.name;
   els.revealImg.src = card.src;
   els.revealImg.alt = `${card.name} card`;
@@ -216,15 +214,25 @@ function toast(msg) {
   toastTimer = setTimeout(() => els.toast.classList.add('hidden'), 1800);
 }
 
-function openGallery() {
-  renderGallery();
-  els.gallery?.classList.remove('hidden');
+async function openGallery(e) {
+  e?.preventDefault?.();
+  e?.stopPropagation?.();
+  try {
+    await ensureDataLoaded();
+    state.collection = loadCollection();
+    renderGallery();
+    els.gallery?.classList.remove('hidden');
+    toast('Gallery opened');
+  } catch (err) {
+    toast('Gallery failed to load');
+    console.error(err);
+  }
 }
 function closeGallery() { els.gallery?.classList.add('hidden'); }
 function renderGallery() {
   if (!els.galleryGrid) return;
   const collected = state.cards.filter((c) => state.collection.has(c.id)).length;
-  if (els.galleryProgress) els.galleryProgress.textContent = `${collected} collected · ${state.cards.length} discovered in this set · ${state.totalCards} total`;
+  if (els.galleryProgress) els.galleryProgress.textContent = `${collected} collected · ${state.cards.length} cards loaded · ${state.totalCards} total`;
   els.galleryGrid.innerHTML = '';
   state.cards.forEach((card) => {
     const owned = state.collection.has(card.id);
@@ -234,13 +242,16 @@ function renderGallery() {
     item.innerHTML = owned
       ? `<img src="${card.src}" alt="${card.name}"><span>${card.number || card.id}</span><strong>${card.name}</strong>`
       : `<div class="card-back">?</div><span>${card.number || card.id}</span><strong>Uncaught</strong>`;
-    if (owned) item.addEventListener('click', () => showReveal(card, false));
+    if (owned) {
+      item.addEventListener('click', (evt) => { evt.preventDefault(); evt.stopPropagation(); showReveal(card, false); });
+      item.addEventListener('touchend', (evt) => { evt.preventDefault(); evt.stopPropagation(); showReveal(card, false); }, { passive: false });
+    }
     els.galleryGrid.appendChild(item);
   });
 }
 
 function catchNearestScreenBall(clientX, clientY) {
-  if (!state.running || !els.reveal.classList.contains('hidden')) return false;
+  if (!state.running || !els.reveal.classList.contains('hidden') || !els.gallery.classList.contains('hidden')) return false;
   const camera = els.cam.getObject3D('camera');
   const canvas = els.scene.canvas;
   if (!camera || !canvas) return false;
@@ -271,12 +282,6 @@ function installScreenTapFallback() {
     if (!state.running) return;
     if (e.target.closest?.('.hud, .reveal, .overlay, .panel')) return;
     if (catchNearestScreenBall(e.clientX, e.clientY)) e.preventDefault();
-  }, { passive: false });
-  window.addEventListener('touchend', (e) => {
-    if (!state.running || !e.changedTouches?.length) return;
-    const t = e.changedTouches[0];
-    if (e.target.closest?.('.hud, .reveal, .overlay, .panel')) return;
-    if (catchNearestScreenBall(t.clientX, t.clientY)) e.preventDefault();
   }, { passive: false });
 }
 
@@ -344,7 +349,9 @@ els.regen.addEventListener('click', () => { generateSpawns(); renderSpawns(); to
 els.revealClose?.addEventListener('click', hideReveal);
 els.reveal?.addEventListener('click', (e) => { if (e.target === els.reveal) hideReveal(); });
 els.galleryOpen?.addEventListener('click', openGallery);
+els.galleryOpen?.addEventListener('touchend', openGallery, { passive: false });
 els.galleryClose?.addEventListener('click', closeGallery);
+els.galleryClose?.addEventListener('touchend', (e) => { e.preventDefault(); closeGallery(); }, { passive: false });
 els.gallery?.addEventListener('click', (e) => { if (e.target === els.gallery) closeGallery(); });
 els.placeToggle?.addEventListener('click', () => toast('Place Mode wiring is next.'));
 els.placeBall?.addEventListener('click', () => toast('Drop Ball wiring is next.'));
