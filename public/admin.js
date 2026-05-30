@@ -1,5 +1,11 @@
-/* Admin panel: edit spawn behavior, default sphere style, and per-character
- * frequency + sphere overrides. Saves to PUT /api/config. */
+/* Admin / setup panel — fully client-side.
+ * Upload characters (stored in IndexedDB), tune per-character frequency and
+ * sphere style, configure spawn behavior, and export/import a pack. */
+import {
+  resolveCharacters, resolveConfig, saveConfig,
+  addCharacterFromFile, deleteCharacter, clearCharacters,
+  countStoredCharacters, exportPack, importPack
+} from './storage.js';
 
 const SPHERE_FIELDS = [
   { key: 'radius', label: 'Radius (m)', type: 'number', step: 0.1, min: 0.2, max: 5 },
@@ -14,21 +20,21 @@ const SPHERE_FIELDS = [
 
 let config = null;
 let characters = [];
-
 const $ = (id) => document.getElementById(id);
 
 async function load() {
-  const [cfg, chars] = await Promise.all([
-    fetch('/api/config').then((r) => r.json()),
-    fetch('/api/characters').then((r) => r.json())
-  ]);
-  config = cfg;
+  config = await resolveConfig();
   config.characters = config.characters || {};
-  characters = chars.characters || [];
+  const resolved = await resolveCharacters();
+  characters = resolved.characters;
   renderSpawn();
   renderDefaultSphere();
   renderCharacters();
+  const stored = await countStoredCharacters();
   $('charcount').textContent = characters.length;
+  $('uploadStatus').textContent = stored
+    ? `${stored} uploaded${stored < 151 ? ` — add ${151 - stored} more to reach 151` : stored > 200 ? ' — over the 200 target' : ' ✓ in the 151–200 range'}`
+    : 'Showing the bundled seed cast. Upload images to replace it.';
 }
 
 function renderSpawn() {
@@ -37,38 +43,31 @@ function renderSpawn() {
   $('spawn-min').value = s.minSpacingFeet;
   $('spawn-max').value = s.maxSpacingFeet;
   $('spawn-radius').value = s.spreadRadiusFeet ?? '';
-  $('spawn-regen').value = s.regenerateOnMoveFeet ?? '';
 }
 
-function sphereInput(field, value, onChange) {
+function field(f, value, onChange) {
   const label = document.createElement('label');
-  label.textContent = field.label;
+  label.textContent = f.label;
   const input = document.createElement('input');
-  input.type = field.type;
-  if (field.step) input.step = field.step;
-  if (field.min != null) input.min = field.min;
-  if (field.max != null) input.max = field.max;
-  if (field.type === 'checkbox') {
+  input.type = f.type;
+  if (f.step) input.step = f.step;
+  if (f.min != null) input.min = f.min;
+  if (f.max != null) input.max = f.max;
+  if (f.type === 'checkbox') {
     input.checked = !!value;
     input.addEventListener('change', () => onChange(input.checked));
   } else {
-    input.value = value ?? (field.type === 'color' ? '#44aaff' : '');
-    input.addEventListener('input', () =>
-      onChange(field.type === 'number' ? parseFloat(input.value) : input.value)
-    );
+    input.value = value ?? (f.type === 'color' ? '#44aaff' : '');
+    input.addEventListener('input', () => onChange(f.type === 'number' ? parseFloat(input.value) : input.value));
   }
   label.appendChild(input);
   return label;
 }
 
 function renderDefaultSphere() {
-  const container = $('default-sphere');
-  container.innerHTML = '';
-  for (const f of SPHERE_FIELDS) {
-    container.appendChild(
-      sphereInput(f, config.defaultSphere[f.key], (v) => (config.defaultSphere[f.key] = v))
-    );
-  }
+  const c = $('default-sphere');
+  c.innerHTML = '';
+  for (const f of SPHERE_FIELDS) c.appendChild(field(f, config.defaultSphere[f.key], (v) => (config.defaultSphere[f.key] = v)));
 }
 
 function renderCharacters() {
@@ -77,23 +76,23 @@ function renderCharacters() {
   list.innerHTML = '';
   for (const c of characters) {
     if (filter && !c.name.toLowerCase().includes(filter)) continue;
-    config.characters[c.id] = config.characters[c.id] || {};
-    const entry = config.characters[c.id];
+    const entry = (config.characters[c.id] = config.characters[c.id] || {});
     if (typeof entry.frequency !== 'number') entry.frequency = 1;
+    entry.sphere = entry.sphere || {};
 
     const row = document.createElement('div');
     row.className = 'char';
 
     const img = document.createElement('img');
-    img.src = '/' + c.image.replace(/^\//, '');
+    img.src = c.src;
     img.alt = c.name;
 
     const name = document.createElement('div');
     name.className = 'name';
     name.textContent = c.name;
 
-    const freq = document.createElement('div');
-    freq.className = 'freq';
+    const freqWrap = document.createElement('div');
+    freqWrap.className = 'freq';
     const range = document.createElement('input');
     range.type = 'range';
     range.min = 0; range.max = 5; range.step = 0.1;
@@ -105,49 +104,50 @@ function renderCharacters() {
       entry.frequency = parseFloat(range.value);
       val.textContent = entry.frequency.toFixed(1);
     });
-    freq.append(range, val);
+    const freqLabel = document.createElement('span');
+    freqLabel.className = 'freqlabel';
+    freqLabel.textContent = 'freq';
+    freqWrap.append(freqLabel, range, val);
 
-    const freqLabel = document.createElement('div');
-    freqLabel.style.fontSize = '12px';
-    freqLabel.style.color = '#9aa6c9';
-    freqLabel.textContent = 'frequency';
+    const tools = document.createElement('div');
+    tools.className = 'tools';
+    if (c.fromStore) {
+      const del = document.createElement('button');
+      del.className = 'icon';
+      del.textContent = '✕';
+      del.title = 'Remove character';
+      del.addEventListener('click', async () => {
+        await deleteCharacter(c.id);
+        delete config.characters[c.id];
+        await load();
+      });
+      tools.appendChild(del);
+    }
 
-    // Per-character sphere override
     const details = document.createElement('details');
     const summary = document.createElement('summary');
     summary.textContent = 'Override sphere';
     details.appendChild(summary);
     const ov = document.createElement('div');
     ov.className = 'grid override';
-    entry.sphere = entry.sphere || {};
     for (const f of SPHERE_FIELDS) {
-      ov.appendChild(
-        sphereInput(f, entry.sphere[f.key], (v) => {
-          if (v === '' || v == null || (typeof v === 'number' && Number.isNaN(v))) {
-            delete entry.sphere[f.key];
-          } else {
-            entry.sphere[f.key] = v;
-          }
-        })
-      );
+      ov.appendChild(field(f, entry.sphere[f.key], (v) => {
+        if (v === '' || v == null || (typeof v === 'number' && Number.isNaN(v))) delete entry.sphere[f.key];
+        else entry.sphere[f.key] = v;
+      }));
     }
     details.appendChild(ov);
 
-    row.append(img, name, freqLabel, freq, details);
+    row.append(img, name, freqWrap, tools, details);
     list.appendChild(row);
   }
 }
 
-function collectSpawn() {
+function collect() {
   config.spawn.count = parseInt($('spawn-count').value, 10) || 1;
   config.spawn.minSpacingFeet = parseFloat($('spawn-min').value) || 10;
   config.spawn.maxSpacingFeet = parseFloat($('spawn-max').value) || 20;
   config.spawn.spreadRadiusFeet = parseFloat($('spawn-radius').value) || undefined;
-  config.spawn.regenerateOnMoveFeet = parseFloat($('spawn-regen').value) || undefined;
-}
-
-function cleanCharacters() {
-  // Drop empty sphere override objects to keep config.json tidy.
   for (const id of Object.keys(config.characters)) {
     const e = config.characters[id];
     if (e.sphere && Object.keys(e.sphere).length === 0) delete e.sphere;
@@ -161,38 +161,60 @@ function toast(msg) {
   t.textContent = msg;
   t.classList.remove('hidden');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.add('hidden'), 2000);
+  toastTimer = setTimeout(() => t.classList.add('hidden'), 2200);
 }
 
-async function save() {
-  collectSpawn();
-  cleanCharacters();
-  const res = await fetch('/api/config', {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json', 'x-admin-token': $('token').value },
-    body: JSON.stringify(config)
-  });
-  if (res.ok) toast('Saved ✓');
-  else toast('Save failed: ' + (await res.json().catch(() => ({})).then?.((j) => j.error) || res.status));
-}
+/* events */
+$('uploadInput').addEventListener('change', async (e) => {
+  const files = [...e.target.files].filter((f) => f.type.startsWith('image/'));
+  if (!files.length) return;
+  $('uploadStatus').textContent = `Uploading ${files.length}…`;
+  for (const f of files) await addCharacterFromFile(f);
+  e.target.value = '';
+  await load();
+  toast(`Added ${files.length} character${files.length > 1 ? 's' : ''}`);
+});
 
-async function sync() {
-  toast('Syncing from Drive…');
-  const res = await fetch('/api/sync', {
-    method: 'POST',
-    headers: { 'x-admin-token': $('token').value }
-  });
-  const body = await res.json().catch(() => ({}));
-  if (res.ok) {
-    toast('Drive sync complete — reloading roster');
+$('clearBtn').addEventListener('click', async () => {
+  if (!confirm('Remove all uploaded characters from this device?')) return;
+  await clearCharacters();
+  config.characters = {};
+  await load();
+  toast('Cleared uploaded characters');
+});
+
+$('saveBtn').addEventListener('click', async () => {
+  collect();
+  await saveConfig(config);
+  toast('Saved ✓');
+});
+
+$('exportBtn').addEventListener('click', async () => {
+  collect();
+  await saveConfig(config);
+  const pack = await exportPack();
+  const blob = new Blob([JSON.stringify(pack)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `ar-character-pack-${Date.now()}.json`;
+  a.click();
+  toast('Pack exported');
+});
+
+$('importInput').addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  try {
+    const pack = JSON.parse(await file.text());
+    await importPack(pack);
+    e.target.value = '';
     await load();
-  } else {
-    toast('Sync failed: ' + (body.error || res.status));
+    toast('Pack imported ✓');
+  } catch (err) {
+    toast('Import failed: ' + err.message);
   }
-}
+});
 
-$('saveBtn').addEventListener('click', save);
-$('syncBtn').addEventListener('click', sync);
 $('filter').addEventListener('input', renderCharacters);
 
 load().catch((e) => toast('Load failed: ' + e.message));

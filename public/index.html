@@ -6,48 +6,57 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-
-  <!-- A-Frame + AR.js (location-based / GPS AR over the back camera) -->
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-  <script src="https://raw.githack.com/AR-js-org/AR.js/3.4.5/aframe/build/aframe-ar-nft.js"></script>
   <script src="https://unpkg.com/aframe-look-at-component@1.0.0/dist/aframe-look-at-component.min.js"></script>
-
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- camera passthrough for non-WebXR (magic-window) mode -->
+  <video id="passthrough" class="hidden" autoplay playsinline muted></video>
+
   <div id="gate" class="overlay">
     <div class="card">
       <h1>AR Character Hunt</h1>
-      <p>Point your phone around to discover characters floating inside glowing spheres, scattered every 10–20 feet around you.</p>
+      <p>Point your phone around to find characters floating inside glowing spheres, scattered every 10–20 feet around you — indoors or out.</p>
       <ul class="reqs">
         <li>📷 Allow camera access</li>
-        <li>📍 Allow location access</li>
-        <li>🚶 Best played outdoors with room to walk</li>
+        <li>🚶 Best with room to walk around</li>
       </ul>
       <button id="start">Start hunting</button>
-      <p class="hint">Use HTTPS (or localhost). Heads-up: GPS spacing is approximate.</p>
-      <a class="adminlink" href="admin.html">Admin panel →</a>
+      <p id="mode" class="hint">Checking AR support…</p>
+      <a class="adminlink" href="admin.html">Set up characters (admin) →</a>
     </div>
   </div>
 
   <div id="hud" class="hud hidden">
-    <div id="status" class="status">Locating…</div>
-    <div id="score" class="score">Found <b id="count">0</b> / <span id="total">0</span></div>
-    <button id="regen" class="regen" title="Reseed nearby spheres">⟲</button>
+    <div id="status" class="status">Loading…</div>
+    <div id="score" class="score">Caught <b id="count">0</b> / <span id="total">0</span></div>
+    <button id="regen" class="regen" title="Reshuffle nearby spheres">⟲</button>
   </div>
 
+  <div id="reticle" class="reticle hidden"></div>
   <div id="toast" class="toast hidden"></div>
 
   <a-scene
     id="scene"
     class="hidden"
     vr-mode-ui="enabled: false"
-    renderer="antialias: true; alpha: true; logarithmicDepthBuffer: true; colorManagement: true"
-    embedded
-    arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false">
-    <a-camera gps-new-camera="gpsMinDistance: 3" rotation-reader></a-camera>
+    device-orientation-permission-ui="enabled: true"
+    renderer="antialias: true; alpha: true; colorManagement: true"
+    webxr="optionalFeatures: local-floor, bounded-floor; referenceSpaceType: local-floor"
+    background="transparent: true">
+    <a-camera
+      id="cam"
+      position="0 1.6 0"
+      wasd-controls-enabled="false"
+      look-controls="magicWindowTrackingEnabled: true; touchEnabled: true">
+      <a-entity
+        id="cursor"
+        cursor="rayOrigin: mouse; fuse: false"
+        raycaster="objects: .catchable; far: 30"></a-entity>
+    </a-camera>
   </a-scene>
 
-  <script src="game.js"></script>
+  <script type="module" src="game.js"></script>
 </body>
 </html>

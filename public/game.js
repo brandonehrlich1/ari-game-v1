@@ -1,54 +1,59 @@
-/* AR Character Hunt — game logic.
+/* AR Character Hunt — game logic (static / self-contained).
  *
- * Pipeline:
- *   1. fetch sphere/spawn config + the Drive-mirrored character roster
- *   2. get the player's GPS fix
- *   3. scatter N spawn points around them, each 10-20 ft apart
- *   4. assign a weighted-random character to each point
- *   5. render a translucent sphere with the character billboard inside,
- *      anchored to real-world GPS coords via AR.js
- *   6. tap a nearby sphere to "catch" the character
+ * Placement is metric (meters), so it works indoors AND outdoors:
+ *   - WebXR immersive-ar (Android Chrome, AR headsets): full positional
+ *     tracking — spheres are anchored in the room and you physically walk to
+ *     them, spaced 10-20 ft apart.
+ *   - Fallback "magic window" (iOS Safari etc.): live camera passthrough +
+ *     gyro look-around; spheres sit around you on a viewable dome so you can
+ *     still find and tap them.
+ *
+ * Characters + tuning come from the browser (IndexedDB) via storage.js, with a
+ * bundled seed roster as the default.
  */
+import { resolveCharacters, resolveConfig } from './storage.js';
 
-const FEET_PER_METER = 3.28084;
-const EARTH_M_PER_DEG_LAT = 111320;
+const FT_PER_M = 3.28084;
 
 const els = {
   gate: document.getElementById('gate'),
   start: document.getElementById('start'),
+  mode: document.getElementById('mode'),
   hud: document.getElementById('hud'),
   scene: document.getElementById('scene'),
+  cam: document.getElementById('cam'),
   status: document.getElementById('status'),
   count: document.getElementById('count'),
   total: document.getElementById('total'),
   regen: document.getElementById('regen'),
-  toast: document.getElementById('toast')
+  reticle: document.getElementById('reticle'),
+  toast: document.getElementById('toast'),
+  video: document.getElementById('passthrough')
 };
 
 const state = {
   config: null,
   characters: [],
-  origin: null, // {lat, lon}
   spawns: [],
-  found: new Set()
+  found: new Set(),
+  xr: false
 };
 
-async function loadData() {
-  const [cfg, chars] = await Promise.all([
-    fetch('/api/config').then((r) => r.json()).catch(() => null),
-    fetch('/api/characters').then((r) => r.json()).catch(() => null)
-  ]);
-  state.config = cfg || fallbackConfig();
-  state.characters = (chars && chars.characters) || [];
-  els.total.textContent = state.config.spawn.count;
-}
+let xrSupported = false;
+navigator.xr?.isSessionSupported?.('immersive-ar').then((ok) => {
+  xrSupported = ok;
+  els.mode.textContent = ok
+    ? 'Full AR supported — walk around to find characters.'
+    : 'Look-around AR mode (your device has no WebXR) — pan to find characters.';
+}).catch(() => {
+  els.mode.textContent = 'Look-around AR mode — pan around to find characters.';
+});
 
-function fallbackConfig() {
-  return {
-    spawn: { minSpacingFeet: 10, maxSpacingFeet: 20, count: 30, spreadRadiusFeet: 180 },
-    defaultSphere: { radius: 1.1, color: '#44aaff', opacity: 0.35, characterScale: 1.4, bobble: true },
-    characters: {}
-  };
+async function loadData() {
+  const [chars, cfg] = await Promise.all([resolveCharacters(), resolveConfig()]);
+  state.characters = chars.characters;
+  state.config = cfg;
+  els.total.textContent = state.config.spawn.count;
 }
 
 /* ---- weighted character picker ---- */
@@ -56,12 +61,11 @@ function pickCharacter() {
   const list = state.characters;
   if (!list.length) return null;
   const weights = list.map((c) => {
-    const cfg = state.config.characters?.[c.id];
-    const f = cfg && typeof cfg.frequency === 'number' ? cfg.frequency : 1;
-    return Math.max(0, f);
+    const f = state.config.characters?.[c.id]?.frequency;
+    return Math.max(0, typeof f === 'number' ? f : 1);
   });
   const total = weights.reduce((a, b) => a + b, 0);
-  if (total <= 0) return list[Math.floor(Math.random() * list.length)];
+  if (total <= 0) return list[(Math.random() * list.length) | 0];
   let r = Math.random() * total;
   for (let i = 0; i < list.length; i++) {
     r -= weights[i];
@@ -70,113 +74,95 @@ function pickCharacter() {
   return list[list.length - 1];
 }
 
-/* ---- merged sphere style for a character ---- */
 function sphereStyle(charId) {
-  const base = state.config.defaultSphere || {};
-  const override = state.config.characters?.[charId]?.sphere || {};
-  return { ...base, ...override };
+  return { ...(state.config.defaultSphere || {}), ...(state.config.characters?.[charId]?.sphere || {}) };
 }
 
-/* ---- spawn-point generation with 10-20 ft spacing ---- */
-function feetToLat(ft) {
-  return ft / FEET_PER_METER / EARTH_M_PER_DEG_LAT;
-}
-function feetToLon(ft, lat) {
-  return ft / FEET_PER_METER / (EARTH_M_PER_DEG_LAT * Math.cos((lat * Math.PI) / 180));
-}
-function distFeet(a, b) {
-  const dLat = (a.lat - b.lat) * EARTH_M_PER_DEG_LAT;
-  const dLon =
-    (a.lon - b.lon) * EARTH_M_PER_DEG_LAT * Math.cos((a.lat * Math.PI) / 180);
-  return Math.sqrt(dLat * dLat + dLon * dLon) * FEET_PER_METER;
-}
-
+/* ---- generate spawn points in meters around the origin ---- */
 function generateSpawns() {
-  const { count, minSpacingFeet, maxSpacingFeet, spreadRadiusFeet } = state.config.spawn;
-  const minSpacing = minSpacingFeet ?? 10;
-  const maxSpacing = maxSpacingFeet ?? 20;
-  const radius = spreadRadiusFeet ?? Math.max(80, count * (minSpacing + maxSpacing) / 2);
-  const origin = state.origin;
-  const points = [];
+  const sp = state.config.spawn;
+  const minM = (sp.minSpacingFeet ?? 10) / FT_PER_M;
+  const count = sp.count ?? 24;
+  const radiusM = (sp.spreadRadiusFeet ?? 120) / FT_PER_M;
+  const pts = [];
   let attempts = 0;
 
-  while (points.length < count && attempts < count * 60) {
+  while (pts.length < count && attempts < count * 80) {
     attempts++;
     const angle = Math.random() * Math.PI * 2;
-    const dist = Math.sqrt(Math.random()) * radius; // uniform over disc
-    const dxFt = Math.cos(angle) * dist;
-    const dyFt = Math.sin(angle) * dist;
-    const cand = {
-      lat: origin.lat + feetToLat(dyFt),
-      lon: origin.lon + feetToLon(dxFt, origin.lat)
-    };
-    // enforce min spacing; bias toward also being within max spacing of a neighbour
-    let tooClose = false;
-    for (const p of points) {
-      if (distFeet(cand, p) < minSpacing) { tooClose = true; break; }
-    }
-    if (tooClose) continue;
-    points.push(cand);
+    const dist = Math.sqrt(Math.random()) * radiusM; // uniform over disc
+    const x = Math.cos(angle) * dist;
+    const z = Math.sin(angle) * dist;
+    if (pts.some((p) => Math.hypot(p.x - x, p.z - z) < minM)) continue;
+    pts.push({ x, z });
   }
 
-  state.spawns = points.map((p, i) => ({
-    id: `spawn-${i}`,
-    lat: p.lat,
-    lon: p.lon,
-    character: pickCharacter()
-  }));
+  state.spawns = pts.map((p, i) => {
+    const bearing = Math.atan2(p.x, -p.z); // direction from origin
+    return {
+      id: `spawn-${i}`,
+      x: p.x,
+      z: p.z,
+      bearing,
+      y: 1.1 + Math.random() * 0.9,
+      character: pickCharacter()
+    };
+  });
 }
 
-/* ---- render spheres into the AR scene ---- */
+/* ---- render ---- */
 function clearSpawns() {
-  state.scene && document.querySelectorAll('.spawn-entity').forEach((e) => e.remove());
+  document.querySelectorAll('.spawn-entity').forEach((e) => e.remove());
+  state.found.clear();
+  els.count.textContent = '0';
 }
 
 function renderSpawns() {
-  document.querySelectorAll('.spawn-entity').forEach((e) => e.remove());
-  state.found.clear();
-  updateScore();
-
-  const scene = els.scene;
+  clearSpawns();
   for (const s of state.spawns) {
     if (!s.character) continue;
     const style = sphereStyle(s.character.id);
+    const radius = style.radius ?? 0.6;
+
+    // In look-around (non-XR) mode there's no walking, so pull spheres onto a
+    // viewable dome (2.5-7 m) along their bearing instead of true distance.
+    let x = s.x, y = s.y, z = s.z;
+    if (!state.xr) {
+      const d = 2.5 + (s.id.charCodeAt(6) % 5) + Math.random() * 1.5;
+      x = Math.sin(s.bearing) * d;
+      z = -Math.cos(s.bearing) * d;
+    }
 
     const wrap = document.createElement('a-entity');
-    wrap.classList.add('spawn-entity');
-    wrap.setAttribute('gps-new-entity-place', `latitude: ${s.lat}; longitude: ${s.lon}`);
+    wrap.classList.add('spawn-entity', 'catchable');
+    wrap.setAttribute('position', `${x} ${y} ${z}`);
     wrap.dataset.spawnId = s.id;
-    wrap.dataset.charName = s.character.name;
 
     const sphere = document.createElement('a-sphere');
-    sphere.setAttribute('radius', style.radius ?? 1.1);
+    sphere.setAttribute('radius', radius);
     sphere.setAttribute('color', style.color ?? '#44aaff');
-    sphere.setAttribute('opacity', style.opacity ?? 0.35);
+    sphere.setAttribute('opacity', style.opacity ?? 0.4);
     sphere.setAttribute('transparent', 'true');
     sphere.setAttribute('metalness', style.metalness ?? 0.1);
     sphere.setAttribute('roughness', style.roughness ?? 0.4);
     sphere.setAttribute('wireframe', String(!!style.wireframe));
     sphere.setAttribute('side', 'double');
     if (style.bobble) {
-      sphere.setAttribute(
-        'animation',
-        'property: position; dir: alternate; dur: 2200; easing: easeInOutSine; loop: true; to: 0 0.4 0'
-      );
+      sphere.setAttribute('animation', 'property: position; dir: alternate; dur: 2200; easing: easeInOutSine; loop: true; to: 0 0.2 0');
     }
     wrap.appendChild(sphere);
 
     const img = document.createElement('a-image');
-    const scale = (style.radius ?? 1.1) * (style.characterScale ?? 1.4);
-    img.setAttribute('src', '/' + s.character.image.replace(/^\//, ''));
+    const scale = radius * (style.characterScale ?? 1.5) * 2;
+    img.setAttribute('src', s.character.src);
     img.setAttribute('width', scale);
     img.setAttribute('height', scale);
     img.setAttribute('transparent', 'true');
-    img.setAttribute('look-at', '[gps-new-camera]');
-    img.setAttribute('position', '0 0 0');
+    img.setAttribute('look-at', '#cam');
     wrap.appendChild(img);
 
     wrap.addEventListener('click', () => tryCatch(s, wrap));
-    scene.appendChild(wrap);
+    els.scene.appendChild(wrap);
   }
   els.status.textContent = `${state.spawns.length} spheres nearby`;
 }
@@ -185,17 +171,10 @@ function renderSpawns() {
 function tryCatch(spawn, entity) {
   if (state.found.has(spawn.id)) return;
   state.found.add(spawn.id);
-  entity.querySelector('a-sphere')?.setAttribute(
-    'animation__catch',
-    'property: scale; to: 0.01 0.01 0.01; dur: 350; easing: easeInBack'
-  );
-  setTimeout(() => entity.remove(), 360);
-  toast(`Caught ${spawn.character.name}! ✨`);
-  updateScore();
-}
-
-function updateScore() {
+  entity.querySelector('a-sphere')?.setAttribute('animation__catch', 'property: scale; to: 0.01 0.01 0.01; dur: 320; easing: easeInBack');
+  setTimeout(() => entity.remove(), 340);
   els.count.textContent = state.found.size;
+  toast(`Caught ${spawn.character.name}! ✨`);
 }
 
 let toastTimer;
@@ -206,63 +185,89 @@ function toast(msg) {
   toastTimer = setTimeout(() => els.toast.classList.add('hidden'), 1800);
 }
 
-/* ---- geolocation + lifecycle ---- */
-function onGpsUpdate(e) {
-  const pos = e.detail.position;
-  if (!state.origin) {
-    state.origin = { lat: pos.latitude, lon: pos.longitude };
-    generateSpawns();
-    renderSpawns();
-    return;
+/* ---- proximity auto-catch while walking (XR) ---- */
+AFRAME.registerComponent('proximity-catcher', {
+  tick() {
+    if (!state.xr) return;
+    const camPos = new THREE.Vector3();
+    this.el.object3D.getWorldPosition(camPos);
+    document.querySelectorAll('.spawn-entity').forEach((entity) => {
+      const id = entity.dataset.spawnId;
+      if (state.found.has(id)) return;
+      const p = new THREE.Vector3();
+      entity.object3D.getWorldPosition(p);
+      if (camPos.distanceTo(p) < 1.4) {
+        const spawn = state.spawns.find((s) => s.id === id);
+        if (spawn) tryCatch(spawn, entity);
+      }
+    });
   }
-  // Re-seed if the player wanders far from where spheres were generated.
-  const moved = distFeet(state.origin, { lat: pos.latitude, lon: pos.longitude });
-  const threshold = state.config.spawn.regenerateOnMoveFeet;
-  if (threshold && moved > threshold) {
-    state.origin = { lat: pos.latitude, lon: pos.longitude };
-    generateSpawns();
-    renderSpawns();
+});
+
+/* ---- camera passthrough for magic-window mode ---- */
+async function startPassthrough() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: { ideal: 'environment' } },
+      audio: false
+    });
+    els.video.srcObject = stream;
+    els.video.classList.remove('hidden');
+  } catch (e) {
+    els.status.textContent = 'Camera blocked — enable camera access and reload.';
   }
 }
 
+/* ---- start ---- */
 async function start() {
   els.start.disabled = true;
   els.start.textContent = 'Starting…';
   try {
     await loadData();
-  } catch (err) {
-    alert('Could not load game data: ' + err.message);
+  } catch (e) {
+    alert('Could not load game data: ' + e.message);
     els.start.disabled = false;
     els.start.textContent = 'Start hunting';
     return;
   }
 
   if (!state.characters.length) {
-    toast('No characters yet — add some via Drive sync or seed.');
+    toast('No characters yet — add some in the admin panel.');
   }
 
   els.gate.classList.add('hidden');
   els.hud.classList.remove('hidden');
   els.scene.classList.remove('hidden');
+  els.cam.setAttribute('proximity-catcher', '');
 
-  const cam = document.querySelector('[gps-new-camera]');
-  cam.addEventListener('gps-camera-update-position', onGpsUpdate);
+  const scene = els.scene;
+  const begin = () => {
+    generateSpawns();
+    renderSpawns();
+  };
 
-  // Fallback: if no GPS event fires in 8s, try the raw geolocation API once.
-  setTimeout(() => {
-    if (!state.origin && navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (p) => onGpsUpdate({ detail: { position: p.coords } }),
-        () => (els.status.textContent = 'Location unavailable — enable GPS & reload.'),
-        { enableHighAccuracy: true }
-      );
+  if (xrSupported) {
+    state.xr = true;
+    try {
+      await scene.enterAR();
+      els.reticle.classList.remove('hidden');
+      scene.addEventListener('exit-vr', () => els.reticle.classList.add('hidden'));
+      begin();
+      return;
+    } catch (e) {
+      state.xr = false; // user declined or failed — fall through to magic window
     }
-  }, 8000);
+  }
+
+  // Magic-window fallback
+  state.xr = false;
+  await startPassthrough();
+  els.reticle.classList.remove('hidden');
+  begin();
 }
 
 els.start.addEventListener('click', start);
 els.regen.addEventListener('click', () => {
-  if (!state.origin) return;
   generateSpawns();
   renderSpawns();
   toast('Spheres reshuffled');

@@ -1,96 +1,95 @@
 # AR Character Hunt (ari-game-v1)
 
-A mobile web AR game. Open it on your phone, point the **back camera** around,
-and discover characters floating inside glowing **spheres** scattered every
-**10–20 feet** in real physical space. Tap a nearby sphere to catch the
-character.
+A mobile web AR game. Open the link on your phone, point the **back camera**
+around, and find characters floating inside glowing **spheres** scattered every
+**10–20 feet** in real physical space — **indoors or outdoors**. Tap (or walk
+into) a sphere to catch the character.
 
-- **Characters** (a cast of ~151–200) are mirrored from a **Google Drive**
-  folder into the repo, so updating the Drive updates the game.
-- An **admin panel** lets you style each character's sphere and tune how often
-  it spawns.
+Fully **self-contained**: upload your cast of **151–200 characters** right in
+the app (no accounts, no backend). Everything runs as a static site.
 
-## Stack
+## 🔗 Live link
 
-- **Frontend:** [A-Frame](https://aframe.io) + [AR.js](https://ar-js-org.github.io/AR.js-Docs/)
-  location-based AR (GPS), served as static files in `public/`.
-- **Backend:** a tiny Express server (`server/server.js`) that serves the app
-  and exposes a config/roster/sync API.
-- **Drive mirror:** `scripts/sync-drive.js` pulls images from a Drive folder
-  into `public/assets/characters/` and writes `data/characters.json`.
+Deployed via GitHub Pages from `public/`:
 
-## Quick start
+**https://brandonehrlich1.github.io/ari-game-v1/**
 
-```bash
-npm install
-npm run seed     # generates 12 placeholder characters so the game runs now
-npm start        # http://localhost:3000  (game)  /admin.html (admin)
-```
-
-Open the game on a phone over **HTTPS** (camera + GPS require a secure
-context). For local phone testing, tunnel with something like `ngrok http 3000`
-or run behind a TLS reverse proxy. `localhost` works on desktop for the UI, but
-the AR camera/GPS need a real device.
+(The `.github/workflows/deploy-pages.yml` workflow builds and publishes on every
+push. Admin/setup is at `…/ari-game-v1/admin.html`.)
 
 ## How it works
 
-### Spawning (10–20 ft)
-On start the app gets your GPS fix and scatters `spawn.count` points within
-`spreadRadiusFeet`, rejecting any point closer than `minSpacingFeet` (10) to
-another so spheres stay spread out. Distances are converted to lat/lon offsets
-and anchored with AR.js `gps-new-entity-place`. Walking past
-`regenerateOnMoveFeet` reseeds the field around your new position.
+### Indoor + outdoor AR
+Placement is **metric**, so it isn't tied to GPS:
 
-### Characters from Google Drive
-1. Create a Drive folder and drop in character images (PNG/JPG/SVG/WebP). Each
-   file becomes one character; the filename becomes its name (`Ember.png` →
-   "Ember").
-2. Create a Google **service account**, download its key JSON, and **share the
-   folder** with the service account's email (read access).
-3. Configure env (`cp .env.example .env`):
-   - `DRIVE_FOLDER_ID` — the folder's id (from its URL)
-   - `GOOGLE_SERVICE_ACCOUNT_JSON` — path to the key file (or raw JSON)
-4. Sync:
-   ```bash
-   npm run sync
-   ```
-   This rewrites `data/characters.json` and downloads art into
-   `public/assets/characters/`, removing art for files deleted from Drive.
+- **WebXR (`immersive-ar`)** — on devices that support it (Android Chrome with
+  ARCore, AR headsets) you get full positional tracking: spheres are anchored
+  in the room and you **physically walk** between them, 10–20 ft apart, inside
+  or outside.
+- **Look-around fallback** — on devices without WebXR AR (e.g. iOS Safari) the
+  app uses the live camera feed + gyroscope so you can pan around to find and
+  tap spheres arranged on a viewable dome.
 
-**Keeping it mirrored:** `.github/workflows/drive-sync.yml` runs the sync
-hourly (and on demand) and commits changes, so the repo — and therefore the
-game — tracks the Drive folder. Add repo secrets `DRIVE_FOLDER_ID` and
-`GOOGLE_SERVICE_ACCOUNT_JSON`. You can also trigger a sync from the admin panel
-("Sync from Drive") when the server has Drive env configured.
+### Characters: upload in the app
+Open **admin.html**, tap **Upload character images**, and select your images
+(PNG/JPG/SVG/WebP). Each image becomes a character (the filename becomes its
+name). They're stored on the device via **IndexedDB** — no server needed. Until
+you upload your own, a 12-character seed cast ships with the site.
 
-### Admin panel (`/admin.html`)
-- **Spawn behavior:** count, min/max spacing (feet), spread radius, reseed
-  distance.
-- **Default sphere style:** radius, color, opacity, metalness, roughness,
-  character scale, wireframe, float/bobble.
-- **Per character:** spawn **frequency** (relative weight — 0 disables, higher
-  = more common) and an optional sphere **override**.
-- Saves to `data/config.json` via `PUT /api/config`. Set `ADMIN_TOKEN` to
-  require a token for writes (entered in the panel).
+- **Frequency** — per-character relative spawn weight (0 disables, higher = more
+  common).
+- **Sphere style** — set a default look (radius, color, opacity, metalness,
+  roughness, character scale, wireframe, float) and override it per character.
+- **Spawn behavior** — count, min/max spacing (feet), spread radius.
+- **Export / Import pack** — move your characters + settings between devices as
+  a single JSON file.
 
-## Config files
+> Storage is per-device/per-browser. Set up your cast on the device you'll play
+> on, or use Export/Import to copy a pack across devices.
 
-- `data/config.json` — spawn + sphere settings (edited by the admin panel).
-- `data/characters.json` — the roster (generated by seed/sync; don't hand-edit).
+## Run locally
 
-## API
+```bash
+npm install
+npm run seed     # generates the bundled seed roster + default-config.json
+npm start        # http://localhost:3000  (game)   /admin.html (setup)
+```
 
-| Method | Path              | Purpose                                  |
-|--------|-------------------|------------------------------------------|
-| GET    | `/api/characters` | Drive-mirrored roster                    |
-| GET    | `/api/config`     | Spawn + sphere config                    |
-| PUT    | `/api/config`     | Save config (admin; honors `ADMIN_TOKEN`)|
-| POST   | `/api/sync`       | Trigger a Drive re-sync (admin)          |
+Camera/AR need a **secure context**. `localhost` is treated as secure for the
+camera; for full WebXR on a phone, use the deployed HTTPS link or an HTTPS
+tunnel (e.g. `ngrok http 3000`).
 
-## Notes & next steps
+## Project layout
 
-- AR.js GPS placement is approximate (consumer GPS drift is several meters); the
-  10–20 ft spacing is best-effort outdoors with a clear sky view.
-- Possible follow-ups: persistent per-player catches, rarity tiers driving
-  frequency, sound/haptics on catch, and clustering that also enforces the
-  *max* spacing for tighter trails.
+```
+public/                 # the entire static app (this is what gets deployed)
+  index.html  game.js   # the AR game
+  admin.html  admin.js  # self-contained setup / upload panel
+  storage.js            # IndexedDB store for characters + config
+  seed-characters.json  # default roster (generated by npm run seed)
+  default-config.json   # default spawn + sphere settings
+  assets/characters/    # seed art
+scripts/
+  seed.js               # generate the seed roster + default config
+  sync-drive.js         # OPTIONAL: seed the default roster from a Drive folder
+server/server.js        # OPTIONAL local dev static server
+.github/workflows/
+  deploy-pages.yml       # build + publish to GitHub Pages (the live link)
+  drive-sync.yml         # OPTIONAL manual Drive → repo sync
+```
+
+## Optional: seed the default roster from Google Drive
+
+If you'd rather bake a default cast into the site from a Drive folder (instead
+of, or in addition to, in-app uploads): set `DRIVE_FOLDER_ID` +
+`GOOGLE_SERVICE_ACCOUNT_JSON` (see `.env.example`), run `npm run sync`, and
+commit. There's a manual `drive-sync` workflow for the same in CI. In-app
+uploads always take precedence over the baked-in default on a given device.
+
+## Notes
+
+- WebXR AR availability varies by device/browser; the fallback keeps the game
+  playable everywhere with a camera.
+- Possible follow-ups: persistent catches/score, rarity tiers, sound + haptics
+  on catch, and shared (server-backed) rosters so one admin's upload reaches all
+  players.

@@ -25,7 +25,8 @@ import { google } from 'googleapis';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, '..');
-const charDir = join(root, 'public', 'assets', 'characters');
+const pub = join(root, 'public');
+const charDir = join(pub, 'assets', 'characters');
 
 const FOLDER_ID = process.env.DRIVE_FOLDER_ID;
 const KEY = process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
@@ -149,8 +150,8 @@ async function main() {
     count: characters.length,
     characters
   };
-  writeFileSync(join(root, 'data', 'characters.json'), JSON.stringify(manifest, null, 2) + '\n');
-  console.log(`[sync-drive] Wrote data/characters.json with ${characters.length} characters.`);
+  writeFileSync(join(pub, 'seed-characters.json'), JSON.stringify(manifest, null, 2) + '\n');
+  console.log(`[sync-drive] Wrote public/seed-characters.json with ${characters.length} characters.`);
 
   if (characters.length < 151 || characters.length > 200) {
     console.warn(`[sync-drive] Note: roster is ${characters.length}; target is 151-200 characters.`);

@@ -2,18 +2,18 @@
   "spawn": {
     "minSpacingFeet": 10,
     "maxSpacingFeet": 20,
-    "count": 30,
-    "spreadRadiusFeet": 180,
-    "regenerateOnMoveFeet": 120
+    "count": 24,
+    "spreadRadiusFeet": 120,
+    "placement": "metric"
   },
   "defaultSphere": {
-    "radius": 1.1,
+    "radius": 0.6,
     "color": "#44aaff",
-    "opacity": 0.35,
+    "opacity": 0.4,
     "metalness": 0.1,
     "roughness": 0.4,
     "wireframe": false,
-    "characterScale": 1.4,
+    "characterScale": 1.5,
     "bobble": true
   },
   "characters": {}

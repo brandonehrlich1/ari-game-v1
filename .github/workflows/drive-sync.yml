@@ -3,9 +3,9 @@ name: Mirror Google Drive characters
 # Mirrors the Drive character folder into the repo so the game roster updates
 # as the Drive changes. Runs on a schedule and on demand. Commits any changes
 # to data/characters.json + public/assets/characters/.
+# Optional: only if you'd rather seed the *default* roster from a Drive folder
+# instead of (or in addition to) uploading characters in the app. Run manually.
 on:
-  schedule:
-    - cron: '0 * * * *' # hourly
   workflow_dispatch:
 
 jobs:
@@ -37,7 +37,7 @@ jobs:
           rm -f service-account.json
           git config user.name "drive-sync-bot"
           git config user.email "actions@github.com"
-          git add data/characters.json public/assets/characters
+          git add public/seed-characters.json public/assets/characters
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
