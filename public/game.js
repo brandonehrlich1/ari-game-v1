@@ -10,6 +10,7 @@ const XR_AUTO_CATCH_RADIUS_M = 0.45;
 const SCREEN_TAP_RADIUS_PX = 110;
 const COLLECTION_KEY = 'arimon.collection.v1';
 const BINDER_PAGE_SIZE = 9;
+const MAX_VISIBLE_FALLBACK_BALLS = 2;
 
 const FALLBACK_CARDS = [
   { id: '001', name: 'Turtwig Ari', number: '001/151', src: 'assets/cards/001-turtwig-ari.png' }
@@ -48,7 +49,10 @@ const state = {
   found: new Set(),
   collection: new Set(),
   xr: false,
-  running: false
+  running: false,
+  huntSeeded: false,
+  visibleZoneIndex: 0,
+  zoneTimer: null
 };
 let xrSupported = false;
 
@@ -56,9 +60,9 @@ navigator.xr?.isSessionSupported?.('immersive-ar').then((ok) => {
   xrSupported = ok;
   els.mode.textContent = ok
     ? 'Full AR supported — walk around to find Ari Balls.'
-    : 'Look-around AR mode — pan slowly in a full circle to find Ari Balls.';
+    : 'Look-around hunt — scan the room slowly to reveal Ari Balls.';
 }).catch(() => {
-  els.mode.textContent = 'Look-around AR mode — pan slowly in a full circle to find Ari Balls.';
+  els.mode.textContent = 'Look-around hunt — scan the room slowly to reveal Ari Balls.';
 });
 
 async function loadData() {
@@ -126,23 +130,26 @@ function generateSpawns() {
       const x = Math.cos(angle) * dist;
       const z = Math.sin(angle) * dist;
       if (pts.some((p) => Math.hypot(p.x - x, p.z - z) < minM)) continue;
-      pts.push({ x, z, y: toddlerHeightForIndex(pts.length) });
+      pts.push({ x, z, y: toddlerHeightForIndex(pts.length), zone: pts.length });
     }
   } else {
+    // Natural Hunt v2: keep 360° coverage, but do not render the whole ring.
+    // The fixed coordinates act as hidden room zones; only 1-2 zones are revealed
+    // at a time so the player experiences discovery instead of a camera-following carousel.
     const layout = [
-      { angle: -160, dist: 7.6, y: 0.58 },
-      { angle: -112, dist: 9.8, y: 0.78 },
-      { angle: -54, dist: 6.8, y: 1.02 },
-      { angle: -10, dist: 8.8, y: 1.18 },
-      { angle: 36, dist: 7.4, y: 0.64 },
-      { angle: 90, dist: 10.2, y: 1.34 },
-      { angle: 146, dist: 8.8, y: 0.88 },
-      { angle: 178, dist: 11.2, y: 1.58 }
+      { label: 'behind-left low', angle: -160, dist: 7.6, y: 0.58 },
+      { label: 'left play height', angle: -112, dist: 9.8, y: 0.78 },
+      { label: 'front-left table', angle: -54, dist: 6.8, y: 1.02 },
+      { label: 'front table', angle: -10, dist: 8.8, y: 1.18 },
+      { label: 'front-right low', angle: 36, dist: 7.4, y: 0.64 },
+      { label: 'right kid eye-line', angle: 90, dist: 10.2, y: 1.34 },
+      { label: 'rear-right play height', angle: 146, dist: 8.8, y: 0.88 },
+      { label: 'behind surprise', angle: 178, dist: 11.2, y: 1.58 }
     ];
     for (let i = 0; i < count; i++) {
       const l = layout[i % layout.length];
       const a = l.angle * Math.PI / 180;
-      pts.push({ x: Math.sin(a) * l.dist, z: -Math.cos(a) * l.dist, y: l.y });
+      pts.push({ x: Math.sin(a) * l.dist, z: -Math.cos(a) * l.dist, y: l.y, zone: i, label: l.label });
     }
   }
 
@@ -151,8 +158,12 @@ function generateSpawns() {
     x: p.x,
     z: p.z,
     y: p.y ?? 0.8,
+    zone: p.zone ?? i,
+    label: p.label || `zone-${i}`,
     card: pickCard()
   }));
+  state.huntSeeded = false;
+  state.visibleZoneIndex = 0;
 }
 
 function toddlerHeightForIndex(i) {
@@ -163,6 +174,8 @@ function toddlerHeightForIndex(i) {
 function clearSpawns() {
   document.querySelectorAll('.spawn-entity').forEach((e) => e.remove());
   state.found.clear();
+  if (state.zoneTimer) clearInterval(state.zoneTimer);
+  state.zoneTimer = null;
 }
 
 function renderSpawns() {
@@ -174,7 +187,9 @@ function renderSpawns() {
     const wrap = document.createElement('a-entity');
     wrap.classList.add('spawn-entity');
     wrap.setAttribute('position', `${s.x} ${s.y} ${s.z}`);
+    wrap.setAttribute('visible', state.xr ? 'true' : 'false');
     wrap.dataset.spawnId = s.id;
+    wrap.dataset.zone = String(s.zone);
 
     const glow = document.createElement('a-sphere');
     glow.setAttribute('radius', visualRadius * 1.2);
@@ -201,6 +216,38 @@ function renderSpawns() {
 
     els.scene.appendChild(wrap);
   }
+  if (!state.xr) beginZoneReveal();
+}
+
+function beginZoneReveal() {
+  setAllFallbackSpawnsVisible(false);
+  toast('Look around for Ari Balls…');
+  state.zoneTimer = setInterval(revealNextZone, 1700);
+  setTimeout(() => {
+    state.huntSeeded = true;
+    revealNextZone();
+  }, 900);
+}
+
+function revealNextZone() {
+  if (!state.running || state.xr || !state.spawns.length) return;
+  const remaining = state.spawns.filter((s) => !state.found.has(s.id));
+  if (!remaining.length) return;
+  setAllFallbackSpawnsVisible(false);
+  for (let offset = 0; offset < MAX_VISIBLE_FALLBACK_BALLS; offset++) {
+    const spawn = remaining[(state.visibleZoneIndex + offset) % remaining.length];
+    setSpawnVisible(spawn.id, true);
+  }
+  state.visibleZoneIndex = (state.visibleZoneIndex + 1) % remaining.length;
+}
+
+function setAllFallbackSpawnsVisible(visible) {
+  document.querySelectorAll('.spawn-entity').forEach((entity) => entity.setAttribute('visible', visible ? 'true' : 'false'));
+}
+
+function setSpawnVisible(spawnId, visible) {
+  const entity = document.querySelector(`.spawn-entity[data-spawn-id="${spawnId}"]`);
+  if (entity) entity.setAttribute('visible', visible ? 'true' : 'false');
 }
 
 function tryCatch(spawn, entity) {
@@ -336,6 +383,7 @@ function catchNearestScreenBall(clientX, clientY) {
   let best = null;
   let bestDist = Infinity;
   document.querySelectorAll('.spawn-entity').forEach((entity) => {
+    if (entity.getAttribute('visible') === false || entity.getAttribute('visible') === 'false') return;
     const id = entity.dataset.spawnId;
     if (!id || state.found.has(id)) return;
     const world = new THREE.Vector3();
@@ -422,7 +470,7 @@ async function start() {
 }
 
 els.start.addEventListener('click', start);
-els.regen.addEventListener('click', () => { generateSpawns(); renderSpawns(); toast('Ari Balls reshuffled for Ari'); });
+els.regen.addEventListener('click', () => { generateSpawns(); renderSpawns(); toast('New Ari Balls hidden around the room'); });
 els.revealClose?.addEventListener('click', hideReveal);
 els.reveal?.addEventListener('click', (e) => { if (e.target === els.reveal) hideReveal(); });
 els.galleryOpen?.addEventListener('click', openGallery);
