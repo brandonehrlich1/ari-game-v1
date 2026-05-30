@@ -13,7 +13,7 @@
  *
  * Filename conventions supported (both currently in the repo):
  *   001-turtwig-ari.png   ->  id 001, name "Turtwig Ari"
- *   007_SquirtAri.png     ->  id 007, name "Squirt Ari"
+ *   007_SquirtAri.png     ->  id 007, name "SquirtAri"
  *
  * For each card we derive:
  *   id      first three digits of the filename
@@ -44,18 +44,19 @@ function fail(msg) {
   process.exit(1);
 }
 
-/** Turn a raw filename stem into a friendly display name. */
+/** Turn a raw filename stem into a friendly display name.
+ *  - kebab/snake separators become spaces: "001-turtwig-ari" -> "Turtwig Ari"
+ *  - a fused CamelCase token is kept intact (matches the AriMon naming style):
+ *      "007_SquirtAri" -> "SquirtAri", "025_PikAriChu" -> "PikAriChu"
+ */
 function humanize(stem) {
   // drop the leading id + separator: "001-turtwig-ari" -> "turtwig-ari"
   let rest = stem.replace(/^\d{3}[-_\s]*/, '');
   if (!rest) return '';
-  // split on separators AND camelCase boundaries
-  rest = rest
-    .replace(/[-_]+/g, ' ')
-    .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
-    .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
-    .trim();
+  // only split on explicit separators (NOT camelCase) so fused names survive
   return rest
+    .replace(/[-_]+/g, ' ')
+    .trim()
     .split(/\s+/)
     .map((w) => (w ? w[0].toUpperCase() + w.slice(1) : w))
     .join(' ');

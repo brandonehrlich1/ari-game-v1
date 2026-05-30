@@ -101,7 +101,7 @@ Card art lives in `public/assets/cards/` and the game reads
 
 1. Drop the PNG(s) into `public/assets/cards/`. Either naming style works:
    - `001-turtwig-ari.png`  → id `001`, name "Turtwig Ari"
-   - `007_SquirtAri.png`    → id `007`, name "Squirt Ari"
+   - `007_SquirtAri.png`    → id `007`, name "SquirtAri"
    (the first three digits become the id and the `###/151` number).
 2. Regenerate the manifest:
    ```bash
