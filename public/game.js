@@ -4,10 +4,10 @@ import { resolveConfig } from './storage.js';
 const FT_PER_M = 3.28084;
 const ARI_SPHERE_ASSET = 'assets/F5BAFFD4-8565-45B8-8E75-AEC99FAD12BB.png';
 const TENNIS_BALL_RADIUS_M = 0.0335;
-const FALLBACK_BALL_RADIUS_M = 0.0065;
-const MIN_TAP_TARGET_RADIUS_M = 0.20;
+const FALLBACK_BALL_RADIUS_M = 0.0052;
+const MIN_TAP_TARGET_RADIUS_M = 0.18;
 const XR_AUTO_CATCH_RADIUS_M = 0.45;
-const SCREEN_TAP_RADIUS_PX = 105;
+const SCREEN_TAP_RADIUS_PX = 110;
 const COLLECTION_KEY = 'arimon.collection.v1';
 
 const FALLBACK_CARDS = [
@@ -103,7 +103,7 @@ function saveCollection() {
 function updateCollectionCount() { els.count.textContent = state.collection.size; }
 function pickCard() {
   const unseen = state.cards.filter((c) => !state.collection.has(c.id));
-  const pool = unseen.length && Math.random() < 0.72 ? unseen : state.cards;
+  const pool = unseen.length && Math.random() < 0.82 ? unseen : state.cards;
   return pool[(Math.random() * pool.length) | 0];
 }
 function sphereStyle() { return state.config?.defaultSphere || {}; }
@@ -125,18 +125,21 @@ function generateSpawns() {
       const x = Math.cos(angle) * dist;
       const z = Math.sin(angle) * dist;
       if (pts.some((p) => Math.hypot(p.x - x, p.z - z) < minM)) continue;
-      pts.push({ x, z, y: 0.48 + Math.random() * 0.9 });
+      pts.push({ x, z, y: toddlerHeightForIndex(pts.length) });
     }
   } else {
+    // Full 360° fallback tuned for a toddler hunt: 40% low, 35% table/play height,
+    // 20% kid eye-line, 5% high surprise. This keeps the hunt in Ari's natural
+    // field of view while still requiring a full-room scan.
     const layout = [
-      { angle: -160, dist: 7.8, y: 0.60 },
-      { angle: -108, dist: 9.6, y: 1.12 },
-      { angle: -48, dist: 6.8, y: 0.52 },
-      { angle: 0, dist: 8.4, y: 1.02 },
-      { angle: 42, dist: 7.2, y: 0.55 },
-      { angle: 96, dist: 10.0, y: 1.20 },
-      { angle: 154, dist: 8.8, y: 0.66 },
-      { angle: 178, dist: 11.0, y: 0.90 }
+      { angle: -160, dist: 7.6, y: 0.58 },
+      { angle: -112, dist: 9.8, y: 0.78 },
+      { angle: -54, dist: 6.8, y: 1.02 },
+      { angle: -10, dist: 8.8, y: 1.18 },
+      { angle: 36, dist: 7.4, y: 0.64 },
+      { angle: 90, dist: 10.2, y: 1.34 },
+      { angle: 146, dist: 8.8, y: 0.88 },
+      { angle: 178, dist: 11.2, y: 1.58 }
     ];
     for (let i = 0; i < count; i++) {
       const l = layout[i % layout.length];
@@ -149,9 +152,14 @@ function generateSpawns() {
     id: `spawn-${Date.now()}-${i}`,
     x: p.x,
     z: p.z,
-    y: p.y ?? 0.7,
+    y: p.y ?? 0.8,
     card: pickCard()
   }));
+}
+
+function toddlerHeightForIndex(i) {
+  const heights = [0.58, 0.78, 1.02, 1.18, 0.64, 1.34, 0.88, 1.58];
+  return heights[i % heights.length];
 }
 
 function clearSpawns() {
@@ -171,8 +179,8 @@ function renderSpawns() {
     wrap.dataset.spawnId = s.id;
 
     const glow = document.createElement('a-sphere');
-    glow.setAttribute('radius', visualRadius * 1.35);
-    glow.setAttribute('material', 'color: #7fd8ff; opacity: 0.035; transparent: true; depthWrite: false');
+    glow.setAttribute('radius', visualRadius * 1.2);
+    glow.setAttribute('material', 'color: #7fd8ff; opacity: 0.022; transparent: true; depthWrite: false');
     wrap.appendChild(glow);
 
     const ball = document.createElement('a-image');
@@ -182,7 +190,7 @@ function renderSpawns() {
     ball.setAttribute('height', visualRadius * 2);
     ball.setAttribute('transparent', 'true');
     ball.setAttribute('look-at', '#cam');
-    ball.setAttribute('animation', 'property: position; dir: alternate; dur: 4400; easing: easeInOutSine; loop: true; to: 0 0.004 0');
+    ball.setAttribute('animation', 'property: position; dir: alternate; dur: 5600; easing: easeInOutSine; loop: true; to: 0 0.002 0');
     ball.addEventListener('click', (e) => { e.stopPropagation(); tryCatch(s, wrap); });
     wrap.appendChild(ball);
 
@@ -195,7 +203,7 @@ function renderSpawns() {
 
     els.scene.appendChild(wrap);
   }
-  els.status.textContent = `${state.spawns.length} Ari Balls hidden in 360° · ${state.cards.length} cards loaded`;
+  els.status.textContent = `${state.spawns.length} Ari Balls hidden for Ari · ${state.cards.length} cards loaded`;
 }
 
 function tryCatch(spawn, entity) {
@@ -359,7 +367,7 @@ async function start() {
 }
 
 els.start.addEventListener('click', start);
-els.regen.addEventListener('click', () => { generateSpawns(); renderSpawns(); toast('Ari Balls reshuffled across 360°'); });
+els.regen.addEventListener('click', () => { generateSpawns(); renderSpawns(); toast('Ari Balls reshuffled for Ari'); });
 els.revealClose?.addEventListener('click', hideReveal);
 els.reveal?.addEventListener('click', (e) => { if (e.target === els.reveal) hideReveal(); });
 els.galleryOpen?.addEventListener('click', openGallery);
