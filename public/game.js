@@ -4,10 +4,10 @@ import { resolveConfig } from './storage.js';
 const FT_PER_M = 3.28084;
 const ARI_SPHERE_ASSET = 'assets/F5BAFFD4-8565-45B8-8E75-AEC99FAD12BB.png';
 const TENNIS_BALL_RADIUS_M = 0.0335;
-const FALLBACK_BALL_RADIUS_M = 0.012;
-const MIN_TAP_TARGET_RADIUS_M = 0.22;
+const FALLBACK_BALL_RADIUS_M = 0.0075;
+const MIN_TAP_TARGET_RADIUS_M = 0.20;
 const XR_AUTO_CATCH_RADIUS_M = 0.45;
-const SCREEN_TAP_RADIUS_PX = 95;
+const SCREEN_TAP_RADIUS_PX = 100;
 const COLLECTION_KEY = 'arimon.collection.v1';
 
 const FALLBACK_CARDS = [
@@ -110,18 +110,17 @@ function generateSpawns() {
       const x = Math.cos(angle) * dist;
       const z = Math.sin(angle) * dist;
       if (pts.some((p) => Math.hypot(p.x - x, p.z - z) < minM)) continue;
-      pts.push({ x, z, y: 0.65 + Math.random() * 0.75 });
+      pts.push({ x, z, y: 0.55 + Math.random() * 0.85 });
     }
   } else {
-    // Natural Placement v1: stable uneven sectors with varied depth and height.
-    // This makes balls feel like they belong near floor/table zones rather than
-    // orbiting the camera as identical UI dots.
+    // Wide Room-Sector Layout v2: intentionally spread across a larger arc so
+    // the player must pan around the room instead of seeing a tight cluster.
     const layout = [
-      { angle: -30, dist: 5.8, y: 0.72 },
-      { angle: -12, dist: 7.0, y: 1.18 },
-      { angle: 8, dist: 5.2, y: 0.58 },
-      { angle: 26, dist: 6.6, y: 0.94 },
-      { angle: 43, dist: 7.8, y: 0.68 }
+      { angle: -78, dist: 9.2, y: 0.55 },
+      { angle: -38, dist: 6.8, y: 1.05 },
+      { angle: 6, dist: 8.6, y: 0.48 },
+      { angle: 44, dist: 7.4, y: 1.18 },
+      { angle: 82, dist: 10.4, y: 0.62 }
     ];
     for (let i = 0; i < count; i++) {
       const l = layout[i % layout.length];
@@ -150,8 +149,8 @@ function renderSpawns() {
     wrap.dataset.spawnId = s.id;
 
     const glow = document.createElement('a-sphere');
-    glow.setAttribute('radius', visualRadius * 1.8);
-    glow.setAttribute('material', 'color: #7fd8ff; opacity: 0.08; transparent: true; depthWrite: false');
+    glow.setAttribute('radius', visualRadius * 1.45);
+    glow.setAttribute('material', 'color: #7fd8ff; opacity: 0.045; transparent: true; depthWrite: false');
     wrap.appendChild(glow);
 
     const ball = document.createElement('a-image');
@@ -161,7 +160,7 @@ function renderSpawns() {
     ball.setAttribute('height', visualRadius * 2);
     ball.setAttribute('transparent', 'true');
     ball.setAttribute('look-at', '#cam');
-    ball.setAttribute('animation', 'property: position; dir: alternate; dur: 3200; easing: easeInOutSine; loop: true; to: 0 0.012 0');
+    ball.setAttribute('animation', 'property: position; dir: alternate; dur: 3800; easing: easeInOutSine; loop: true; to: 0 0.006 0');
     ball.addEventListener('click', (e) => { e.stopPropagation(); tryCatch(s, wrap); });
     wrap.appendChild(ball);
 
@@ -174,7 +173,7 @@ function renderSpawns() {
 
     els.scene.appendChild(wrap);
   }
-  els.status.textContent = `${state.spawns.length} Ari Balls nearby · ${state.cards.length} cards loaded`;
+  els.status.textContent = `${state.spawns.length} Ari Balls hidden nearby · ${state.cards.length} cards loaded`;
 }
 function tryCatch(spawn, entity) {
   if (state.found.has(spawn.id)) return;
