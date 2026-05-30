@@ -26,6 +26,7 @@ jobs:
         with:
           node-version: 20
       - run: npm run seed # ensure bundled seed roster + default config exist
+      - run: npm run build:cards # auto-register any card PNGs in public/assets/cards/
       - uses: actions/configure-pages@v5
         with:
           enablement: true

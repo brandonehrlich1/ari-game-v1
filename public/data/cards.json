@@ -147,12 +147,92 @@
       "rarity": "Uncommon"
     },
     {
+      "id": "020",
+      "number": "020/151",
+      "name": "RattaAri",
+      "src": "assets/cards/020_RattaAri.png",
+      "type": "Colorless",
+      "rarity": "Common"
+    },
+    {
+      "id": "021",
+      "number": "021/151",
+      "name": "RaticAri",
+      "src": "assets/cards/021_RaticAri.png",
+      "type": "Colorless",
+      "rarity": "Uncommon"
+    },
+    {
+      "id": "022",
+      "number": "022/151",
+      "name": "SpearAri",
+      "src": "assets/cards/022_SpearAri.png",
+      "type": "Colorless",
+      "rarity": "Common"
+    },
+    {
+      "id": "023",
+      "number": "023/151",
+      "name": "FearAri",
+      "src": "assets/cards/023_FearAri.png",
+      "type": "Colorless",
+      "rarity": "Uncommon"
+    },
+    {
+      "id": "024",
+      "number": "024/151",
+      "name": "EkansAri",
+      "src": "assets/cards/024_EkansAri.png",
+      "type": "Grass",
+      "rarity": "Common"
+    },
+    {
       "id": "025",
       "number": "025/151",
       "name": "PikAriChu",
       "src": "assets/cards/025_PikAriChu.png",
       "type": "Electric",
       "rarity": "Rare"
+    },
+    {
+      "id": "026",
+      "number": "026/151",
+      "name": "RaiAri",
+      "src": "assets/cards/026_RaiAri.png",
+      "type": "Electric",
+      "rarity": "Rare"
+    },
+    {
+      "id": "027",
+      "number": "027/151",
+      "name": "SandshAri",
+      "src": "assets/cards/027_SandshAri.png",
+      "type": "Fighting",
+      "rarity": "Common"
+    },
+    {
+      "id": "028",
+      "number": "028/151",
+      "name": "SandslAri",
+      "src": "assets/cards/028_SandslAri.png",
+      "type": "Fighting",
+      "rarity": "Uncommon"
+    },
+    {
+      "id": "029",
+      "number": "029/151",
+      "name": "NidoranAriF",
+      "src": "assets/cards/029_NidoranAriF.png",
+      "type": "Grass",
+      "rarity": "Common"
+    },
+    {
+      "id": "030",
+      "number": "030/151",
+      "name": "NidorinAriF",
+      "src": "assets/cards/030_NidorinAriF.png",
+      "type": "Grass",
+      "rarity": "Uncommon"
     },
     {
       "id": "133",
@@ -167,6 +247,14 @@
       "number": "150/151",
       "name": "MewtwoAri",
       "src": "assets/cards/150_MewtwoAri.png",
+      "type": "Psychic",
+      "rarity": "Rare"
+    },
+    {
+      "id": "151",
+      "number": "151/151",
+      "name": "MewAri",
+      "src": "assets/cards/151_MewAri.png",
       "type": "Psychic",
       "rarity": "Rare"
     }
