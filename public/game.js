@@ -10,6 +10,7 @@ const XR_AUTO_CATCH_RADIUS_M = 0.45;
 const SCREEN_TAP_RADIUS_PX = 110;
 const COLLECTION_KEY = 'arimon.collection.v1';
 const BINDER_PAGE_SIZE = 9;
+const FALLBACK_TOTAL_BALLS = 4;
 const MAX_VISIBLE_FALLBACK_BALLS = 2;
 
 const FALLBACK_CARDS = [
@@ -116,7 +117,7 @@ function sphereStyle() { return state.config?.defaultSphere || {}; }
 function generateSpawns() {
   const sp = state.config?.spawn || {};
   const configuredCount = sp.count ?? 12;
-  const count = state.xr ? configuredCount : Math.min(Math.max(configuredCount, 6), 8);
+  const count = state.xr ? configuredCount : FALLBACK_TOTAL_BALLS;
   const pts = [];
 
   if (state.xr) {
@@ -133,18 +134,13 @@ function generateSpawns() {
       pts.push({ x, z, y: toddlerHeightForIndex(pts.length), zone: pts.length });
     }
   } else {
-    // Natural Hunt v2: keep 360° coverage, but do not render the whole ring.
-    // The fixed coordinates act as hidden room zones; only 1-2 zones are revealed
-    // at a time so the player experiences discovery instead of a camera-following carousel.
+    // Room Hunt v3: a normal room gets four Ari Balls total.
+    // This keeps the hunt from reading as a 360° orbit while preserving varied room zones.
     const layout = [
-      { label: 'behind-left low', angle: -160, dist: 7.6, y: 0.58 },
-      { label: 'left play height', angle: -112, dist: 9.8, y: 0.78 },
-      { label: 'front-left table', angle: -54, dist: 6.8, y: 1.02 },
-      { label: 'front table', angle: -10, dist: 8.8, y: 1.18 },
-      { label: 'front-right low', angle: 36, dist: 7.4, y: 0.64 },
-      { label: 'right kid eye-line', angle: 90, dist: 10.2, y: 1.34 },
-      { label: 'rear-right play height', angle: 146, dist: 8.8, y: 0.88 },
-      { label: 'behind surprise', angle: 178, dist: 11.2, y: 1.58 }
+      { label: 'left low discovery', angle: -112, dist: 8.6, y: 0.64 },
+      { label: 'front table discovery', angle: -18, dist: 7.8, y: 1.08 },
+      { label: 'right play-height discovery', angle: 82, dist: 9.4, y: 0.82 },
+      { label: 'behind surprise', angle: 164, dist: 10.4, y: 1.34 }
     ];
     for (let i = 0; i < count; i++) {
       const l = layout[i % layout.length];
@@ -221,8 +217,8 @@ function renderSpawns() {
 
 function beginZoneReveal() {
   setAllFallbackSpawnsVisible(false);
-  toast('Look around for Ari Balls…');
-  state.zoneTimer = setInterval(revealNextZone, 1700);
+  toast('Four Ari Balls are hidden nearby…');
+  state.zoneTimer = setInterval(revealNextZone, 1900);
   setTimeout(() => {
     state.huntSeeded = true;
     revealNextZone();
@@ -234,7 +230,7 @@ function revealNextZone() {
   const remaining = state.spawns.filter((s) => !state.found.has(s.id));
   if (!remaining.length) return;
   setAllFallbackSpawnsVisible(false);
-  for (let offset = 0; offset < MAX_VISIBLE_FALLBACK_BALLS; offset++) {
+  for (let offset = 0; offset < Math.min(MAX_VISIBLE_FALLBACK_BALLS, remaining.length); offset++) {
     const spawn = remaining[(state.visibleZoneIndex + offset) % remaining.length];
     setSpawnVisible(spawn.id, true);
   }
@@ -470,7 +466,7 @@ async function start() {
 }
 
 els.start.addEventListener('click', start);
-els.regen.addEventListener('click', () => { generateSpawns(); renderSpawns(); toast('New Ari Balls hidden around the room'); });
+els.regen.addEventListener('click', () => { generateSpawns(); renderSpawns(); toast('Four Ari Balls hidden in the room'); });
 els.revealClose?.addEventListener('click', hideReveal);
 els.reveal?.addEventListener('click', (e) => { if (e.target === els.reveal) hideReveal(); });
 els.galleryOpen?.addEventListener('click', openGallery);
