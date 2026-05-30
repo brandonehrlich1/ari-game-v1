@@ -11,7 +11,6 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- camera passthrough for non-WebXR (magic-window) mode -->
   <video id="passthrough" class="hidden" autoplay playsinline muted></video>
 
   <div id="gate" class="overlay">
@@ -20,8 +19,8 @@
       <p>Find floating Ari Balls in the room. Catch one to reveal the AriMon card hiding inside.</p>
       <ul class="reqs">
         <li>📷 Allow camera access</li>
-        <li>🎴 First card: Turtwig Ari</li>
-        <li>🚶 Best with room to walk around</li>
+        <li>🎴 Collect the first AriMon set</li>
+        <li>📍 Use Place Mode to drop balls around the room</li>
       </ul>
       <button id="start">Start hunting</button>
       <p id="mode" class="hint">Checking AR support…</p>
@@ -31,6 +30,10 @@
 
   <div id="hud" class="hud hidden">
     <div id="status" class="status">Loading…</div>
+    <button id="gallery-open" class="pillbtn">Gallery</button>
+    <button id="place-toggle" class="pillbtn">Place Mode</button>
+    <button id="place-ball" class="pillbtn hidden">Drop Ball</button>
+    <button id="reset-map" class="pillbtn hidden">Reset Map</button>
     <div id="score" class="score">Collection <b id="count">0</b> / <span id="total">151</span></div>
     <button id="regen" class="regen" title="Reshuffle nearby Ari Balls">⟲</button>
   </div>
@@ -40,10 +43,24 @@
 
   <div id="reveal" class="reveal hidden" role="dialog" aria-modal="true" aria-labelledby="reveal-title">
     <div class="reveal-card-wrap">
-      <div class="reveal-kicker">Caught AriMon #001</div>
-      <h2 id="reveal-title">Turtwig Ari</h2>
-      <img id="reveal-img" alt="Turtwig Ari card" />
+      <div class="reveal-kicker">Caught AriMon</div>
+      <h2 id="reveal-title">AriMon</h2>
+      <img id="reveal-img" alt="AriMon card" />
       <button id="reveal-close">Keep hunting</button>
+    </div>
+  </div>
+
+  <div id="gallery" class="panel hidden" role="dialog" aria-modal="true" aria-labelledby="gallery-title">
+    <div class="panel-card">
+      <div class="panel-head">
+        <div>
+          <div class="panel-kicker">AriMon Collection</div>
+          <h2 id="gallery-title">My Gallery</h2>
+        </div>
+        <button id="gallery-close" class="iconbtn" aria-label="Close gallery">×</button>
+      </div>
+      <div id="gallery-progress" class="panel-progress">0 collected</div>
+      <div id="gallery-grid" class="gallery-grid"></div>
     </div>
   </div>
 
