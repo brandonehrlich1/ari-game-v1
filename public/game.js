@@ -4,13 +4,14 @@ import { resolveConfig } from './storage.js';
 const FT_PER_M = 3.28084;
 const ARI_SPHERE_ASSET = 'assets/F5BAFFD4-8565-45B8-8E75-AEC99FAD12BB.png';
 const TENNIS_BALL_RADIUS_M = 0.0335;
-const FALLBACK_BALL_RADIUS_M = 0.024;
-const MIN_TAP_TARGET_RADIUS_M = 0.28;
+const FALLBACK_BALL_RADIUS_M = 0.016;
+const MIN_TAP_TARGET_RADIUS_M = 0.24;
 const XR_AUTO_CATCH_RADIUS_M = 0.45;
 const SCREEN_TAP_RADIUS_PX = 95;
 const COLLECTION_KEY = 'arimon.collection.v1';
+const SESSION_ORIGIN_KEY = 'arimon.sessionOrigin.v1';
 
-const CARDS = [
+const FALLBACK_CARDS = [
   { id: '001', name: 'Turtwig Ari', number: '001/151', src: 'assets/cards/001-turtwig-ari.png' }
 ];
 
@@ -34,7 +35,16 @@ const els = {
   revealClose: document.getElementById('reveal-close')
 };
 
-const state = { config: null, spawns: [], found: new Set(), collection: new Set(), xr: false, running: false };
+const state = {
+  config: null,
+  cards: FALLBACK_CARDS,
+  totalCards: 151,
+  spawns: [],
+  found: new Set(),
+  collection: new Set(),
+  xr: false,
+  running: false
+};
 let xrSupported = false;
 
 navigator.xr?.isSessionSupported?.('immersive-ar').then((ok) => {
@@ -44,9 +54,26 @@ navigator.xr?.isSessionSupported?.('immersive-ar').then((ok) => {
 
 async function loadData() {
   state.config = await resolveConfig();
+  await loadCards();
   state.collection = loadCollection();
-  els.total.textContent = '151';
+  els.total.textContent = state.totalCards;
   updateCollectionCount();
+}
+
+async function loadCards() {
+  try {
+    const res = await fetch(`data/cards.json?v=${Date.now()}`, { cache: 'no-store' });
+    if (!res.ok) throw new Error(`cards.json ${res.status}`);
+    const data = await res.json();
+    const cards = Array.isArray(data.cards) ? data.cards.filter((c) => c.id && c.src) : [];
+    if (!cards.length) throw new Error('cards.json has no cards');
+    state.cards = cards;
+    state.totalCards = data.total || 151;
+  } catch (e) {
+    console.warn('Using fallback cards:', e);
+    state.cards = FALLBACK_CARDS;
+    state.totalCards = 151;
+  }
 }
 
 function loadCollection() {
@@ -59,32 +86,57 @@ function loadCollection() {
 }
 function saveCollection() { localStorage.setItem(COLLECTION_KEY, JSON.stringify([...state.collection])); }
 function updateCollectionCount() { els.count.textContent = state.collection.size; }
-function pickCard() { return CARDS[0]; }
+
+function pickCard() {
+  const unseen = state.cards.filter((c) => !state.collection.has(c.id));
+  const pool = unseen.length && Math.random() < 0.72 ? unseen : state.cards;
+  return pool[(Math.random() * pool.length) | 0];
+}
 function sphereStyle() { return state.config.defaultSphere || {}; }
 
 function generateSpawns() {
   const sp = state.config.spawn || {};
-  const minM = (sp.minSpacingFeet ?? 10) / FT_PER_M;
   const configuredCount = sp.count ?? 12;
-  const count = state.xr ? configuredCount : Math.min(configuredCount, 8);
-  const radiusM = (sp.spreadRadiusFeet ?? 60) / FT_PER_M;
+  const count = state.xr ? configuredCount : Math.min(configuredCount, 6);
   const pts = [];
-  let attempts = 0;
-  while (pts.length < count && attempts < count * 80) {
-    attempts++;
-    const angle = Math.random() * Math.PI * 2;
-    const dist = Math.sqrt(Math.random()) * radiusM;
-    const x = Math.cos(angle) * dist;
-    const z = Math.sin(angle) * dist;
-    if (pts.some((p) => Math.hypot(p.x - x, p.z - z) < minM)) continue;
-    pts.push({ x, z });
+
+  if (state.xr) {
+    const minM = (sp.minSpacingFeet ?? 10) / FT_PER_M;
+    const radiusM = (sp.spreadRadiusFeet ?? 60) / FT_PER_M;
+    let attempts = 0;
+    while (pts.length < count && attempts < count * 80) {
+      attempts++;
+      const angle = Math.random() * Math.PI * 2;
+      const dist = Math.sqrt(Math.random()) * radiusM;
+      const x = Math.cos(angle) * dist;
+      const z = Math.sin(angle) * dist;
+      if (pts.some((p) => Math.hypot(p.x - x, p.z - z) < minM)) continue;
+      pts.push({ x, z });
+    }
+  } else {
+    // iPhone/Safari fallback: create a stable semicircle in front of the start
+    // pose instead of re-randomizing into an obvious camera-following dome.
+    const layout = [
+      { angle: -34, dist: 4.2 },
+      { angle: -18, dist: 5.6 },
+      { angle: 0, dist: 4.8 },
+      { angle: 18, dist: 5.6 },
+      { angle: 34, dist: 4.2 },
+      { angle: 52, dist: 6.2 }
+    ];
+    for (let i = 0; i < count; i++) {
+      const l = layout[i % layout.length];
+      const a = l.angle * Math.PI / 180;
+      pts.push({ x: Math.sin(a) * l.dist, z: -Math.cos(a) * l.dist });
+    }
   }
+
   state.spawns = pts.map((p, i) => ({
     id: `spawn-${Date.now()}-${i}`,
     x: p.x,
     z: p.z,
     bearing: Math.atan2(p.x, -p.z),
-    y: 1.05 + Math.random() * 0.7,
+    y: 1.05 + (i % 3) * 0.22,
     card: pickCard()
   }));
 }
@@ -100,15 +152,9 @@ function renderSpawns() {
   for (const s of state.spawns) {
     const visualRadius = style.radius ?? (state.xr ? TENNIS_BALL_RADIUS_M : FALLBACK_BALL_RADIUS_M);
     const hitRadius = Math.max(visualRadius, style.hitRadius ?? MIN_TAP_TARGET_RADIUS_M);
-    let x = s.x, y = s.y, z = s.z;
-    if (!state.xr) {
-      const d = 4.5 + (Math.abs(hashCode(s.id)) % 4) + Math.random() * 1.25;
-      x = Math.sin(s.bearing) * d;
-      z = -Math.cos(s.bearing) * d;
-    }
     const wrap = document.createElement('a-entity');
     wrap.classList.add('spawn-entity');
-    wrap.setAttribute('position', `${x} ${y} ${z}`);
+    wrap.setAttribute('position', `${s.x} ${s.y} ${s.z}`);
     wrap.dataset.spawnId = s.id;
 
     const ball = document.createElement('a-image');
@@ -118,7 +164,7 @@ function renderSpawns() {
     ball.setAttribute('height', visualRadius * 2);
     ball.setAttribute('transparent', 'true');
     ball.setAttribute('look-at', '#cam');
-    ball.setAttribute('animation', 'property: position; dir: alternate; dur: 2200; easing: easeInOutSine; loop: true; to: 0 0.03 0');
+    ball.setAttribute('animation', 'property: position; dir: alternate; dur: 2400; easing: easeInOutSine; loop: true; to: 0 0.02 0');
     ball.addEventListener('click', (e) => { e.stopPropagation(); tryCatch(s, wrap); });
     wrap.appendChild(ball);
 
@@ -131,13 +177,7 @@ function renderSpawns() {
 
     els.scene.appendChild(wrap);
   }
-  els.status.textContent = `${state.spawns.length} Ari Balls nearby`;
-}
-
-function hashCode(str) {
-  let h = 0;
-  for (let i = 0; i < str.length; i++) h = ((h << 5) - h) + str.charCodeAt(i) | 0;
-  return h;
+  els.status.textContent = `${state.spawns.length} Ari Balls nearby · ${state.cards.length} cards loaded`;
 }
 
 function tryCatch(spawn, entity) {
@@ -157,9 +197,9 @@ function showReveal(card, wasNew) {
   els.revealImg.src = card.src;
   els.revealImg.alt = `${card.name} card`;
   const kicker = els.reveal.querySelector('.reveal-kicker');
-  if (kicker) kicker.textContent = `${wasNew ? 'New card caught' : 'Card caught again'} · ${card.number}`;
+  if (kicker) kicker.textContent = `${wasNew ? 'New card caught' : 'Duplicate card'} · ${card.number || card.id}`;
   els.reveal.classList.remove('hidden');
-  toast(`${wasNew ? 'Added' : 'Caught'} ${card.name}! 🎴`);
+  toast(`${wasNew ? 'Added' : 'Duplicate'} ${card.name}! 🎴`);
 }
 function hideReveal() { els.reveal.classList.add('hidden'); }
 let toastTimer;
@@ -188,10 +228,7 @@ function catchNearestScreenBall(clientX, clientY) {
     const sx = rect.left + ((projected.x + 1) / 2) * rect.width;
     const sy = rect.top + ((-projected.y + 1) / 2) * rect.height;
     const dist = Math.hypot(clientX - sx, clientY - sy);
-    if (dist < bestDist) {
-      bestDist = dist;
-      best = entity;
-    }
+    if (dist < bestDist) { bestDist = dist; best = entity; }
   });
   if (!best || bestDist > SCREEN_TAP_RADIUS_PX) return false;
   const spawn = state.spawns.find((s) => s.id === best.dataset.spawnId);
