@@ -33,9 +33,21 @@ function frameSvg(e, hasArt) {
       <text x="476" y="${y + 6}" text-anchor="end" font-family="DejaVu Sans" font-weight="800" font-size="22" fill="#1d1d1d">${esc(a.dmg)}</text>
       ${a.text ? `<text x="${nameX}" y="${y + 24}" font-family="DejaVu Sans" font-size="11.5" fill="#444">${esc(a.text)}</text>` : ''}`;
   }).join('');
+  // Finished-looking placeholder: a cute type-tinted chibi mascot (swaps to real art).
   const artPlaceholder = hasArt ? '' : `
-    <text x="260" y="206" text-anchor="middle" font-family="DejaVu Sans" font-weight="800" font-size="26" fill="${t.accent}" opacity="0.9">${esc(e.name)}</text>
-    <text x="260" y="234" text-anchor="middle" font-family="DejaVu Sans" font-size="13" fill="${t.accent}" opacity="0.75">chibi ${esc(e.species)} — art slot</text>`;
+    <g opacity="0.96">
+      <ellipse cx="260" cy="300" rx="84" ry="20" fill="#000" opacity="0.10"/>
+      <path d="M212 150 q-14 -34 8 -40 q20 -4 24 28 z" fill="${t.pip}" stroke="${t.accent}" stroke-width="3"/>
+      <path d="M308 150 q14 -34 -8 -40 q-20 -4 -24 28 z" fill="${t.pip}" stroke="${t.accent}" stroke-width="3"/>
+      <ellipse cx="260" cy="218" rx="78" ry="70" fill="${t.pip}" stroke="${t.accent}" stroke-width="3"/>
+      <ellipse cx="260" cy="238" rx="46" ry="40" fill="#ffffff" opacity="0.45"/>
+      <circle cx="236" cy="206" r="15" fill="#fff"/><circle cx="284" cy="206" r="15" fill="#fff"/>
+      <circle cx="238" cy="208" r="6.5" fill="#23202a"/><circle cx="286" cy="208" r="6.5" fill="#23202a"/>
+      <circle cx="226" cy="230" r="8" fill="#ff9ab0" opacity="0.7"/><circle cx="294" cy="230" r="8" fill="#ff9ab0" opacity="0.7"/>
+      <path d="M248 230 q12 12 24 0" fill="none" stroke="#23202a" stroke-width="3" stroke-linecap="round"/>
+      <ellipse cx="236" cy="286" rx="15" ry="9" fill="${t.accent}"/><ellipse cx="284" cy="286" rx="15" ry="9" fill="${t.accent}"/>
+    </g>
+    <text x="260" y="352" text-anchor="middle" font-family="DejaVu Sans" font-size="11" font-weight="700" fill="${t.accent}" opacity="0.65">AriMon · art coming soon</text>`;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="520" height="728" viewBox="0 0 520 728">
   <defs>
     <linearGradient id="b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f9dd4b"/><stop offset="0.5" stop-color="#efc02f"/><stop offset="1" stop-color="#d79b1c"/></linearGradient>

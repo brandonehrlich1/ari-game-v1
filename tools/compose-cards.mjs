@@ -53,5 +53,19 @@ async function composeAll() {
   console.log(`\nComposed ${n} cards into public/assets/cards/. Run \`npm run build:cards\` (or just push — CI does it).`);
 }
 
+async function fillPlaceholders() {
+  mkdirSync(cardsDir, { recursive: true });
+  let n = 0;
+  for (const c of bible.cards) {
+    if (c.status === 'live') continue;
+    const art = join(artDir, `${c.id}.png`);
+    const png = await renderCard(c, existsSync(art) ? { artPath: art } : {});
+    writeFileSync(join(cardsDir, `${c.id}_${c.name}.png`), png);
+    n++;
+  }
+  console.log(`Filled ${n} placeholder/real cards into public/assets/cards/.`);
+}
+
 if (process.env.PREVIEW) await preview(process.env.PREVIEW);
+else if (process.env.FILL) await fillPlaceholders();
 else await composeAll();

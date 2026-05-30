@@ -147,6 +147,12 @@
       "rarity": "Uncommon"
     },
     {
+      "id": "019",
+      "number": "019/151",
+      "name": "PidgeotAri",
+      "src": "assets/cards/019_PidgeotAri.png"
+    },
+    {
       "id": "020",
       "number": "020/151",
       "name": "RattaAri",
@@ -235,12 +241,720 @@
       "rarity": "Uncommon"
     },
     {
+      "id": "031",
+      "number": "031/151",
+      "name": "NidoqueenAri",
+      "src": "assets/cards/031_NidoqueenAri.png"
+    },
+    {
+      "id": "032",
+      "number": "032/151",
+      "name": "NidoranMAri",
+      "src": "assets/cards/032_NidoranMAri.png"
+    },
+    {
+      "id": "033",
+      "number": "033/151",
+      "name": "NidorinoAri",
+      "src": "assets/cards/033_NidorinoAri.png"
+    },
+    {
+      "id": "034",
+      "number": "034/151",
+      "name": "NidokingAri",
+      "src": "assets/cards/034_NidokingAri.png"
+    },
+    {
+      "id": "035",
+      "number": "035/151",
+      "name": "ClefairyAri",
+      "src": "assets/cards/035_ClefairyAri.png"
+    },
+    {
+      "id": "036",
+      "number": "036/151",
+      "name": "ClefableAri",
+      "src": "assets/cards/036_ClefableAri.png"
+    },
+    {
+      "id": "037",
+      "number": "037/151",
+      "name": "VulpixAri",
+      "src": "assets/cards/037_VulpixAri.png"
+    },
+    {
+      "id": "038",
+      "number": "038/151",
+      "name": "NinetalesAri",
+      "src": "assets/cards/038_NinetalesAri.png"
+    },
+    {
+      "id": "039",
+      "number": "039/151",
+      "name": "JigglypuffAri",
+      "src": "assets/cards/039_JigglypuffAri.png"
+    },
+    {
+      "id": "040",
+      "number": "040/151",
+      "name": "WigglytuffAri",
+      "src": "assets/cards/040_WigglytuffAri.png"
+    },
+    {
+      "id": "041",
+      "number": "041/151",
+      "name": "ZubatAri",
+      "src": "assets/cards/041_ZubatAri.png"
+    },
+    {
+      "id": "042",
+      "number": "042/151",
+      "name": "GolbatAri",
+      "src": "assets/cards/042_GolbatAri.png"
+    },
+    {
+      "id": "043",
+      "number": "043/151",
+      "name": "OddishAri",
+      "src": "assets/cards/043_OddishAri.png"
+    },
+    {
+      "id": "044",
+      "number": "044/151",
+      "name": "GloomAri",
+      "src": "assets/cards/044_GloomAri.png"
+    },
+    {
+      "id": "045",
+      "number": "045/151",
+      "name": "VileplumeAri",
+      "src": "assets/cards/045_VileplumeAri.png"
+    },
+    {
+      "id": "046",
+      "number": "046/151",
+      "name": "ParasAri",
+      "src": "assets/cards/046_ParasAri.png"
+    },
+    {
+      "id": "047",
+      "number": "047/151",
+      "name": "ParasectAri",
+      "src": "assets/cards/047_ParasectAri.png"
+    },
+    {
+      "id": "048",
+      "number": "048/151",
+      "name": "VenonatAri",
+      "src": "assets/cards/048_VenonatAri.png"
+    },
+    {
+      "id": "049",
+      "number": "049/151",
+      "name": "VenomothAri",
+      "src": "assets/cards/049_VenomothAri.png"
+    },
+    {
+      "id": "050",
+      "number": "050/151",
+      "name": "DiglettAri",
+      "src": "assets/cards/050_DiglettAri.png"
+    },
+    {
+      "id": "051",
+      "number": "051/151",
+      "name": "DugtrioAri",
+      "src": "assets/cards/051_DugtrioAri.png"
+    },
+    {
+      "id": "052",
+      "number": "052/151",
+      "name": "MeowthAri",
+      "src": "assets/cards/052_MeowthAri.png"
+    },
+    {
+      "id": "053",
+      "number": "053/151",
+      "name": "PersianAri",
+      "src": "assets/cards/053_PersianAri.png"
+    },
+    {
+      "id": "054",
+      "number": "054/151",
+      "name": "PsyduckAri",
+      "src": "assets/cards/054_PsyduckAri.png"
+    },
+    {
+      "id": "055",
+      "number": "055/151",
+      "name": "GolduckAri",
+      "src": "assets/cards/055_GolduckAri.png"
+    },
+    {
+      "id": "056",
+      "number": "056/151",
+      "name": "MankeyAri",
+      "src": "assets/cards/056_MankeyAri.png"
+    },
+    {
+      "id": "057",
+      "number": "057/151",
+      "name": "PrimeapeAri",
+      "src": "assets/cards/057_PrimeapeAri.png"
+    },
+    {
+      "id": "058",
+      "number": "058/151",
+      "name": "GrowlitheAri",
+      "src": "assets/cards/058_GrowlitheAri.png"
+    },
+    {
+      "id": "059",
+      "number": "059/151",
+      "name": "ArcanineAri",
+      "src": "assets/cards/059_ArcanineAri.png"
+    },
+    {
+      "id": "060",
+      "number": "060/151",
+      "name": "PoliwagAri",
+      "src": "assets/cards/060_PoliwagAri.png"
+    },
+    {
+      "id": "061",
+      "number": "061/151",
+      "name": "PoliwhirlAri",
+      "src": "assets/cards/061_PoliwhirlAri.png"
+    },
+    {
+      "id": "062",
+      "number": "062/151",
+      "name": "PoliwrathAri",
+      "src": "assets/cards/062_PoliwrathAri.png"
+    },
+    {
+      "id": "063",
+      "number": "063/151",
+      "name": "AbraAri",
+      "src": "assets/cards/063_AbraAri.png"
+    },
+    {
+      "id": "064",
+      "number": "064/151",
+      "name": "KadabraAri",
+      "src": "assets/cards/064_KadabraAri.png"
+    },
+    {
+      "id": "065",
+      "number": "065/151",
+      "name": "AlakazamAri",
+      "src": "assets/cards/065_AlakazamAri.png"
+    },
+    {
+      "id": "066",
+      "number": "066/151",
+      "name": "MachopAri",
+      "src": "assets/cards/066_MachopAri.png"
+    },
+    {
+      "id": "067",
+      "number": "067/151",
+      "name": "MachokeAri",
+      "src": "assets/cards/067_MachokeAri.png"
+    },
+    {
+      "id": "068",
+      "number": "068/151",
+      "name": "MachampAri",
+      "src": "assets/cards/068_MachampAri.png"
+    },
+    {
+      "id": "069",
+      "number": "069/151",
+      "name": "BellsproutAri",
+      "src": "assets/cards/069_BellsproutAri.png"
+    },
+    {
+      "id": "070",
+      "number": "070/151",
+      "name": "WeepinbellAri",
+      "src": "assets/cards/070_WeepinbellAri.png"
+    },
+    {
+      "id": "071",
+      "number": "071/151",
+      "name": "VictreebelAri",
+      "src": "assets/cards/071_VictreebelAri.png"
+    },
+    {
+      "id": "072",
+      "number": "072/151",
+      "name": "TentacoolAri",
+      "src": "assets/cards/072_TentacoolAri.png"
+    },
+    {
+      "id": "073",
+      "number": "073/151",
+      "name": "TentacruelAri",
+      "src": "assets/cards/073_TentacruelAri.png"
+    },
+    {
+      "id": "074",
+      "number": "074/151",
+      "name": "GeodudeAri",
+      "src": "assets/cards/074_GeodudeAri.png"
+    },
+    {
+      "id": "075",
+      "number": "075/151",
+      "name": "GravelerAri",
+      "src": "assets/cards/075_GravelerAri.png"
+    },
+    {
+      "id": "076",
+      "number": "076/151",
+      "name": "GolemAri",
+      "src": "assets/cards/076_GolemAri.png"
+    },
+    {
+      "id": "077",
+      "number": "077/151",
+      "name": "PonytaAri",
+      "src": "assets/cards/077_PonytaAri.png"
+    },
+    {
+      "id": "078",
+      "number": "078/151",
+      "name": "RapidashAri",
+      "src": "assets/cards/078_RapidashAri.png"
+    },
+    {
+      "id": "079",
+      "number": "079/151",
+      "name": "SlowpokeAri",
+      "src": "assets/cards/079_SlowpokeAri.png"
+    },
+    {
+      "id": "080",
+      "number": "080/151",
+      "name": "SlowbroAri",
+      "src": "assets/cards/080_SlowbroAri.png"
+    },
+    {
+      "id": "081",
+      "number": "081/151",
+      "name": "MagnemiteAri",
+      "src": "assets/cards/081_MagnemiteAri.png"
+    },
+    {
+      "id": "082",
+      "number": "082/151",
+      "name": "MagnetonAri",
+      "src": "assets/cards/082_MagnetonAri.png"
+    },
+    {
+      "id": "083",
+      "number": "083/151",
+      "name": "FarfetchdAri",
+      "src": "assets/cards/083_FarfetchdAri.png"
+    },
+    {
+      "id": "084",
+      "number": "084/151",
+      "name": "DoduoAri",
+      "src": "assets/cards/084_DoduoAri.png"
+    },
+    {
+      "id": "085",
+      "number": "085/151",
+      "name": "DodrioAri",
+      "src": "assets/cards/085_DodrioAri.png"
+    },
+    {
+      "id": "086",
+      "number": "086/151",
+      "name": "SeelAri",
+      "src": "assets/cards/086_SeelAri.png"
+    },
+    {
+      "id": "087",
+      "number": "087/151",
+      "name": "DewgongAri",
+      "src": "assets/cards/087_DewgongAri.png"
+    },
+    {
+      "id": "088",
+      "number": "088/151",
+      "name": "GrimerAri",
+      "src": "assets/cards/088_GrimerAri.png"
+    },
+    {
+      "id": "089",
+      "number": "089/151",
+      "name": "MukAri",
+      "src": "assets/cards/089_MukAri.png"
+    },
+    {
+      "id": "090",
+      "number": "090/151",
+      "name": "ShellderAri",
+      "src": "assets/cards/090_ShellderAri.png"
+    },
+    {
+      "id": "091",
+      "number": "091/151",
+      "name": "CloysterAri",
+      "src": "assets/cards/091_CloysterAri.png"
+    },
+    {
+      "id": "092",
+      "number": "092/151",
+      "name": "GastlyAri",
+      "src": "assets/cards/092_GastlyAri.png"
+    },
+    {
+      "id": "093",
+      "number": "093/151",
+      "name": "HaunterAri",
+      "src": "assets/cards/093_HaunterAri.png"
+    },
+    {
+      "id": "094",
+      "number": "094/151",
+      "name": "GengarAri",
+      "src": "assets/cards/094_GengarAri.png"
+    },
+    {
+      "id": "095",
+      "number": "095/151",
+      "name": "OnixAri",
+      "src": "assets/cards/095_OnixAri.png"
+    },
+    {
+      "id": "096",
+      "number": "096/151",
+      "name": "DrowzeeAri",
+      "src": "assets/cards/096_DrowzeeAri.png"
+    },
+    {
+      "id": "097",
+      "number": "097/151",
+      "name": "HypnoAri",
+      "src": "assets/cards/097_HypnoAri.png"
+    },
+    {
+      "id": "098",
+      "number": "098/151",
+      "name": "KrabbyAri",
+      "src": "assets/cards/098_KrabbyAri.png"
+    },
+    {
+      "id": "099",
+      "number": "099/151",
+      "name": "KinglerAri",
+      "src": "assets/cards/099_KinglerAri.png"
+    },
+    {
+      "id": "100",
+      "number": "100/151",
+      "name": "VoltorbAri",
+      "src": "assets/cards/100_VoltorbAri.png"
+    },
+    {
+      "id": "101",
+      "number": "101/151",
+      "name": "ElectrodeAri",
+      "src": "assets/cards/101_ElectrodeAri.png"
+    },
+    {
+      "id": "102",
+      "number": "102/151",
+      "name": "ExeggcuteAri",
+      "src": "assets/cards/102_ExeggcuteAri.png"
+    },
+    {
+      "id": "103",
+      "number": "103/151",
+      "name": "ExeggutorAri",
+      "src": "assets/cards/103_ExeggutorAri.png"
+    },
+    {
+      "id": "104",
+      "number": "104/151",
+      "name": "CuboneAri",
+      "src": "assets/cards/104_CuboneAri.png"
+    },
+    {
+      "id": "105",
+      "number": "105/151",
+      "name": "MarowakAri",
+      "src": "assets/cards/105_MarowakAri.png"
+    },
+    {
+      "id": "106",
+      "number": "106/151",
+      "name": "HitmonleeAri",
+      "src": "assets/cards/106_HitmonleeAri.png"
+    },
+    {
+      "id": "107",
+      "number": "107/151",
+      "name": "HitmonchanAri",
+      "src": "assets/cards/107_HitmonchanAri.png"
+    },
+    {
+      "id": "108",
+      "number": "108/151",
+      "name": "LickitungAri",
+      "src": "assets/cards/108_LickitungAri.png"
+    },
+    {
+      "id": "109",
+      "number": "109/151",
+      "name": "KoffingAri",
+      "src": "assets/cards/109_KoffingAri.png"
+    },
+    {
+      "id": "110",
+      "number": "110/151",
+      "name": "WeezingAri",
+      "src": "assets/cards/110_WeezingAri.png"
+    },
+    {
+      "id": "111",
+      "number": "111/151",
+      "name": "RhyhornAri",
+      "src": "assets/cards/111_RhyhornAri.png"
+    },
+    {
+      "id": "112",
+      "number": "112/151",
+      "name": "RhydonAri",
+      "src": "assets/cards/112_RhydonAri.png"
+    },
+    {
+      "id": "113",
+      "number": "113/151",
+      "name": "ChanseyAri",
+      "src": "assets/cards/113_ChanseyAri.png"
+    },
+    {
+      "id": "114",
+      "number": "114/151",
+      "name": "TangelaAri",
+      "src": "assets/cards/114_TangelaAri.png"
+    },
+    {
+      "id": "115",
+      "number": "115/151",
+      "name": "KangaskhanAri",
+      "src": "assets/cards/115_KangaskhanAri.png"
+    },
+    {
+      "id": "116",
+      "number": "116/151",
+      "name": "HorseaAri",
+      "src": "assets/cards/116_HorseaAri.png"
+    },
+    {
+      "id": "117",
+      "number": "117/151",
+      "name": "SeadraAri",
+      "src": "assets/cards/117_SeadraAri.png"
+    },
+    {
+      "id": "118",
+      "number": "118/151",
+      "name": "GoldeenAri",
+      "src": "assets/cards/118_GoldeenAri.png"
+    },
+    {
+      "id": "119",
+      "number": "119/151",
+      "name": "SeakingAri",
+      "src": "assets/cards/119_SeakingAri.png"
+    },
+    {
+      "id": "120",
+      "number": "120/151",
+      "name": "StaryuAri",
+      "src": "assets/cards/120_StaryuAri.png"
+    },
+    {
+      "id": "121",
+      "number": "121/151",
+      "name": "StarmieAri",
+      "src": "assets/cards/121_StarmieAri.png"
+    },
+    {
+      "id": "122",
+      "number": "122/151",
+      "name": "MrMimeAri",
+      "src": "assets/cards/122_MrMimeAri.png"
+    },
+    {
+      "id": "123",
+      "number": "123/151",
+      "name": "ScytherAri",
+      "src": "assets/cards/123_ScytherAri.png"
+    },
+    {
+      "id": "124",
+      "number": "124/151",
+      "name": "JynxAri",
+      "src": "assets/cards/124_JynxAri.png"
+    },
+    {
+      "id": "125",
+      "number": "125/151",
+      "name": "ElectabuzzAri",
+      "src": "assets/cards/125_ElectabuzzAri.png"
+    },
+    {
+      "id": "126",
+      "number": "126/151",
+      "name": "MagmarAri",
+      "src": "assets/cards/126_MagmarAri.png"
+    },
+    {
+      "id": "127",
+      "number": "127/151",
+      "name": "PinsirAri",
+      "src": "assets/cards/127_PinsirAri.png"
+    },
+    {
+      "id": "128",
+      "number": "128/151",
+      "name": "TaurosAri",
+      "src": "assets/cards/128_TaurosAri.png"
+    },
+    {
+      "id": "129",
+      "number": "129/151",
+      "name": "MagikarpAri",
+      "src": "assets/cards/129_MagikarpAri.png"
+    },
+    {
+      "id": "130",
+      "number": "130/151",
+      "name": "GyaradosAri",
+      "src": "assets/cards/130_GyaradosAri.png"
+    },
+    {
+      "id": "131",
+      "number": "131/151",
+      "name": "LaprasAri",
+      "src": "assets/cards/131_LaprasAri.png"
+    },
+    {
+      "id": "132",
+      "number": "132/151",
+      "name": "DittoAri",
+      "src": "assets/cards/132_DittoAri.png"
+    },
+    {
       "id": "133",
       "number": "133/151",
       "name": "EveAri",
       "src": "assets/cards/133_EveAri.png",
       "type": "Colorless",
       "rarity": "Rare"
+    },
+    {
+      "id": "134",
+      "number": "134/151",
+      "name": "VaporeonAri",
+      "src": "assets/cards/134_VaporeonAri.png"
+    },
+    {
+      "id": "135",
+      "number": "135/151",
+      "name": "JolteonAri",
+      "src": "assets/cards/135_JolteonAri.png"
+    },
+    {
+      "id": "136",
+      "number": "136/151",
+      "name": "FlareonAri",
+      "src": "assets/cards/136_FlareonAri.png"
+    },
+    {
+      "id": "137",
+      "number": "137/151",
+      "name": "PorygonAri",
+      "src": "assets/cards/137_PorygonAri.png"
+    },
+    {
+      "id": "138",
+      "number": "138/151",
+      "name": "OmanyteAri",
+      "src": "assets/cards/138_OmanyteAri.png"
+    },
+    {
+      "id": "139",
+      "number": "139/151",
+      "name": "OmastarAri",
+      "src": "assets/cards/139_OmastarAri.png"
+    },
+    {
+      "id": "140",
+      "number": "140/151",
+      "name": "KabutoAri",
+      "src": "assets/cards/140_KabutoAri.png"
+    },
+    {
+      "id": "141",
+      "number": "141/151",
+      "name": "KabutopsAri",
+      "src": "assets/cards/141_KabutopsAri.png"
+    },
+    {
+      "id": "142",
+      "number": "142/151",
+      "name": "AerodactylAri",
+      "src": "assets/cards/142_AerodactylAri.png"
+    },
+    {
+      "id": "143",
+      "number": "143/151",
+      "name": "SnorlaxAri",
+      "src": "assets/cards/143_SnorlaxAri.png"
+    },
+    {
+      "id": "144",
+      "number": "144/151",
+      "name": "ArticunoAri",
+      "src": "assets/cards/144_ArticunoAri.png"
+    },
+    {
+      "id": "145",
+      "number": "145/151",
+      "name": "ZapdosAri",
+      "src": "assets/cards/145_ZapdosAri.png"
+    },
+    {
+      "id": "146",
+      "number": "146/151",
+      "name": "MoltresAri",
+      "src": "assets/cards/146_MoltresAri.png"
+    },
+    {
+      "id": "147",
+      "number": "147/151",
+      "name": "DratiniAri",
+      "src": "assets/cards/147_DratiniAri.png"
+    },
+    {
+      "id": "148",
+      "number": "148/151",
+      "name": "DragonairAri",
+      "src": "assets/cards/148_DragonairAri.png"
+    },
+    {
+      "id": "149",
+      "number": "149/151",
+      "name": "DragoniteAri",
+      "src": "assets/cards/149_DragoniteAri.png"
     },
     {
       "id": "150",
