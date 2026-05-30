@@ -146,7 +146,7 @@ a-scene { position: fixed; inset: 0; z-index: 1; background: transparent; }
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 18px;
+  padding: 14px;
   background:
     radial-gradient(circle at 50% 20%, rgba(68,170,255,0.20), transparent 32%),
     rgba(3, 6, 18, 0.82);
@@ -154,10 +154,12 @@ a-scene { position: fixed; inset: 0; z-index: 1; background: transparent; }
   animation: revealFade 0.22s ease-out;
 }
 .reveal-card-wrap, .panel-card {
-  width: min(92vw, 430px);
-  max-height: 92vh;
+  width: min(94vw, 430px);
+  max-height: min(88vh, 760px);
   overflow: auto;
-  padding: 18px;
+  -webkit-overflow-scrolling: touch;
+  padding: 16px;
+  padding-bottom: max(18px, env(safe-area-inset-bottom, 0px));
   border-radius: 30px;
   text-align: center;
   background: linear-gradient(180deg, rgba(255,255,255,0.19), rgba(255,255,255,0.07));
@@ -224,12 +226,19 @@ a-scene { position: fixed; inset: 0; z-index: 1; background: transparent; }
   font-size: 26px;
   line-height: 1;
 }
-.panel-progress { color: #c7d0e8; font-size: 13px; margin: 0 0 14px; text-align: left; }
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
+.panel-progress {
+  color: #c7d0e8;
+  font-size: 13px;
+  margin: 0 0 14px;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10);
 }
+.panel-progress strong { color: #fff; font-size: 16px; }
+.panel-progress span { display: block; margin-top: 3px; color: #91a1c7; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; }
+.gallery-grid { display: block; }
 .gallery-item {
   border: 1px solid rgba(255,255,255,0.13);
   border-radius: 16px;
@@ -240,7 +249,10 @@ a-scene { position: fixed; inset: 0; z-index: 1; background: transparent; }
   cursor: pointer;
   min-width: 0;
 }
-.gallery-item.owned { box-shadow: inset 0 0 0 1px rgba(68,170,255,0.18); }
+.gallery-item.owned {
+  box-shadow: inset 0 0 0 1px rgba(68,170,255,0.22), 0 8px 20px rgba(0,0,0,0.16);
+  background: linear-gradient(180deg, rgba(68,170,255,0.13), rgba(255,255,255,0.07));
+}
 .gallery-item img {
   display: block;
   width: 100%;
@@ -251,7 +263,7 @@ a-scene { position: fixed; inset: 0; z-index: 1; background: transparent; }
 }
 .gallery-item span { display: block; color: #9fb0d8; font-size: 10px; font-weight: 900; }
 .gallery-item strong { display: block; font-size: 11px; line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.gallery-item.locked { opacity: 0.48; }
+.gallery-item.locked { opacity: 0.52; }
 .card-back {
   display: flex;
   align-items: center;
@@ -271,7 +283,6 @@ a-scene { position: fixed; inset: 0; z-index: 1; background: transparent; }
   100% { opacity: 1; transform: translateY(0) scale(1) rotate(0); filter: brightness(1); }
 }
 
-/* ===== v2 UX polish: HUD brand, binder album, catch flash ===== */
 .brand {
   display: flex;
   align-items: center;
@@ -289,52 +300,69 @@ a-scene { position: fixed; inset: 0; z-index: 1; background: transparent; }
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
   white-space: nowrap;
 }
-.brand-mark {
-  color: var(--accent);
-  font-size: 17px;
-  line-height: 1;
-}
+.brand-mark { color: var(--accent); font-size: 17px; line-height: 1; }
 .score { font-weight: 800; white-space: nowrap; }
 .score-sep { opacity: 0.45; margin: 0 1px; }
 
-/* Binder album */
-.binder-page { margin: 0 0 16px; }
-.binder-page + .binder-page { border-top: 1px solid rgba(255, 255, 255, 0.07); padding-top: 14px; }
+.binder-page {
+  margin: 0 0 18px;
+  padding: 10px;
+  border-radius: 22px;
+  background: rgba(255,255,255,0.045);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.binder-page-featured {
+  background: linear-gradient(180deg, rgba(68,170,255,0.13), rgba(255,255,255,0.045));
+  border-color: rgba(68,170,255,0.20);
+}
+.binder-page + .binder-page { border-top: 1px solid rgba(255, 255, 255, 0.07); }
 .binder-page-title {
   position: sticky;
   top: -2px;
   z-index: 1;
-  margin: 0 0 9px;
-  padding: 6px 2px;
+  margin: 0 0 10px;
+  padding: 7px 4px;
   font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.04em;
+  font-weight: 900;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: #9fb0d8;
-  background: linear-gradient(180deg, rgba(8, 12, 28, 0.96), rgba(8, 12, 28, 0.55));
+  color: #d7e6ff;
+  background: linear-gradient(180deg, rgba(8, 12, 28, 0.96), rgba(8, 12, 28, 0.50));
   backdrop-filter: blur(4px);
+  border-radius: 12px;
 }
 .binder-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
 }
+.binder-page-featured .binder-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.binder-page-featured .gallery-item {
+  border-radius: 18px;
+  padding: 9px;
+}
+.binder-page-featured .gallery-item strong { font-size: 13px; }
+.binder-page-featured .gallery-item span { font-size: 11px; }
 .binder-slot.registered { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06); }
-.binder-slot.empty { opacity: 0.42; }
+.binder-slot.empty { opacity: 0.32; }
 .card-back.muted {
   background: rgba(255, 255, 255, 0.05);
   color: #6c7aa0;
-  font-size: 26px;
+  font-size: 24px;
 }
-
-/* keep the binder modal scrollable + within safe area on iPhone Safari */
-.panel-card {
-  -webkit-overflow-scrolling: touch;
-  max-height: min(88vh, 760px);
-  padding-bottom: max(18px, env(safe-area-inset-bottom, 0px));
+@media (max-width: 380px) {
+  .hud { gap: 6px; padding: 8px; }
+  .brand { font-size: 13px; padding: 8px 10px; }
+  .score, .pillbtn { font-size: 11px; padding: 8px 9px; }
+  .regen { width: 34px; height: 34px; }
+  .panel-card { width: 96vw; padding: 13px; }
+  .binder-page-featured .binder-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .binder-grid { gap: 7px; }
+  .gallery-item { padding: 6px; }
 }
-
-/* Catch flash — sits above the scene, below reveal/toast */
 .flash {
   position: fixed;
   inset: 0;
