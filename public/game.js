@@ -9,7 +9,6 @@ const MIN_TAP_TARGET_RADIUS_M = 0.24;
 const XR_AUTO_CATCH_RADIUS_M = 0.45;
 const SCREEN_TAP_RADIUS_PX = 95;
 const COLLECTION_KEY = 'arimon.collection.v1';
-const SESSION_ORIGIN_KEY = 'arimon.sessionOrigin.v1';
 
 const FALLBACK_CARDS = [
   { id: '001', name: 'Turtwig Ari', number: '001/151', src: 'assets/cards/001-turtwig-ari.png' }
@@ -32,7 +31,15 @@ const els = {
   reveal: document.getElementById('reveal'),
   revealTitle: document.getElementById('reveal-title'),
   revealImg: document.getElementById('reveal-img'),
-  revealClose: document.getElementById('reveal-close')
+  revealClose: document.getElementById('reveal-close'),
+  galleryOpen: document.getElementById('gallery-open'),
+  gallery: document.getElementById('gallery'),
+  galleryClose: document.getElementById('gallery-close'),
+  galleryGrid: document.getElementById('gallery-grid'),
+  galleryProgress: document.getElementById('gallery-progress'),
+  placeToggle: document.getElementById('place-toggle'),
+  placeBall: document.getElementById('place-ball'),
+  resetMap: document.getElementById('reset-map')
 };
 
 const state = {
@@ -43,7 +50,8 @@ const state = {
   found: new Set(),
   collection: new Set(),
   xr: false,
-  running: false
+  running: false,
+  placeMode: false
 };
 let xrSupported = false;
 
@@ -114,8 +122,6 @@ function generateSpawns() {
       pts.push({ x, z });
     }
   } else {
-    // iPhone/Safari fallback: create a stable semicircle in front of the start
-    // pose instead of re-randomizing into an obvious camera-following dome.
     const layout = [
       { angle: -34, dist: 4.2 },
       { angle: -18, dist: 5.6 },
@@ -210,6 +216,29 @@ function toast(msg) {
   toastTimer = setTimeout(() => els.toast.classList.add('hidden'), 1800);
 }
 
+function openGallery() {
+  renderGallery();
+  els.gallery?.classList.remove('hidden');
+}
+function closeGallery() { els.gallery?.classList.add('hidden'); }
+function renderGallery() {
+  if (!els.galleryGrid) return;
+  const collected = state.cards.filter((c) => state.collection.has(c.id)).length;
+  if (els.galleryProgress) els.galleryProgress.textContent = `${collected} collected · ${state.cards.length} discovered in this set · ${state.totalCards} total`;
+  els.galleryGrid.innerHTML = '';
+  state.cards.forEach((card) => {
+    const owned = state.collection.has(card.id);
+    const item = document.createElement('button');
+    item.className = `gallery-item ${owned ? 'owned' : 'locked'}`;
+    item.type = 'button';
+    item.innerHTML = owned
+      ? `<img src="${card.src}" alt="${card.name}"><span>${card.number || card.id}</span><strong>${card.name}</strong>`
+      : `<div class="card-back">?</div><span>${card.number || card.id}</span><strong>Uncaught</strong>`;
+    if (owned) item.addEventListener('click', () => showReveal(card, false));
+    els.galleryGrid.appendChild(item);
+  });
+}
+
 function catchNearestScreenBall(clientX, clientY) {
   if (!state.running || !els.reveal.classList.contains('hidden')) return false;
   const camera = els.cam.getObject3D('camera');
@@ -240,13 +269,13 @@ function catchNearestScreenBall(clientX, clientY) {
 function installScreenTapFallback() {
   window.addEventListener('pointerup', (e) => {
     if (!state.running) return;
-    if (e.target.closest?.('.hud, .reveal, .overlay')) return;
+    if (e.target.closest?.('.hud, .reveal, .overlay, .panel')) return;
     if (catchNearestScreenBall(e.clientX, e.clientY)) e.preventDefault();
   }, { passive: false });
   window.addEventListener('touchend', (e) => {
     if (!state.running || !e.changedTouches?.length) return;
     const t = e.changedTouches[0];
-    if (e.target.closest?.('.hud, .reveal, .overlay')) return;
+    if (e.target.closest?.('.hud, .reveal, .overlay, .panel')) return;
     if (catchNearestScreenBall(t.clientX, t.clientY)) e.preventDefault();
   }, { passive: false });
 }
@@ -314,4 +343,10 @@ els.start.addEventListener('click', start);
 els.regen.addEventListener('click', () => { generateSpawns(); renderSpawns(); toast('Ari Balls reshuffled'); });
 els.revealClose?.addEventListener('click', hideReveal);
 els.reveal?.addEventListener('click', (e) => { if (e.target === els.reveal) hideReveal(); });
+els.galleryOpen?.addEventListener('click', openGallery);
+els.galleryClose?.addEventListener('click', closeGallery);
+els.gallery?.addEventListener('click', (e) => { if (e.target === els.gallery) closeGallery(); });
+els.placeToggle?.addEventListener('click', () => toast('Place Mode wiring is next.'));
+els.placeBall?.addEventListener('click', () => toast('Drop Ball wiring is next.'));
+els.resetMap?.addEventListener('click', () => toast('Reset Map wiring is next.'));
 installScreenTapFallback();
