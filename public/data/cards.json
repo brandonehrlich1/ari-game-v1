@@ -1,0 +1,12 @@
+{
+  "setId": "arimon-151-v1",
+  "total": 151,
+  "cards": [
+    { "id": "001", "number": "001/151", "name": "Turtwig Ari", "type": "Grass", "rarity": "Common", "src": "assets/cards/001-turtwig-ari.png" },
+    { "id": "002", "number": "002/151", "name": "Ivysari", "type": "Grass", "rarity": "Common", "src": "assets/cards/002-ivysari.png" },
+    { "id": "003", "number": "003/151", "name": "Venusari", "type": "Grass", "rarity": "Rare", "src": "assets/cards/003-venusari.png" },
+    { "id": "004", "number": "004/151", "name": "Charari", "type": "Fire", "rarity": "Common", "src": "assets/cards/004-charari.png" },
+    { "id": "005", "number": "005/151", "name": "Charmeleari", "type": "Fire", "rarity": "Uncommon", "src": "assets/cards/005-charmeleari.png" },
+    { "id": "006", "number": "006/151", "name": "Charizari", "type": "Fire/Flying", "rarity": "Rare", "src": "assets/cards/006-charizari.png" }
+  ]
+}
