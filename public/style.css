@@ -63,19 +63,23 @@ button#start {
   z-index: 40;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 14px;
+  gap: 8px;
+  padding: 12px;
   pointer-events: none;
+  flex-wrap: wrap;
 }
 .hud > * { pointer-events: auto; }
-.status, .score {
-  background: rgba(8, 12, 28, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+.status, .score, .pillbtn {
+  background: rgba(8, 12, 28, 0.66);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 999px;
-  padding: 8px 14px;
-  font-size: 13px;
+  padding: 8px 12px;
+  font-size: 12px;
+  color: #fff;
   backdrop-filter: blur(6px);
 }
+.pillbtn { font-weight: 800; cursor: pointer; }
+.pillbtn.active { background: linear-gradient(90deg, rgba(68,170,255,0.9), rgba(138,79,255,0.9)); }
 .score b { color: var(--accent); }
 .regen {
   margin-left: auto;
@@ -124,7 +128,7 @@ a-scene { position: fixed; inset: 0; z-index: 1; background: transparent; }
   z-index: 30;
   pointer-events: none;
 }
-.reveal {
+.reveal, .panel {
   position: fixed;
   inset: 0;
   z-index: 70;
@@ -136,8 +140,8 @@ a-scene { position: fixed; inset: 0; z-index: 1; background: transparent; }
   backdrop-filter: blur(10px);
   animation: revealFade 0.22s ease-out;
 }
-.reveal-card-wrap {
-  width: min(92vw, 390px);
+.reveal-card-wrap, .panel-card {
+  width: min(92vw, 430px);
   max-height: 92vh;
   overflow: auto;
   padding: 18px;
@@ -149,7 +153,7 @@ a-scene { position: fixed; inset: 0; z-index: 1; background: transparent; }
   transform-origin: center;
   animation: cardPull 0.48s cubic-bezier(.18,.95,.25,1.18);
 }
-.reveal-kicker {
+.reveal-kicker, .panel-kicker {
   display: inline-block;
   margin-bottom: 8px;
   padding: 7px 12px;
@@ -162,7 +166,7 @@ a-scene { position: fixed; inset: 0; z-index: 1; background: transparent; }
   background: rgba(68, 170, 255, 0.18);
   border: 1px solid rgba(68, 170, 255, 0.3);
 }
-.reveal h2 {
+.reveal h2, .panel h2 {
   margin: 4px 0 14px;
   font-size: 28px;
   line-height: 1.05;
@@ -189,6 +193,61 @@ a-scene { position: fixed; inset: 0; z-index: 1; background: transparent; }
   background: linear-gradient(90deg, var(--accent), var(--accent2));
   box-shadow: 0 10px 30px rgba(68,170,255,0.22);
   cursor: pointer;
+}
+.panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  text-align: left;
+}
+.iconbtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  font-size: 26px;
+  line-height: 1;
+}
+.panel-progress { color: #c7d0e8; font-size: 13px; margin: 0 0 14px; text-align: left; }
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.gallery-item {
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 18px;
+  padding: 10px;
+  background: rgba(255,255,255,0.07);
+  color: #fff;
+  text-align: left;
+  cursor: pointer;
+}
+.gallery-item img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 8px;
+}
+.gallery-item span { display: block; color: #9fb0d8; font-size: 11px; font-weight: 800; }
+.gallery-item strong { display: block; font-size: 13px; line-height: 1.2; }
+.gallery-item.locked { opacity: 0.48; }
+.card-back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  font-size: 46px;
+  font-weight: 900;
+  background: linear-gradient(135deg, rgba(68,170,255,0.25), rgba(138,79,255,0.25));
 }
 @keyframes revealFade {
   from { opacity: 0; }
