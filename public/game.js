@@ -9,6 +9,7 @@ const MIN_TAP_TARGET_RADIUS_M = 0.18;
 const XR_AUTO_CATCH_RADIUS_M = 0.45;
 const SCREEN_TAP_RADIUS_PX = 110;
 const COLLECTION_KEY = 'arimon.collection.v1';
+const BINDER_PAGE_SIZE = 9;
 
 const FALLBACK_CARDS = [
   { id: '001', name: 'Turtwig Ari', number: '001/151', src: 'assets/cards/001-turtwig-ari.png' }
@@ -128,9 +129,6 @@ function generateSpawns() {
       pts.push({ x, z, y: toddlerHeightForIndex(pts.length) });
     }
   } else {
-    // Full 360° fallback tuned for a toddler hunt: 40% low, 35% table/play height,
-    // 20% kid eye-line, 5% high surprise. This keeps the hunt in Ari's natural
-    // field of view while still requiring a full-room scan.
     const layout = [
       { angle: -160, dist: 7.6, y: 0.58 },
       { angle: -112, dist: 9.8, y: 0.78 },
@@ -246,30 +244,53 @@ async function openGallery(e) {
     renderGallery();
     els.gallery?.classList.remove('hidden');
   } catch (err) {
-    toast('Gallery failed to load');
+    toast('Binder failed to load');
     console.error(err);
   }
 }
 function closeGallery() { els.gallery?.classList.add('hidden'); }
 function renderGallery() {
   if (!els.galleryGrid) return;
-  const collected = state.cards.filter((c) => state.collection.has(c.id)).length;
-  if (els.galleryProgress) els.galleryProgress.textContent = `${collected} collected · ${state.cards.length} cards loaded · ${state.totalCards} total`;
+  const cardById = new Map(state.cards.map((card) => [String(card.id).padStart(3, '0'), card]));
+  const loadedCollected = state.cards.filter((c) => state.collection.has(c.id)).length;
+  if (els.galleryProgress) {
+    els.galleryProgress.textContent = `${loadedCollected}/${state.cards.length} loaded cards caught · ${state.collection.size}/${state.totalCards} total collection`;
+  }
   els.galleryGrid.innerHTML = '';
-  state.cards.forEach((card) => {
-    const owned = state.collection.has(card.id);
-    const item = document.createElement('button');
-    item.className = `gallery-item ${owned ? 'owned' : 'locked'}`;
-    item.type = 'button';
-    item.innerHTML = owned
-      ? `<img src="${card.src}" alt="${card.name}"><span>${card.number || card.id}</span><strong>${card.name}</strong>`
-      : `<div class="card-back">?</div><span>${card.number || card.id}</span><strong>Uncaught</strong>`;
-    if (owned) {
-      item.addEventListener('click', (evt) => { evt.preventDefault(); evt.stopPropagation(); showReveal(card, false); });
-      item.addEventListener('touchend', (evt) => { evt.preventDefault(); evt.stopPropagation(); showReveal(card, false); }, { passive: false });
+
+  for (let pageStart = 1; pageStart <= state.totalCards; pageStart += BINDER_PAGE_SIZE) {
+    const pageEnd = Math.min(pageStart + BINDER_PAGE_SIZE - 1, state.totalCards);
+    const page = document.createElement('section');
+    page.className = 'binder-page';
+
+    const title = document.createElement('div');
+    title.className = 'binder-page-title';
+    title.textContent = `Binder Page ${Math.ceil(pageStart / BINDER_PAGE_SIZE)} · ${String(pageStart).padStart(3, '0')}–${String(pageEnd).padStart(3, '0')}`;
+    page.appendChild(title);
+
+    const grid = document.createElement('div');
+    grid.className = 'binder-grid';
+    for (let n = pageStart; n <= pageEnd; n++) {
+      const id = String(n).padStart(3, '0');
+      const card = cardById.get(id);
+      const owned = !!card && state.collection.has(card.id);
+      const item = document.createElement('button');
+      item.className = `gallery-item binder-slot ${owned ? 'owned' : card ? 'registered locked' : 'empty locked'}`;
+      item.type = 'button';
+      if (owned) {
+        item.innerHTML = `<img src="${card.src}" alt="${card.name}"><span>${card.number || `${id}/151`}</span><strong>${card.name}</strong>`;
+        item.addEventListener('click', (evt) => { evt.preventDefault(); evt.stopPropagation(); showReveal(card, false); });
+        item.addEventListener('touchend', (evt) => { evt.preventDefault(); evt.stopPropagation(); showReveal(card, false); }, { passive: false });
+      } else if (card) {
+        item.innerHTML = `<div class="card-back">?</div><span>${card.number || `${id}/151`}</span><strong>Uncaught</strong>`;
+      } else {
+        item.innerHTML = `<div class="card-back muted">?</div><span>${id}/151</span><strong>Coming soon</strong>`;
+      }
+      grid.appendChild(item);
     }
-    els.galleryGrid.appendChild(item);
-  });
+    page.appendChild(grid);
+    els.galleryGrid.appendChild(page);
+  }
 }
 
 function catchNearestScreenBall(clientX, clientY) {
