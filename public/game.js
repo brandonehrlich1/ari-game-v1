@@ -11,7 +11,7 @@ const SCREEN_TAP_RADIUS_PX = 95;
 const COLLECTION_KEY = 'arimon.collection.v1';
 
 const CARDS = [
-  { id: '001', name: 'Turtwig Ari', number: '001/151', src: 'assets/001-turtwig-ari.jpg' }
+  { id: '001', name: 'Turtwig Ari', number: '001/151', src: 'assets/cards/001-turtwig-ari.png' }
 ];
 
 const els = {
