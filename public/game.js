@@ -65,7 +65,7 @@ async function loadData() {
   state.config = await resolveConfig();
   await loadCards();
   state.collection = loadCollection();
-  els.total.textContent = state.totalCards;
+  els.total.textContent = state.cards.length;
   updateCollectionCount();
 }
 
@@ -216,11 +216,10 @@ function tryCatch(spawn, entity) {
   setTimeout(() => showReveal(spawn.card, wasNew), 300);
 }
 
-// Lightweight catch pulse — a quick screen flash, no dependencies.
 function flashScreen() {
   if (!els.flash) return;
   els.flash.classList.remove('hidden', 'flash-go');
-  void els.flash.offsetWidth; // restart the animation
+  void els.flash.offsetWidth;
   els.flash.classList.add('flash-go');
   setTimeout(() => els.flash.classList.add('hidden'), 360);
 }
@@ -261,21 +260,38 @@ function closeGallery() { els.gallery?.classList.add('hidden'); }
 function renderGallery() {
   if (!els.galleryGrid) return;
   const cardById = new Map(state.cards.map((card) => [String(card.id).padStart(3, '0'), card]));
+  const available = state.cards.length;
+  const caughtAvailable = state.cards.filter((c) => state.collection.has(c.id)).length;
   if (els.galleryProgress) {
-    const caught = state.collection.size;
-    const pct = Math.round((caught / state.totalCards) * 100);
-    els.galleryProgress.textContent = `${caught} of ${state.totalCards} caught · ${pct}% complete`;
+    const pct = available ? Math.round((caughtAvailable / available) * 100) : 0;
+    els.galleryProgress.innerHTML = `<strong>${caughtAvailable}/${available}</strong> available AriMon caught · ${pct}% complete <span>${state.totalCards}-slot master set</span>`;
   }
   els.galleryGrid.innerHTML = '';
 
+  const availablePage = document.createElement('section');
+  availablePage.className = 'binder-page binder-page-featured';
+  const availableTitle = document.createElement('div');
+  availableTitle.className = 'binder-page-title';
+  availableTitle.textContent = `Available AriMon · ${available} loaded`;
+  availablePage.appendChild(availableTitle);
+  const availableGrid = document.createElement('div');
+  availableGrid.className = 'binder-grid';
+  [...state.cards]
+    .sort((a, b) => String(a.id).localeCompare(String(b.id), undefined, { numeric: true }))
+    .forEach((card) => availableGrid.appendChild(renderBinderSlot(card, String(card.id).padStart(3, '0'), true)));
+  availablePage.appendChild(availableGrid);
+  els.galleryGrid.appendChild(availablePage);
+
   for (let pageStart = 1; pageStart <= state.totalCards; pageStart += BINDER_PAGE_SIZE) {
     const pageEnd = Math.min(pageStart + BINDER_PAGE_SIZE - 1, state.totalCards);
+    const hasRegisteredCard = range(pageStart, pageEnd).some((n) => cardById.has(String(n).padStart(3, '0')));
+    if (!hasRegisteredCard && pageStart > 27) continue;
     const page = document.createElement('section');
     page.className = 'binder-page';
 
     const title = document.createElement('div');
     title.className = 'binder-page-title';
-    title.textContent = `Binder Page ${Math.ceil(pageStart / BINDER_PAGE_SIZE)} · ${String(pageStart).padStart(3, '0')}–${String(pageEnd).padStart(3, '0')}`;
+    title.textContent = `Master Set ${String(pageStart).padStart(3, '0')}–${String(pageEnd).padStart(3, '0')}`;
     page.appendChild(title);
 
     const grid = document.createElement('div');
@@ -283,24 +299,32 @@ function renderGallery() {
     for (let n = pageStart; n <= pageEnd; n++) {
       const id = String(n).padStart(3, '0');
       const card = cardById.get(id);
-      const owned = !!card && state.collection.has(card.id);
-      const item = document.createElement('button');
-      item.className = `gallery-item binder-slot ${owned ? 'owned' : card ? 'registered locked' : 'empty locked'}`;
-      item.type = 'button';
-      if (owned) {
-        item.innerHTML = `<img src="${card.src}" alt="${card.name}"><span>${card.number || `${id}/151`}</span><strong>${card.name}</strong>`;
-        item.addEventListener('click', (evt) => { evt.preventDefault(); evt.stopPropagation(); showReveal(card, false); });
-        item.addEventListener('touchend', (evt) => { evt.preventDefault(); evt.stopPropagation(); showReveal(card, false); }, { passive: false });
-      } else if (card) {
-        item.innerHTML = `<div class="card-back">?</div><span>${card.number || `${id}/151`}</span><strong>Uncaught</strong>`;
-      } else {
-        item.innerHTML = `<div class="card-back muted">?</div><span>${id}/151</span><strong>Coming soon</strong>`;
-      }
-      grid.appendChild(item);
+      grid.appendChild(renderBinderSlot(card, id, false));
     }
     page.appendChild(grid);
     els.galleryGrid.appendChild(page);
   }
+}
+
+function range(start, end) {
+  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+}
+
+function renderBinderSlot(card, id, compact) {
+  const owned = !!card && state.collection.has(card.id);
+  const item = document.createElement('button');
+  item.className = `gallery-item binder-slot ${compact ? 'compact' : ''} ${owned ? 'owned' : card ? 'registered locked' : 'empty locked'}`;
+  item.type = 'button';
+  if (owned) {
+    item.innerHTML = `<img src="${card.src}" alt="${card.name}"><span>${card.number || `${id}/151`}</span><strong>${card.name}</strong>`;
+    item.addEventListener('click', (evt) => { evt.preventDefault(); evt.stopPropagation(); showReveal(card, false); });
+    item.addEventListener('touchend', (evt) => { evt.preventDefault(); evt.stopPropagation(); showReveal(card, false); }, { passive: false });
+  } else if (card) {
+    item.innerHTML = `<div class="card-back">?</div><span>${card.number || `${id}/151`}</span><strong>Uncaught</strong>`;
+  } else {
+    item.innerHTML = `<div class="card-back muted">?</div><span>${id}/151</span><strong>Future</strong>`;
+  }
+  return item;
 }
 
 function catchNearestScreenBall(clientX, clientY) {
@@ -362,7 +386,7 @@ async function startPassthrough() {
     els.video.srcObject = stream;
     els.video.classList.remove('hidden');
   } catch (e) {
-    toast('Camera blocked — allow camera access and reload.');
+    // Camera may be blocked on desktop/inspector; keep the static UI usable.
   }
 }
 
@@ -398,7 +422,7 @@ async function start() {
 }
 
 els.start.addEventListener('click', start);
-els.regen.addEventListener('click', () => { generateSpawns(); renderSpawns(); toast('Fresh Ari Balls hidden nearby'); });
+els.regen.addEventListener('click', () => { generateSpawns(); renderSpawns(); toast('Ari Balls reshuffled for Ari'); });
 els.revealClose?.addEventListener('click', hideReveal);
 els.reveal?.addEventListener('click', (e) => { if (e.target === els.reveal) hideReveal(); });
 els.galleryOpen?.addEventListener('click', openGallery);
