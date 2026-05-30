@@ -7,6 +7,7 @@ const TENNIS_BALL_RADIUS_M = 0.0335;
 const FALLBACK_BALL_RADIUS_M = 0.024;
 const MIN_TAP_TARGET_RADIUS_M = 0.28;
 const XR_AUTO_CATCH_RADIUS_M = 0.45;
+const SCREEN_TAP_RADIUS_PX = 95;
 const COLLECTION_KEY = 'arimon.collection.v1';
 
 const CARDS = [
@@ -33,7 +34,7 @@ const els = {
   revealClose: document.getElementById('reveal-close')
 };
 
-const state = { config: null, spawns: [], found: new Set(), collection: new Set(), xr: false };
+const state = { config: null, spawns: [], found: new Set(), collection: new Set(), xr: false, running: false };
 let xrSupported = false;
 
 navigator.xr?.isSessionSupported?.('immersive-ar').then((ok) => {
@@ -124,7 +125,7 @@ function renderSpawns() {
     const hit = document.createElement('a-sphere');
     hit.classList.add('ari-sphere-hit-target', 'catchable');
     hit.setAttribute('radius', hitRadius);
-    hit.setAttribute('material', 'opacity: 0; transparent: true; depthWrite: false');
+    hit.setAttribute('material', 'opacity: 0.001; transparent: true; depthWrite: false; color: #ffffff');
     hit.addEventListener('click', (e) => { e.stopPropagation(); tryCatch(s, wrap); });
     wrap.appendChild(hit);
 
@@ -169,6 +170,50 @@ function toast(msg) {
   toastTimer = setTimeout(() => els.toast.classList.add('hidden'), 1800);
 }
 
+function catchNearestScreenBall(clientX, clientY) {
+  if (!state.running || !els.reveal.classList.contains('hidden')) return false;
+  const camera = els.cam.getObject3D('camera');
+  const canvas = els.scene.canvas;
+  if (!camera || !canvas) return false;
+  const rect = canvas.getBoundingClientRect();
+  let best = null;
+  let bestDist = Infinity;
+  document.querySelectorAll('.spawn-entity').forEach((entity) => {
+    const id = entity.dataset.spawnId;
+    if (!id || state.found.has(id)) return;
+    const world = new THREE.Vector3();
+    entity.object3D.getWorldPosition(world);
+    const projected = world.clone().project(camera);
+    if (projected.z < -1 || projected.z > 1) return;
+    const sx = rect.left + ((projected.x + 1) / 2) * rect.width;
+    const sy = rect.top + ((-projected.y + 1) / 2) * rect.height;
+    const dist = Math.hypot(clientX - sx, clientY - sy);
+    if (dist < bestDist) {
+      bestDist = dist;
+      best = entity;
+    }
+  });
+  if (!best || bestDist > SCREEN_TAP_RADIUS_PX) return false;
+  const spawn = state.spawns.find((s) => s.id === best.dataset.spawnId);
+  if (!spawn) return false;
+  tryCatch(spawn, best);
+  return true;
+}
+
+function installScreenTapFallback() {
+  window.addEventListener('pointerup', (e) => {
+    if (!state.running) return;
+    if (e.target.closest?.('.hud, .reveal, .overlay')) return;
+    if (catchNearestScreenBall(e.clientX, e.clientY)) e.preventDefault();
+  }, { passive: false });
+  window.addEventListener('touchend', (e) => {
+    if (!state.running || !e.changedTouches?.length) return;
+    const t = e.changedTouches[0];
+    if (e.target.closest?.('.hud, .reveal, .overlay')) return;
+    if (catchNearestScreenBall(t.clientX, t.clientY)) e.preventDefault();
+  }, { passive: false });
+}
+
 AFRAME.registerComponent('proximity-catcher', {
   tick() {
     if (!state.xr) return;
@@ -210,6 +255,7 @@ async function start() {
   els.hud.classList.remove('hidden');
   els.scene.classList.remove('hidden');
   els.cam.setAttribute('proximity-catcher', '');
+  state.running = true;
   const begin = () => { generateSpawns(); renderSpawns(); };
   if (xrSupported) {
     state.xr = true;
@@ -231,3 +277,4 @@ els.start.addEventListener('click', start);
 els.regen.addEventListener('click', () => { generateSpawns(); renderSpawns(); toast('Ari Balls reshuffled'); });
 els.revealClose?.addEventListener('click', hideReveal);
 els.reveal?.addEventListener('click', (e) => { if (e.target === els.reveal) hideReveal(); });
+installScreenTapFallback();
