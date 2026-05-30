@@ -4,8 +4,8 @@ import { resolveConfig } from './storage.js';
 const FT_PER_M = 3.28084;
 const ARI_SPHERE_ASSET = 'assets/F5BAFFD4-8565-45B8-8E75-AEC99FAD12BB.png';
 const TENNIS_BALL_RADIUS_M = 0.0335;
-const FALLBACK_BALL_RADIUS_M = 0.016;
-const MIN_TAP_TARGET_RADIUS_M = 0.24;
+const FALLBACK_BALL_RADIUS_M = 0.012;
+const MIN_TAP_TARGET_RADIUS_M = 0.22;
 const XR_AUTO_CATCH_RADIUS_M = 0.45;
 const SCREEN_TAP_RADIUS_PX = 95;
 const COLLECTION_KEY = 'arimon.collection.v1';
@@ -36,10 +36,7 @@ const els = {
   gallery: document.getElementById('gallery'),
   galleryClose: document.getElementById('gallery-close'),
   galleryGrid: document.getElementById('gallery-grid'),
-  galleryProgress: document.getElementById('gallery-progress'),
-  placeToggle: document.getElementById('place-toggle'),
-  placeBall: document.getElementById('place-ball'),
-  resetMap: document.getElementById('reset-map')
+  galleryProgress: document.getElementById('gallery-progress')
 };
 
 const state = {
@@ -50,8 +47,7 @@ const state = {
   found: new Set(),
   collection: new Set(),
   xr: false,
-  running: false,
-  placeMode: false
+  running: false
 };
 let xrSupported = false;
 
@@ -67,11 +63,7 @@ async function loadData() {
   els.total.textContent = state.totalCards;
   updateCollectionCount();
 }
-
-async function ensureDataLoaded() {
-  if (!state.config) await loadData();
-}
-
+async function ensureDataLoaded() { if (!state.config) await loadData(); }
 async function loadCards() {
   try {
     const res = await fetch(`data/cards.json?v=${Date.now()}`, { cache: 'no-store' });
@@ -87,18 +79,14 @@ async function loadCards() {
     state.totalCards = 151;
   }
 }
-
 function loadCollection() {
   try {
     const parsed = JSON.parse(localStorage.getItem(COLLECTION_KEY) || '[]');
     return new Set(Array.isArray(parsed) ? parsed : []);
-  } catch {
-    return new Set();
-  }
+  } catch { return new Set(); }
 }
 function saveCollection() { localStorage.setItem(COLLECTION_KEY, JSON.stringify([...state.collection])); }
 function updateCollectionCount() { els.count.textContent = state.collection.size; }
-
 function pickCard() {
   const unseen = state.cards.filter((c) => !state.collection.has(c.id));
   const pool = unseen.length && Math.random() < 0.72 ? unseen : state.cards;
@@ -109,7 +97,7 @@ function sphereStyle() { return state.config?.defaultSphere || {}; }
 function generateSpawns() {
   const sp = state.config?.spawn || {};
   const configuredCount = sp.count ?? 12;
-  const count = state.xr ? configuredCount : Math.min(configuredCount, 6);
+  const count = state.xr ? configuredCount : Math.min(configuredCount, 5);
   const pts = [];
   if (state.xr) {
     const minM = (sp.minSpacingFeet ?? 10) / FT_PER_M;
@@ -122,33 +110,34 @@ function generateSpawns() {
       const x = Math.cos(angle) * dist;
       const z = Math.sin(angle) * dist;
       if (pts.some((p) => Math.hypot(p.x - x, p.z - z) < minM)) continue;
-      pts.push({ x, z });
+      pts.push({ x, z, y: 0.65 + Math.random() * 0.75 });
     }
   } else {
+    // Natural Placement v1: stable uneven sectors with varied depth and height.
+    // This makes balls feel like they belong near floor/table zones rather than
+    // orbiting the camera as identical UI dots.
     const layout = [
-      { angle: -34, dist: 4.2 }, { angle: -18, dist: 5.6 }, { angle: 0, dist: 4.8 },
-      { angle: 18, dist: 5.6 }, { angle: 34, dist: 4.2 }, { angle: 52, dist: 6.2 }
+      { angle: -30, dist: 5.8, y: 0.72 },
+      { angle: -12, dist: 7.0, y: 1.18 },
+      { angle: 8, dist: 5.2, y: 0.58 },
+      { angle: 26, dist: 6.6, y: 0.94 },
+      { angle: 43, dist: 7.8, y: 0.68 }
     ];
     for (let i = 0; i < count; i++) {
       const l = layout[i % layout.length];
       const a = l.angle * Math.PI / 180;
-      pts.push({ x: Math.sin(a) * l.dist, z: -Math.cos(a) * l.dist });
+      pts.push({ x: Math.sin(a) * l.dist, z: -Math.cos(a) * l.dist, y: l.y });
     }
   }
   state.spawns = pts.map((p, i) => ({
     id: `spawn-${Date.now()}-${i}`,
     x: p.x,
     z: p.z,
-    y: 1.05 + (i % 3) * 0.22,
+    y: p.y ?? (0.7 + (i % 3) * 0.22),
     card: pickCard()
   }));
 }
-
-function clearSpawns() {
-  document.querySelectorAll('.spawn-entity').forEach((e) => e.remove());
-  state.found.clear();
-}
-
+function clearSpawns() { document.querySelectorAll('.spawn-entity').forEach((e) => e.remove()); state.found.clear(); }
 function renderSpawns() {
   clearSpawns();
   const style = sphereStyle();
@@ -160,6 +149,11 @@ function renderSpawns() {
     wrap.setAttribute('position', `${s.x} ${s.y} ${s.z}`);
     wrap.dataset.spawnId = s.id;
 
+    const glow = document.createElement('a-sphere');
+    glow.setAttribute('radius', visualRadius * 1.8);
+    glow.setAttribute('material', 'color: #7fd8ff; opacity: 0.08; transparent: true; depthWrite: false');
+    wrap.appendChild(glow);
+
     const ball = document.createElement('a-image');
     ball.classList.add('ari-sphere-visual', 'catchable');
     ball.setAttribute('src', ARI_SPHERE_ASSET);
@@ -167,7 +161,7 @@ function renderSpawns() {
     ball.setAttribute('height', visualRadius * 2);
     ball.setAttribute('transparent', 'true');
     ball.setAttribute('look-at', '#cam');
-    ball.setAttribute('animation', 'property: position; dir: alternate; dur: 2400; easing: easeInOutSine; loop: true; to: 0 0.02 0');
+    ball.setAttribute('animation', 'property: position; dir: alternate; dur: 3200; easing: easeInOutSine; loop: true; to: 0 0.012 0');
     ball.addEventListener('click', (e) => { e.stopPropagation(); tryCatch(s, wrap); });
     wrap.appendChild(ball);
 
@@ -182,7 +176,6 @@ function renderSpawns() {
   }
   els.status.textContent = `${state.spawns.length} Ari Balls nearby · ${state.cards.length} cards loaded`;
 }
-
 function tryCatch(spawn, entity) {
   if (state.found.has(spawn.id)) return;
   state.found.add(spawn.id);
@@ -194,7 +187,6 @@ function tryCatch(spawn, entity) {
   updateCollectionCount();
   setTimeout(() => showReveal(spawn.card, wasNew), 360);
 }
-
 function showReveal(card, wasNew) {
   closeGallery();
   els.revealTitle.textContent = card.name;
@@ -213,20 +205,14 @@ function toast(msg) {
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => els.toast.classList.add('hidden'), 1800);
 }
-
 async function openGallery(e) {
-  e?.preventDefault?.();
-  e?.stopPropagation?.();
+  e?.preventDefault?.(); e?.stopPropagation?.();
   try {
     await ensureDataLoaded();
     state.collection = loadCollection();
     renderGallery();
     els.gallery?.classList.remove('hidden');
-    toast('Gallery opened');
-  } catch (err) {
-    toast('Gallery failed to load');
-    console.error(err);
-  }
+  } catch (err) { toast('Gallery failed to load'); console.error(err); }
 }
 function closeGallery() { els.gallery?.classList.add('hidden'); }
 function renderGallery() {
@@ -249,7 +235,6 @@ function renderGallery() {
     els.galleryGrid.appendChild(item);
   });
 }
-
 function catchNearestScreenBall(clientX, clientY) {
   if (!state.running || !els.reveal.classList.contains('hidden') || !els.gallery.classList.contains('hidden')) return false;
   const camera = els.cam.getObject3D('camera');
@@ -276,7 +261,6 @@ function catchNearestScreenBall(clientX, clientY) {
   tryCatch(spawn, best);
   return true;
 }
-
 function installScreenTapFallback() {
   window.addEventListener('pointerup', (e) => {
     if (!state.running) return;
@@ -284,7 +268,6 @@ function installScreenTapFallback() {
     if (catchNearestScreenBall(e.clientX, e.clientY)) e.preventDefault();
   }, { passive: false });
 }
-
 AFRAME.registerComponent('proximity-catcher', {
   tick() {
     if (!state.xr) return;
@@ -302,17 +285,13 @@ AFRAME.registerComponent('proximity-catcher', {
     });
   }
 });
-
 async function startPassthrough() {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' } }, audio: false });
     els.video.srcObject = stream;
     els.video.classList.remove('hidden');
-  } catch (e) {
-    els.status.textContent = 'Camera blocked — enable camera access and reload.';
-  }
+  } catch (e) { els.status.textContent = 'Camera blocked — enable camera access and reload.'; }
 }
-
 async function start() {
   els.start.disabled = true;
   els.start.textContent = 'Starting…';
@@ -343,7 +322,6 @@ async function start() {
   els.reticle.classList.remove('hidden');
   begin();
 }
-
 els.start.addEventListener('click', start);
 els.regen.addEventListener('click', () => { generateSpawns(); renderSpawns(); toast('Ari Balls reshuffled'); });
 els.revealClose?.addEventListener('click', hideReveal);
@@ -353,7 +331,4 @@ els.galleryOpen?.addEventListener('touchend', openGallery, { passive: false });
 els.galleryClose?.addEventListener('click', closeGallery);
 els.galleryClose?.addEventListener('touchend', (e) => { e.preventDefault(); closeGallery(); }, { passive: false });
 els.gallery?.addEventListener('click', (e) => { if (e.target === els.gallery) closeGallery(); });
-els.placeToggle?.addEventListener('click', () => toast('Place Mode wiring is next.'));
-els.placeBall?.addEventListener('click', () => toast('Drop Ball wiring is next.'));
-els.resetMap?.addEventListener('click', () => toast('Reset Map wiring is next.'));
 installScreenTapFallback();
