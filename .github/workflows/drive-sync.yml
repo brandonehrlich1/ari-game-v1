@@ -1,0 +1,46 @@
+name: Mirror Google Drive characters
+
+# Mirrors the Drive character folder into the repo so the game roster updates
+# as the Drive changes. Runs on a schedule and on demand. Commits any changes
+# to data/characters.json + public/assets/characters/.
+on:
+  schedule:
+    - cron: '0 * * * *' # hourly
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Write service-account key
+        run: printf '%s' "$GOOGLE_SERVICE_ACCOUNT_JSON" > service-account.json
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+
+      - name: Sync from Drive
+        run: npm run sync
+        env:
+          DRIVE_FOLDER_ID: ${{ secrets.DRIVE_FOLDER_ID }}
+          GOOGLE_SERVICE_ACCOUNT_JSON: ./service-account.json
+
+      - name: Commit changes
+        run: |
+          rm -f service-account.json
+          git config user.name "drive-sync-bot"
+          git config user.email "actions@github.com"
+          git add data/characters.json public/assets/characters
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore: sync characters from Google Drive"
+            git push
+          fi

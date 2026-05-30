@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Admin · AR Character Hunt</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>AR Character Hunt — Admin</h1>
+    <div class="actions">
+      <input id="token" type="password" placeholder="Admin token (if set)" />
+      <button id="syncBtn" class="ghost">Sync from Drive</button>
+      <button id="saveBtn">Save</button>
+      <a href="index.html" class="ghost link">Play →</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="panel">
+      <h2>Spawn behavior</h2>
+      <p class="muted">How many spheres appear and how far apart they sit in physical space.</p>
+      <div class="grid">
+        <label>Spheres per area (count)<input id="spawn-count" type="number" min="1" max="200" /></label>
+        <label>Min spacing (feet)<input id="spawn-min" type="number" min="3" max="100" /></label>
+        <label>Max spacing (feet)<input id="spawn-max" type="number" min="3" max="200" /></label>
+        <label>Spread radius (feet)<input id="spawn-radius" type="number" min="20" max="1000" /></label>
+        <label>Re-seed after moving (feet)<input id="spawn-regen" type="number" min="0" max="2000" /></label>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Default sphere style</h2>
+      <p class="muted">Applied to every character unless overridden below.</p>
+      <div id="default-sphere" class="grid"></div>
+    </section>
+
+    <section class="panel">
+      <div class="rowhead">
+        <h2>Characters <span id="charcount" class="badge">0</span></h2>
+        <input id="filter" placeholder="Filter by name…" />
+      </div>
+      <p class="muted">Tune each character's spawn frequency (relative weight) and override its sphere. Roster mirrors your Google Drive folder.</p>
+      <div id="characters" class="charlist"></div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast hidden"></div>
+  <script src="admin.js"></script>
+</body>
+</html>

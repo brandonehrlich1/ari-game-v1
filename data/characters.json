@@ -1,0 +1,91 @@
+{
+  "generatedAt": "2026-05-30T16:27:59.502Z",
+  "source": "seed",
+  "count": 12,
+  "characters": [
+    {
+      "id": "ember",
+      "name": "Ember",
+      "image": "assets/characters/ember.svg",
+      "color": "#ff5a3c",
+      "driveId": null
+    },
+    {
+      "id": "marina",
+      "name": "Marina",
+      "image": "assets/characters/marina.svg",
+      "color": "#2eb8c4",
+      "driveId": null
+    },
+    {
+      "id": "flint",
+      "name": "Flint",
+      "image": "assets/characters/flint.svg",
+      "color": "#9b6b3a",
+      "driveId": null
+    },
+    {
+      "id": "lumen",
+      "name": "Lumen",
+      "image": "assets/characters/lumen.svg",
+      "color": "#f4d35e",
+      "driveId": null
+    },
+    {
+      "id": "violetta",
+      "name": "Violetta",
+      "image": "assets/characters/violetta.svg",
+      "color": "#8a4fff",
+      "driveId": null
+    },
+    {
+      "id": "mossy",
+      "name": "Mossy",
+      "image": "assets/characters/mossy.svg",
+      "color": "#4caf50",
+      "driveId": null
+    },
+    {
+      "id": "cobalt",
+      "name": "Cobalt",
+      "image": "assets/characters/cobalt.svg",
+      "color": "#2b56c4",
+      "driveId": null
+    },
+    {
+      "id": "rosa",
+      "name": "Rosa",
+      "image": "assets/characters/rosa.svg",
+      "color": "#ff6fa5",
+      "driveId": null
+    },
+    {
+      "id": "ashen",
+      "name": "Ashen",
+      "image": "assets/characters/ashen.svg",
+      "color": "#7a7f87",
+      "driveId": null
+    },
+    {
+      "id": "solis",
+      "name": "Solis",
+      "image": "assets/characters/solis.svg",
+      "color": "#ff9f1c",
+      "driveId": null
+    },
+    {
+      "id": "nyx",
+      "name": "Nyx",
+      "image": "assets/characters/nyx.svg",
+      "color": "#3a3a5a",
+      "driveId": null
+    },
+    {
+      "id": "coral",
+      "name": "Coral",
+      "image": "assets/characters/coral.svg",
+      "color": "#ff7f6b",
+      "driveId": null
+    }
+  ]
+}

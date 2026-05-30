@@ -1,0 +1,20 @@
+{
+  "spawn": {
+    "minSpacingFeet": 10,
+    "maxSpacingFeet": 20,
+    "count": 30,
+    "spreadRadiusFeet": 180,
+    "regenerateOnMoveFeet": 120
+  },
+  "defaultSphere": {
+    "radius": 1.1,
+    "color": "#44aaff",
+    "opacity": 0.35,
+    "metalness": 0.1,
+    "roughness": 0.4,
+    "wireframe": false,
+    "characterScale": 1.4,
+    "bobble": true
+  },
+  "characters": {}
+}
