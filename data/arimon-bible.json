@@ -1,0 +1,6238 @@
+{
+  "set": "AriMon Base Set",
+  "total": 151,
+  "generatedAt": "2026-05-30T22:24:31.321Z",
+  "live": 32,
+  "todo": 119,
+  "cards": [
+    {
+      "id": "001",
+      "number": "001/151",
+      "name": "Turtwig Ari",
+      "dex": null,
+      "status": "live",
+      "artFile": "assets/cards/001-turtwig-ari.png",
+      "type": "Grass",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 60,
+      "species": "Friend",
+      "len": "1' 0\"",
+      "wt": "12 lbs",
+      "attacks": [
+        {
+          "name": "Tackle",
+          "cost": [
+            "Colorless"
+          ],
+          "dmg": "10"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "Ari’s one-of-a-kind partner.",
+        "The very first card of the whole hunt."
+      ]
+    },
+    {
+      "id": "002",
+      "number": "002/151",
+      "name": "Ivysari",
+      "dex": 2,
+      "status": "live",
+      "artFile": "assets/cards/002-ivysari.png",
+      "type": "Grass",
+      "rarity": "Common",
+      "stage": "Stage 1",
+      "evoFrom": "Bulbasaur",
+      "hp": 80,
+      "species": "Seed",
+      "len": "4' 11\"",
+      "wt": "18 lbs",
+      "attacks": [
+        {
+          "name": "Leaf Munch",
+          "cost": [
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Vine Whip",
+          "cost": [
+            "Grass",
+            "Grass"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "003",
+      "number": "003/151",
+      "name": "Venusari",
+      "dex": 3,
+      "status": "live",
+      "artFile": "assets/cards/003-venusari.png",
+      "type": "Grass",
+      "rarity": "Rare",
+      "stage": "Stage 2",
+      "evoFrom": "Ivysaur",
+      "hp": 120,
+      "species": "Seed",
+      "len": "1' 0\"",
+      "wt": "19 lbs",
+      "attacks": [
+        {
+          "name": "Spore Puff",
+          "cost": [
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "30"
+        },
+        {
+          "name": "Poison Sting",
+          "cost": [
+            "Grass",
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "80"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless",
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "004",
+      "number": "004/151",
+      "name": "Charari",
+      "dex": 4,
+      "status": "live",
+      "artFile": "assets/cards/004-charari.png",
+      "type": "Fire",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 80,
+      "species": "Flame",
+      "len": "2' 5\"",
+      "wt": "16 lbs",
+      "attacks": [
+        {
+          "name": "Heat Tackle",
+          "cost": [
+            "Fire"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Sky Blaze",
+          "cost": [
+            "Fire",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Water",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It keeps Ari’s room cozy on the coldest nights.",
+        "Its tail-glow is Ari’s favorite nightlight."
+      ]
+    },
+    {
+      "id": "005",
+      "number": "005/151",
+      "name": "Charmeleari",
+      "dex": 5,
+      "status": "live",
+      "artFile": "assets/cards/005-charmeleari.png",
+      "type": "Fire",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Charmander",
+      "hp": 70,
+      "species": "Flame",
+      "len": "3' 6\"",
+      "wt": "17 lbs",
+      "attacks": [
+        {
+          "name": "Sky Blaze",
+          "cost": [
+            "Fire",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Ember",
+          "cost": [
+            "Fire",
+            "Fire"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Water",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It keeps Ari’s room cozy on the coldest nights.",
+        "Its tail-glow is Ari’s favorite nightlight."
+      ]
+    },
+    {
+      "id": "006",
+      "number": "006/151",
+      "name": "Charizari",
+      "dex": 6,
+      "status": "live",
+      "artFile": "assets/cards/006-charizari.png",
+      "type": "Fire/Flying",
+      "rarity": "Rare",
+      "stage": "Stage 2",
+      "evoFrom": "Charmeleon",
+      "hp": 110,
+      "species": "Flame",
+      "len": "4' 7\"",
+      "wt": "14 lbs",
+      "attacks": [
+        {
+          "name": "Flame Dash",
+          "cost": [
+            "Fire",
+            "Fire",
+            "Colorless"
+          ],
+          "dmg": "80"
+        }
+      ],
+      "weakness": "Water",
+      "resistance": null,
+      "retreat": [
+        "Colorless",
+        "Colorless"
+      ],
+      "flavor": [
+        "It keeps Ari’s room cozy on the coldest nights.",
+        "Its tail-glow is Ari’s favorite nightlight."
+      ]
+    },
+    {
+      "id": "007",
+      "number": "007/151",
+      "name": "SquirtAri",
+      "dex": 7,
+      "status": "live",
+      "artFile": "assets/cards/007_SquirtAri.png",
+      "type": "Water",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 70,
+      "species": "Splash",
+      "len": "1' 8\"",
+      "wt": "15 lbs",
+      "attacks": [
+        {
+          "name": "Aqua Tail",
+          "cost": [
+            "Water"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Splash Crash",
+          "cost": [
+            "Water",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Electric",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It splashes happily whenever Ari fills the tub.",
+        "Loves blowing bubbles for Ari to chase."
+      ]
+    },
+    {
+      "id": "008",
+      "number": "008/151",
+      "name": "WartortAri",
+      "dex": 8,
+      "status": "live",
+      "artFile": "assets/cards/008_WartortAri.png",
+      "type": "Water",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Squirtle",
+      "hp": 100,
+      "species": "Splash",
+      "len": "2' 5\"",
+      "wt": "28 lbs",
+      "attacks": [
+        {
+          "name": "Splash Crash",
+          "cost": [
+            "Water",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Bubble",
+          "cost": [
+            "Water",
+            "Water"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Electric",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It splashes happily whenever Ari fills the tub.",
+        "Loves blowing bubbles for Ari to chase."
+      ]
+    },
+    {
+      "id": "009",
+      "number": "009/151",
+      "name": "BlastAri",
+      "dex": 9,
+      "status": "live",
+      "artFile": "assets/cards/009_BlastAri.png",
+      "type": "Water",
+      "rarity": "Rare",
+      "stage": "Stage 2",
+      "evoFrom": "Wartortle",
+      "hp": 100,
+      "species": "Splash",
+      "len": "3' 6\"",
+      "wt": "29 lbs",
+      "attacks": [
+        {
+          "name": "Hydro Pump",
+          "cost": [
+            "Water",
+            "Colorless"
+          ],
+          "dmg": "30"
+        },
+        {
+          "name": "Aqua Tail",
+          "cost": [
+            "Water",
+            "Water",
+            "Colorless"
+          ],
+          "dmg": "80"
+        }
+      ],
+      "weakness": "Electric",
+      "resistance": null,
+      "retreat": [
+        "Colorless",
+        "Colorless"
+      ],
+      "flavor": [
+        "It splashes happily whenever Ari fills the tub.",
+        "Loves blowing bubbles for Ari to chase."
+      ]
+    },
+    {
+      "id": "010",
+      "number": "010/151",
+      "name": "BulbausAri",
+      "dex": 1,
+      "status": "live",
+      "artFile": "assets/cards/010_BulbausAri.png",
+      "type": "Grass",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 50,
+      "species": "Seed",
+      "len": "3' 10\"",
+      "wt": "21 lbs",
+      "attacks": [
+        {
+          "name": "Vine Whip",
+          "cost": [
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "011",
+      "number": "011/151",
+      "name": "CaterAri",
+      "dex": 10,
+      "status": "live",
+      "artFile": "assets/cards/011_CaterAri.png",
+      "type": "Grass",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 50,
+      "species": "Seed",
+      "len": "3' 2\"",
+      "wt": "89 lbs",
+      "attacks": [
+        {
+          "name": "Leaf Munch",
+          "cost": [
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "012",
+      "number": "012/151",
+      "name": "MetapodAri",
+      "dex": 11,
+      "status": "live",
+      "artFile": "assets/cards/012_MetapodAri.png",
+      "type": "Grass",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Caterpie",
+      "hp": 100,
+      "species": "Seed",
+      "len": "4' 3\"",
+      "wt": "90 lbs",
+      "attacks": [
+        {
+          "name": "Mega Drain",
+          "cost": [
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Spore Puff",
+          "cost": [
+            "Grass",
+            "Grass"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "013",
+      "number": "013/151",
+      "name": "ButterAri",
+      "dex": 12,
+      "status": "live",
+      "artFile": "assets/cards/013_ButterAri.png",
+      "type": "Grass",
+      "rarity": "Rare",
+      "stage": "Stage 2",
+      "evoFrom": "Metapod",
+      "hp": 120,
+      "species": "Seed",
+      "len": "1' 0\"",
+      "wt": "87 lbs",
+      "attacks": [
+        {
+          "name": "Poison Sting",
+          "cost": [
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "30"
+        },
+        {
+          "name": "Toxic Spike",
+          "cost": [
+            "Grass",
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "80"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless",
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "014",
+      "number": "014/151",
+      "name": "WeedAri",
+      "dex": 13,
+      "status": "live",
+      "artFile": "assets/cards/014_WeedAri.png",
+      "type": "Grass",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 60,
+      "species": "Seed",
+      "len": "2' 1\"",
+      "wt": "88 lbs",
+      "attacks": [
+        {
+          "name": "Razor Leaf",
+          "cost": [
+            "Grass"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Leaf Munch",
+          "cost": [
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "015",
+      "number": "015/151",
+      "name": "KakunAri",
+      "dex": 14,
+      "status": "live",
+      "artFile": "assets/cards/015_KakunAri.png",
+      "type": "Grass",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Weedle",
+      "hp": 70,
+      "species": "Seed",
+      "len": "3' 10\"",
+      "wt": "93 lbs",
+      "attacks": [
+        {
+          "name": "Vine Whip",
+          "cost": [
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Spore Puff",
+          "cost": [
+            "Grass",
+            "Grass"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "016",
+      "number": "016/151",
+      "name": "BeedrAri",
+      "dex": 15,
+      "status": "live",
+      "artFile": "assets/cards/016_BeedrAri.png",
+      "type": "Grass",
+      "rarity": "Rare",
+      "stage": "Stage 2",
+      "evoFrom": "Kakuna",
+      "hp": 130,
+      "species": "Seed",
+      "len": "4' 11\"",
+      "wt": "94 lbs",
+      "attacks": [
+        {
+          "name": "Toxic Spike",
+          "cost": [
+            "Grass",
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "80"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless",
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "017",
+      "number": "017/151",
+      "name": "PidgeAri",
+      "dex": 16,
+      "status": "live",
+      "artFile": "assets/cards/017_PidgeAri.png",
+      "type": "Colorless",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 70,
+      "species": "Friend",
+      "len": "1' 8\"",
+      "wt": "91 lbs",
+      "attacks": [
+        {
+          "name": "Body Slam",
+          "cost": [
+            "Colorless"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Quick Attack",
+          "cost": [
+            "Colorless",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It follows Ari everywhere around the house.",
+        "A loyal little buddy that never leaves Ari’s side."
+      ]
+    },
+    {
+      "id": "018",
+      "number": "018/151",
+      "name": "PidgeottAri",
+      "dex": 17,
+      "status": "live",
+      "artFile": "assets/cards/018_PidgeottAri.png",
+      "type": "Colorless",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Pidgey",
+      "hp": 80,
+      "species": "Friend",
+      "len": "2' 9\"",
+      "wt": "92 lbs",
+      "attacks": [
+        {
+          "name": "Quick Attack",
+          "cost": [
+            "Colorless",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Body Slam",
+          "cost": [
+            "Colorless",
+            "Colorless"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It follows Ari everywhere around the house.",
+        "A loyal little buddy that never leaves Ari’s side."
+      ]
+    },
+    {
+      "id": "019",
+      "number": "019/151",
+      "name": "PidgeotAri",
+      "dex": 18,
+      "status": "todo",
+      "artFile": null,
+      "type": "Colorless",
+      "rarity": "Rare",
+      "stage": "Stage 2",
+      "evoFrom": "Pidgeotto",
+      "hp": 100,
+      "species": "Friend",
+      "len": "3' 6\"",
+      "wt": "81 lbs",
+      "attacks": [
+        {
+          "name": "Body Slam",
+          "cost": [
+            "Colorless",
+            "Colorless",
+            "Colorless"
+          ],
+          "dmg": "80"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless",
+        "Colorless"
+      ],
+      "flavor": [
+        "It follows Ari everywhere around the house.",
+        "A loyal little buddy that never leaves Ari’s side."
+      ]
+    },
+    {
+      "id": "020",
+      "number": "020/151",
+      "name": "RattaAri",
+      "dex": 19,
+      "status": "live",
+      "artFile": "assets/cards/020_RattaAri.png",
+      "type": "Colorless",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 80,
+      "species": "Friend",
+      "len": "4' 7\"",
+      "wt": "82 lbs",
+      "attacks": [
+        {
+          "name": "Quick Attack",
+          "cost": [
+            "Colorless"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Pound",
+          "cost": [
+            "Colorless",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It follows Ari everywhere around the house.",
+        "A loyal little buddy that never leaves Ari’s side."
+      ]
+    },
+    {
+      "id": "021",
+      "number": "021/151",
+      "name": "RaticAri",
+      "dex": 20,
+      "status": "live",
+      "artFile": "assets/cards/021_RaticAri.png",
+      "type": "Colorless",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Rattata",
+      "hp": 80,
+      "species": "Friend",
+      "len": "4' 5\"",
+      "wt": "12 lbs",
+      "attacks": [
+        {
+          "name": "Wing Buffet",
+          "cost": [
+            "Colorless",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Gnaw",
+          "cost": [
+            "Colorless",
+            "Colorless"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It follows Ari everywhere around the house.",
+        "A loyal little buddy that never leaves Ari’s side."
+      ]
+    },
+    {
+      "id": "022",
+      "number": "022/151",
+      "name": "SpearAri",
+      "dex": 21,
+      "status": "live",
+      "artFile": "assets/cards/022_SpearAri.png",
+      "type": "Colorless",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 50,
+      "species": "Friend",
+      "len": "3' 6\"",
+      "wt": "13 lbs",
+      "attacks": [
+        {
+          "name": "Tackle",
+          "cost": [
+            "Colorless",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It follows Ari everywhere around the house.",
+        "A loyal little buddy that never leaves Ari’s side."
+      ]
+    },
+    {
+      "id": "023",
+      "number": "023/151",
+      "name": "FearAri",
+      "dex": 22,
+      "status": "live",
+      "artFile": "assets/cards/023_FearAri.png",
+      "type": "Colorless",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Spearow",
+      "hp": 100,
+      "species": "Friend",
+      "len": "2' 7\"",
+      "wt": "14 lbs",
+      "attacks": [
+        {
+          "name": "Fury Swipes",
+          "cost": [
+            "Colorless",
+            "Colorless"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It follows Ari everywhere around the house.",
+        "A loyal little buddy that never leaves Ari’s side."
+      ]
+    },
+    {
+      "id": "024",
+      "number": "024/151",
+      "name": "EkansAri",
+      "dex": 23,
+      "status": "live",
+      "artFile": "assets/cards/024_EkansAri.png",
+      "type": "Grass",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 70,
+      "species": "Seed",
+      "len": "1' 8\"",
+      "wt": "15 lbs",
+      "attacks": [
+        {
+          "name": "Poison Sting",
+          "cost": [
+            "Grass"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Razor Leaf",
+          "cost": [
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "025",
+      "number": "025/151",
+      "name": "PikAriChu",
+      "dex": 25,
+      "status": "live",
+      "artFile": "assets/cards/025_PikAriChu.png",
+      "type": "Electric",
+      "rarity": "Rare",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 50,
+      "species": "Spark",
+      "len": "3' 2\"",
+      "wt": "99 lbs",
+      "attacks": [
+        {
+          "name": "Zap Jab",
+          "cost": [
+            "Electric"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Static Take",
+          "cost": [
+            "Electric",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It gives the gentlest static boop on Ari’s nose.",
+        "Charges up fast and lights up when Ari giggles."
+      ]
+    },
+    {
+      "id": "026",
+      "number": "026/151",
+      "name": "RaiAri",
+      "dex": 26,
+      "status": "live",
+      "artFile": "assets/cards/026_RaiAri.png",
+      "type": "Electric",
+      "rarity": "Rare",
+      "stage": "Stage 1",
+      "evoFrom": "Pikachu",
+      "hp": 100,
+      "species": "Spark",
+      "len": "2' 3\"",
+      "wt": "10 lbs",
+      "attacks": [
+        {
+          "name": "Thunder Advisory",
+          "cost": [
+            "Electric",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Charge Beam",
+          "cost": [
+            "Electric",
+            "Electric"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It gives the gentlest static boop on Ari’s nose.",
+        "Charges up fast and lights up when Ari giggles."
+      ]
+    },
+    {
+      "id": "027",
+      "number": "027/151",
+      "name": "SandshAri",
+      "dex": 27,
+      "status": "live",
+      "artFile": "assets/cards/027_SandshAri.png",
+      "type": "Fighting",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 70,
+      "species": "Strong",
+      "len": "1' 4\"",
+      "wt": "11 lbs",
+      "attacks": [
+        {
+          "name": "Karate Chop",
+          "cost": [
+            "Fighting"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Double Kick",
+          "cost": [
+            "Fighting",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Psychic",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It carries Ari’s heaviest blocks without a grumble.",
+        "Practices tumbles so Ari can copy along."
+      ]
+    },
+    {
+      "id": "028",
+      "number": "028/151",
+      "name": "SandslAri",
+      "dex": 28,
+      "status": "live",
+      "artFile": "assets/cards/028_SandslAri.png",
+      "type": "Fighting",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Sandshrew",
+      "hp": 80,
+      "species": "Strong",
+      "len": "4' 1\"",
+      "wt": "94 lbs",
+      "attacks": [
+        {
+          "name": "Double Kick",
+          "cost": [
+            "Fighting",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Rock Throw",
+          "cost": [
+            "Fighting",
+            "Fighting"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Psychic",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It carries Ari’s heaviest blocks without a grumble.",
+        "Practices tumbles so Ari can copy along."
+      ]
+    },
+    {
+      "id": "029",
+      "number": "029/151",
+      "name": "NidoranAriF",
+      "dex": 29,
+      "status": "live",
+      "artFile": "assets/cards/029_NidoranAriF.png",
+      "type": "Grass",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 50,
+      "species": "Seed",
+      "len": "3' 2\"",
+      "wt": "95 lbs",
+      "attacks": [
+        {
+          "name": "Razor Leaf",
+          "cost": [
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "030",
+      "number": "030/151",
+      "name": "NidorinAriF",
+      "dex": 30,
+      "status": "live",
+      "artFile": "assets/cards/030_NidorinAriF.png",
+      "type": "Grass",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "NidoranF",
+      "hp": 90,
+      "species": "Seed",
+      "len": "1' 0\"",
+      "wt": "73 lbs",
+      "attacks": [
+        {
+          "name": "Razor Leaf",
+          "cost": [
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Spore Puff",
+          "cost": [
+            "Grass",
+            "Grass"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "031",
+      "number": "031/151",
+      "name": "NidoqueenAri",
+      "dex": 31,
+      "status": "todo",
+      "artFile": null,
+      "type": "Grass",
+      "rarity": "Rare",
+      "stage": "Stage 2",
+      "evoFrom": "Nidorina",
+      "hp": 130,
+      "species": "Seed",
+      "len": "2' 11\"",
+      "wt": "72 lbs",
+      "attacks": [
+        {
+          "name": "Poison Sting",
+          "cost": [
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "30"
+        },
+        {
+          "name": "Leaf Munch",
+          "cost": [
+            "Grass",
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "80"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless",
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "032",
+      "number": "032/151",
+      "name": "NidoranMAri",
+      "dex": 32,
+      "status": "todo",
+      "artFile": null,
+      "type": "Grass",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 50,
+      "species": "Seed",
+      "len": "3' 10\"",
+      "wt": "71 lbs",
+      "attacks": [
+        {
+          "name": "Toxic Spike",
+          "cost": [
+            "Grass"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Leaf Munch",
+          "cost": [
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "033",
+      "number": "033/151",
+      "name": "NidorinoAri",
+      "dex": 33,
+      "status": "todo",
+      "artFile": null,
+      "type": "Grass",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "NidoranM",
+      "hp": 80,
+      "species": "Seed",
+      "len": "4' 9\"",
+      "wt": "70 lbs",
+      "attacks": [
+        {
+          "name": "Vine Whip",
+          "cost": [
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Mega Drain",
+          "cost": [
+            "Grass",
+            "Grass"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "034",
+      "number": "034/151",
+      "name": "NidokingAri",
+      "dex": 34,
+      "status": "todo",
+      "artFile": null,
+      "type": "Grass",
+      "rarity": "Rare",
+      "stage": "Stage 2",
+      "evoFrom": "Nidorino",
+      "hp": 120,
+      "species": "Seed",
+      "len": "1' 8\"",
+      "wt": "69 lbs",
+      "attacks": [
+        {
+          "name": "Leaf Munch",
+          "cost": [
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "30"
+        },
+        {
+          "name": "Mega Drain",
+          "cost": [
+            "Grass",
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "80"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless",
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "035",
+      "number": "035/151",
+      "name": "ClefairyAri",
+      "dex": 35,
+      "status": "todo",
+      "artFile": null,
+      "type": "Colorless",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 80,
+      "species": "Friend",
+      "len": "2' 7\"",
+      "wt": "68 lbs",
+      "attacks": [
+        {
+          "name": "Body Slam",
+          "cost": [
+            "Colorless",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It follows Ari everywhere around the house.",
+        "A loyal little buddy that never leaves Ari’s side."
+      ]
+    },
+    {
+      "id": "036",
+      "number": "036/151",
+      "name": "ClefableAri",
+      "dex": 36,
+      "status": "todo",
+      "artFile": null,
+      "type": "Colorless",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Clefairy",
+      "hp": 70,
+      "species": "Friend",
+      "len": "3' 6\"",
+      "wt": "67 lbs",
+      "attacks": [
+        {
+          "name": "Gnaw",
+          "cost": [
+            "Colorless",
+            "Colorless"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It follows Ari everywhere around the house.",
+        "A loyal little buddy that never leaves Ari’s side."
+      ]
+    },
+    {
+      "id": "037",
+      "number": "037/151",
+      "name": "VulpixAri",
+      "dex": 37,
+      "status": "todo",
+      "artFile": null,
+      "type": "Fire",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 60,
+      "species": "Flame",
+      "len": "4' 5\"",
+      "wt": "66 lbs",
+      "attacks": [
+        {
+          "name": "Heat Tackle",
+          "cost": [
+            "Fire"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Inferno Flight",
+          "cost": [
+            "Fire",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Water",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It keeps Ari’s room cozy on the coldest nights.",
+        "Its tail-glow is Ari’s favorite nightlight."
+      ]
+    },
+    {
+      "id": "038",
+      "number": "038/151",
+      "name": "NinetalesAri",
+      "dex": 38,
+      "status": "todo",
+      "artFile": null,
+      "type": "Fire",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Vulpix",
+      "hp": 90,
+      "species": "Flame",
+      "len": "1' 4\"",
+      "wt": "65 lbs",
+      "attacks": [
+        {
+          "name": "Ember",
+          "cost": [
+            "Fire",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Heat Tackle",
+          "cost": [
+            "Fire",
+            "Fire"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Water",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It keeps Ari’s room cozy on the coldest nights.",
+        "Its tail-glow is Ari’s favorite nightlight."
+      ]
+    },
+    {
+      "id": "039",
+      "number": "039/151",
+      "name": "JigglypuffAri",
+      "dex": 39,
+      "status": "todo",
+      "artFile": null,
+      "type": "Colorless",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 80,
+      "species": "Friend",
+      "len": "2' 7\"",
+      "wt": "64 lbs",
+      "attacks": [
+        {
+          "name": "Wing Buffet",
+          "cost": [
+            "Colorless"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Fury Swipes",
+          "cost": [
+            "Colorless",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It follows Ari everywhere around the house.",
+        "A loyal little buddy that never leaves Ari’s side."
+      ]
+    },
+    {
+      "id": "040",
+      "number": "040/151",
+      "name": "WigglytuffAri",
+      "dex": 40,
+      "status": "todo",
+      "artFile": null,
+      "type": "Colorless",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Jigglypuff",
+      "hp": 100,
+      "species": "Friend",
+      "len": "2' 11\"",
+      "wt": "70 lbs",
+      "attacks": [
+        {
+          "name": "Fury Swipes",
+          "cost": [
+            "Colorless",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Quick Attack",
+          "cost": [
+            "Colorless",
+            "Colorless"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It follows Ari everywhere around the house.",
+        "A loyal little buddy that never leaves Ari’s side."
+      ]
+    },
+    {
+      "id": "041",
+      "number": "041/151",
+      "name": "ZubatAri",
+      "dex": 41,
+      "status": "todo",
+      "artFile": null,
+      "type": "Grass",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 70,
+      "species": "Seed",
+      "len": "1' 0\"",
+      "wt": "71 lbs",
+      "attacks": [
+        {
+          "name": "Leaf Munch",
+          "cost": [
+            "Grass"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Mega Drain",
+          "cost": [
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "042",
+      "number": "042/151",
+      "name": "GolbatAri",
+      "dex": 42,
+      "status": "todo",
+      "artFile": null,
+      "type": "Grass",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Zubat",
+      "hp": 80,
+      "species": "Seed",
+      "len": "4' 9\"",
+      "wt": "68 lbs",
+      "attacks": [
+        {
+          "name": "Spore Puff",
+          "cost": [
+            "Grass",
+            "Grass"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "043",
+      "number": "043/151",
+      "name": "OddishAri",
+      "dex": 43,
+      "status": "todo",
+      "artFile": null,
+      "type": "Grass",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 50,
+      "species": "Seed",
+      "len": "3' 10\"",
+      "wt": "69 lbs",
+      "attacks": [
+        {
+          "name": "Toxic Spike",
+          "cost": [
+            "Grass"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Leaf Munch",
+          "cost": [
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "044",
+      "number": "044/151",
+      "name": "GloomAri",
+      "dex": 44,
+      "status": "todo",
+      "artFile": null,
+      "type": "Grass",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Oddish",
+      "hp": 100,
+      "species": "Seed",
+      "len": "2' 3\"",
+      "wt": "66 lbs",
+      "attacks": [
+        {
+          "name": "Vine Whip",
+          "cost": [
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Mega Drain",
+          "cost": [
+            "Grass",
+            "Grass"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "045",
+      "number": "045/151",
+      "name": "VileplumeAri",
+      "dex": 45,
+      "status": "todo",
+      "artFile": null,
+      "type": "Grass",
+      "rarity": "Rare",
+      "stage": "Stage 2",
+      "evoFrom": "Gloom",
+      "hp": 120,
+      "species": "Seed",
+      "len": "1' 4\"",
+      "wt": "67 lbs",
+      "attacks": [
+        {
+          "name": "Razor Leaf",
+          "cost": [
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "30"
+        },
+        {
+          "name": "Spore Puff",
+          "cost": [
+            "Grass",
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "80"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless",
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "046",
+      "number": "046/151",
+      "name": "ParasAri",
+      "dex": 46,
+      "status": "todo",
+      "artFile": null,
+      "type": "Grass",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 60,
+      "species": "Seed",
+      "len": "4' 1\"",
+      "wt": "64 lbs",
+      "attacks": [
+        {
+          "name": "Poison Sting",
+          "cost": [
+            "Grass"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Leaf Munch",
+          "cost": [
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "047",
+      "number": "047/151",
+      "name": "ParasectAri",
+      "dex": 47,
+      "status": "todo",
+      "artFile": null,
+      "type": "Grass",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Paras",
+      "hp": 70,
+      "species": "Seed",
+      "len": "3' 2\"",
+      "wt": "65 lbs",
+      "attacks": [
+        {
+          "name": "Mega Drain",
+          "cost": [
+            "Grass",
+            "Grass"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "048",
+      "number": "048/151",
+      "name": "VenonatAri",
+      "dex": 48,
+      "status": "todo",
+      "artFile": null,
+      "type": "Grass",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 80,
+      "species": "Seed",
+      "len": "2' 7\"",
+      "wt": "78 lbs",
+      "attacks": [
+        {
+          "name": "Poison Sting",
+          "cost": [
+            "Grass"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Mega Drain",
+          "cost": [
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "049",
+      "number": "049/151",
+      "name": "VenomothAri",
+      "dex": 49,
+      "status": "todo",
+      "artFile": null,
+      "type": "Grass",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Venonat",
+      "hp": 90,
+      "species": "Seed",
+      "len": "1' 8\"",
+      "wt": "79 lbs",
+      "attacks": [
+        {
+          "name": "Mega Drain",
+          "cost": [
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Poison Sting",
+          "cost": [
+            "Grass",
+            "Grass"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "050",
+      "number": "050/151",
+      "name": "DiglettAri",
+      "dex": 50,
+      "status": "todo",
+      "artFile": null,
+      "type": "Fighting",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 50,
+      "species": "Strong",
+      "len": "3' 6\"",
+      "wt": "41 lbs",
+      "attacks": [
+        {
+          "name": "Rock Throw",
+          "cost": [
+            "Fighting"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Low Sweep",
+          "cost": [
+            "Fighting",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Psychic",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It carries Ari’s heaviest blocks without a grumble.",
+        "Practices tumbles so Ari can copy along."
+      ]
+    },
+    {
+      "id": "051",
+      "number": "051/151",
+      "name": "DugtrioAri",
+      "dex": 51,
+      "status": "todo",
+      "artFile": null,
+      "type": "Fighting",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Diglett",
+      "hp": 80,
+      "species": "Strong",
+      "len": "2' 5\"",
+      "wt": "40 lbs",
+      "attacks": [
+        {
+          "name": "Seismic Toss",
+          "cost": [
+            "Fighting",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Double Kick",
+          "cost": [
+            "Fighting",
+            "Fighting"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Psychic",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It carries Ari’s heaviest blocks without a grumble.",
+        "Practices tumbles so Ari can copy along."
+      ]
+    },
+    {
+      "id": "052",
+      "number": "052/151",
+      "name": "MeowthAri",
+      "dex": 52,
+      "status": "todo",
+      "artFile": null,
+      "type": "Colorless",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 70,
+      "species": "Friend",
+      "len": "1' 8\"",
+      "wt": "43 lbs",
+      "attacks": [
+        {
+          "name": "Body Slam",
+          "cost": [
+            "Colorless"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Quick Attack",
+          "cost": [
+            "Colorless",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It follows Ari everywhere around the house.",
+        "A loyal little buddy that never leaves Ari’s side."
+      ]
+    },
+    {
+      "id": "053",
+      "number": "053/151",
+      "name": "PersianAri",
+      "dex": 53,
+      "status": "todo",
+      "artFile": null,
+      "type": "Colorless",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Meowth",
+      "hp": 100,
+      "species": "Friend",
+      "len": "4' 7\"",
+      "wt": "42 lbs",
+      "attacks": [
+        {
+          "name": "Quick Attack",
+          "cost": [
+            "Colorless",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Body Slam",
+          "cost": [
+            "Colorless",
+            "Colorless"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It follows Ari everywhere around the house.",
+        "A loyal little buddy that never leaves Ari’s side."
+      ]
+    },
+    {
+      "id": "054",
+      "number": "054/151",
+      "name": "PsyduckAri",
+      "dex": 54,
+      "status": "todo",
+      "artFile": null,
+      "type": "Water",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 50,
+      "species": "Splash",
+      "len": "3' 2\"",
+      "wt": "45 lbs",
+      "attacks": [
+        {
+          "name": "Bubble",
+          "cost": [
+            "Water",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Electric",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It splashes happily whenever Ari fills the tub.",
+        "Loves blowing bubbles for Ari to chase."
+      ]
+    },
+    {
+      "id": "055",
+      "number": "055/151",
+      "name": "GolduckAri",
+      "dex": 55,
+      "status": "todo",
+      "artFile": null,
+      "type": "Water",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Psyduck",
+      "hp": 80,
+      "species": "Splash",
+      "len": "2' 1\"",
+      "wt": "44 lbs",
+      "attacks": [
+        {
+          "name": "Wave Slap",
+          "cost": [
+            "Water",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Hydro Pump",
+          "cost": [
+            "Water",
+            "Water"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Electric",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It splashes happily whenever Ari fills the tub.",
+        "Loves blowing bubbles for Ari to chase."
+      ]
+    },
+    {
+      "id": "056",
+      "number": "056/151",
+      "name": "MankeyAri",
+      "dex": 56,
+      "status": "todo",
+      "artFile": null,
+      "type": "Fighting",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 70,
+      "species": "Strong",
+      "len": "1' 4\"",
+      "wt": "47 lbs",
+      "attacks": [
+        {
+          "name": "Earth Power",
+          "cost": [
+            "Fighting"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Rock Throw",
+          "cost": [
+            "Fighting",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Psychic",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It carries Ari’s heaviest blocks without a grumble.",
+        "Practices tumbles so Ari can copy along."
+      ]
+    },
+    {
+      "id": "057",
+      "number": "057/151",
+      "name": "PrimeapeAri",
+      "dex": 57,
+      "status": "todo",
+      "artFile": null,
+      "type": "Fighting",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Mankey",
+      "hp": 100,
+      "species": "Strong",
+      "len": "4' 3\"",
+      "wt": "46 lbs",
+      "attacks": [
+        {
+          "name": "Double Kick",
+          "cost": [
+            "Fighting",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Seismic Toss",
+          "cost": [
+            "Fighting",
+            "Fighting"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Psychic",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It carries Ari’s heaviest blocks without a grumble.",
+        "Practices tumbles so Ari can copy along."
+      ]
+    },
+    {
+      "id": "058",
+      "number": "058/151",
+      "name": "GrowlitheAri",
+      "dex": 58,
+      "status": "todo",
+      "artFile": null,
+      "type": "Fire",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 50,
+      "species": "Flame",
+      "len": "3' 2\"",
+      "wt": "33 lbs",
+      "attacks": [
+        {
+          "name": "Ember",
+          "cost": [
+            "Fire"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Sky Blaze",
+          "cost": [
+            "Fire",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Water",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It keeps Ari’s room cozy on the coldest nights.",
+        "Its tail-glow is Ari’s favorite nightlight."
+      ]
+    },
+    {
+      "id": "059",
+      "number": "059/151",
+      "name": "ArcanineAri",
+      "dex": 59,
+      "status": "todo",
+      "artFile": null,
+      "type": "Fire",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Growlithe",
+      "hp": 80,
+      "species": "Flame",
+      "len": "2' 1\"",
+      "wt": "32 lbs",
+      "attacks": [
+        {
+          "name": "Fire Spin",
+          "cost": [
+            "Fire",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Inferno Flight",
+          "cost": [
+            "Fire",
+            "Fire"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Water",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It keeps Ari’s room cozy on the coldest nights.",
+        "Its tail-glow is Ari’s favorite nightlight."
+      ]
+    },
+    {
+      "id": "060",
+      "number": "060/151",
+      "name": "PoliwagAri",
+      "dex": 60,
+      "status": "todo",
+      "artFile": null,
+      "type": "Water",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 80,
+      "species": "Splash",
+      "len": "2' 1\"",
+      "wt": "96 lbs",
+      "attacks": [
+        {
+          "name": "Wave Slap",
+          "cost": [
+            "Water"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Aqua Tail",
+          "cost": [
+            "Water",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Electric",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It splashes happily whenever Ari fills the tub.",
+        "Loves blowing bubbles for Ari to chase."
+      ]
+    },
+    {
+      "id": "061",
+      "number": "061/151",
+      "name": "PoliwhirlAri",
+      "dex": 61,
+      "status": "todo",
+      "artFile": null,
+      "type": "Water",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Poliwag",
+      "hp": 70,
+      "species": "Splash",
+      "len": "3' 2\"",
+      "wt": "95 lbs",
+      "attacks": [
+        {
+          "name": "Bubble",
+          "cost": [
+            "Water",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Hydro Pump",
+          "cost": [
+            "Water",
+            "Water"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Electric",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It splashes happily whenever Ari fills the tub.",
+        "Loves blowing bubbles for Ari to chase."
+      ]
+    },
+    {
+      "id": "062",
+      "number": "062/151",
+      "name": "PoliwrathAri",
+      "dex": 62,
+      "status": "todo",
+      "artFile": null,
+      "type": "Water",
+      "rarity": "Rare",
+      "stage": "Stage 2",
+      "evoFrom": "Poliwhirl",
+      "hp": 110,
+      "species": "Splash",
+      "len": "4' 3\"",
+      "wt": "94 lbs",
+      "attacks": [
+        {
+          "name": "Splash Crash",
+          "cost": [
+            "Water",
+            "Colorless"
+          ],
+          "dmg": "30"
+        },
+        {
+          "name": "Wave Slap",
+          "cost": [
+            "Water",
+            "Water",
+            "Colorless"
+          ],
+          "dmg": "80"
+        }
+      ],
+      "weakness": "Electric",
+      "resistance": null,
+      "retreat": [
+        "Colorless",
+        "Colorless"
+      ],
+      "flavor": [
+        "It splashes happily whenever Ari fills the tub.",
+        "Loves blowing bubbles for Ari to chase."
+      ]
+    },
+    {
+      "id": "063",
+      "number": "063/151",
+      "name": "AbraAri",
+      "dex": 63,
+      "status": "todo",
+      "artFile": null,
+      "type": "Psychic",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 70,
+      "species": "Dream",
+      "len": "1' 4\"",
+      "wt": "93 lbs",
+      "attacks": [
+        {
+          "name": "Confuse Ray",
+          "cost": [
+            "Psychic"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Mind Crush",
+          "cost": [
+            "Psychic",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Psychic",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It always seems to know what Ari is thinking.",
+        "Floats Ari’s toys back to the toy box at bedtime."
+      ]
+    },
+    {
+      "id": "064",
+      "number": "064/151",
+      "name": "KadabraAri",
+      "dex": 64,
+      "status": "todo",
+      "artFile": null,
+      "type": "Psychic",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Abra",
+      "hp": 100,
+      "species": "Dream",
+      "len": "2' 5\"",
+      "wt": "92 lbs",
+      "attacks": [
+        {
+          "name": "Dream Eater",
+          "cost": [
+            "Psychic",
+            "Psychic"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Psychic",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It always seems to know what Ari is thinking.",
+        "Floats Ari’s toys back to the toy box at bedtime."
+      ]
+    },
+    {
+      "id": "065",
+      "number": "065/151",
+      "name": "AlakazamAri",
+      "dex": 65,
+      "status": "todo",
+      "artFile": null,
+      "type": "Psychic",
+      "rarity": "Rare",
+      "stage": "Stage 2",
+      "evoFrom": "Kadabra",
+      "hp": 100,
+      "species": "Dream",
+      "len": "3' 6\"",
+      "wt": "91 lbs",
+      "attacks": [
+        {
+          "name": "Confuse Ray",
+          "cost": [
+            "Psychic",
+            "Colorless"
+          ],
+          "dmg": "30"
+        },
+        {
+          "name": "Psywave",
+          "cost": [
+            "Psychic",
+            "Psychic",
+            "Colorless"
+          ],
+          "dmg": "80"
+        }
+      ],
+      "weakness": "Psychic",
+      "resistance": null,
+      "retreat": [
+        "Colorless",
+        "Colorless"
+      ],
+      "flavor": [
+        "It always seems to know what Ari is thinking.",
+        "Floats Ari’s toys back to the toy box at bedtime."
+      ]
+    },
+    {
+      "id": "066",
+      "number": "066/151",
+      "name": "MachopAri",
+      "dex": 66,
+      "status": "todo",
+      "artFile": null,
+      "type": "Fighting",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 60,
+      "species": "Strong",
+      "len": "4' 5\"",
+      "wt": "90 lbs",
+      "attacks": [
+        {
+          "name": "Seismic Toss",
+          "cost": [
+            "Fighting"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Karate Chop",
+          "cost": [
+            "Fighting",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Psychic",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It carries Ari’s heaviest blocks without a grumble.",
+        "Practices tumbles so Ari can copy along."
+      ]
+    },
+    {
+      "id": "067",
+      "number": "067/151",
+      "name": "MachokeAri",
+      "dex": 67,
+      "status": "todo",
+      "artFile": null,
+      "type": "Fighting",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Machop",
+      "hp": 90,
+      "species": "Strong",
+      "len": "1' 4\"",
+      "wt": "89 lbs",
+      "attacks": [
+        {
+          "name": "Rock Throw",
+          "cost": [
+            "Fighting",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Seismic Toss",
+          "cost": [
+            "Fighting",
+            "Fighting"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Psychic",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It carries Ari’s heaviest blocks without a grumble.",
+        "Practices tumbles so Ari can copy along."
+      ]
+    },
+    {
+      "id": "068",
+      "number": "068/151",
+      "name": "MachampAri",
+      "dex": 68,
+      "status": "todo",
+      "artFile": null,
+      "type": "Fighting",
+      "rarity": "Rare",
+      "stage": "Stage 2",
+      "evoFrom": "Machoke",
+      "hp": 130,
+      "species": "Strong",
+      "len": "2' 5\"",
+      "wt": "88 lbs",
+      "attacks": [
+        {
+          "name": "Seismic Toss",
+          "cost": [
+            "Fighting",
+            "Colorless"
+          ],
+          "dmg": "30"
+        },
+        {
+          "name": "Double Kick",
+          "cost": [
+            "Fighting",
+            "Fighting",
+            "Colorless"
+          ],
+          "dmg": "80"
+        }
+      ],
+      "weakness": "Psychic",
+      "resistance": null,
+      "retreat": [
+        "Colorless",
+        "Colorless"
+      ],
+      "flavor": [
+        "It carries Ari’s heaviest blocks without a grumble.",
+        "Practices tumbles so Ari can copy along."
+      ]
+    },
+    {
+      "id": "069",
+      "number": "069/151",
+      "name": "BellsproutAri",
+      "dex": 69,
+      "status": "todo",
+      "artFile": null,
+      "type": "Grass",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 50,
+      "species": "Seed",
+      "len": "3' 6\"",
+      "wt": "87 lbs",
+      "attacks": [
+        {
+          "name": "Leaf Munch",
+          "cost": [
+            "Grass"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Poison Sting",
+          "cost": [
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "070",
+      "number": "070/151",
+      "name": "WeepinbellAri",
+      "dex": 70,
+      "status": "todo",
+      "artFile": null,
+      "type": "Grass",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Bellsprout",
+      "hp": 90,
+      "species": "Seed",
+      "len": "1' 8\"",
+      "wt": "35 lbs",
+      "attacks": [
+        {
+          "name": "Toxic Spike",
+          "cost": [
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Mega Drain",
+          "cost": [
+            "Grass",
+            "Grass"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "071",
+      "number": "071/151",
+      "name": "VictreebelAri",
+      "dex": 71,
+      "status": "todo",
+      "artFile": null,
+      "type": "Grass",
+      "rarity": "Rare",
+      "stage": "Stage 2",
+      "evoFrom": "Weepinbell",
+      "hp": 130,
+      "species": "Seed",
+      "len": "4' 9\"",
+      "wt": "36 lbs",
+      "attacks": [
+        {
+          "name": "Spore Puff",
+          "cost": [
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "30"
+        },
+        {
+          "name": "Razor Leaf",
+          "cost": [
+            "Grass",
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "80"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless",
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "072",
+      "number": "072/151",
+      "name": "TentacoolAri",
+      "dex": 72,
+      "status": "todo",
+      "artFile": null,
+      "type": "Water",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 50,
+      "species": "Splash",
+      "len": "3' 10\"",
+      "wt": "37 lbs",
+      "attacks": [
+        {
+          "name": "Aqua Tail",
+          "cost": [
+            "Water"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Water Gun",
+          "cost": [
+            "Water",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Electric",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It splashes happily whenever Ari fills the tub.",
+        "Loves blowing bubbles for Ari to chase."
+      ]
+    },
+    {
+      "id": "073",
+      "number": "073/151",
+      "name": "TentacruelAri",
+      "dex": 73,
+      "status": "todo",
+      "artFile": null,
+      "type": "Water",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Tentacool",
+      "hp": 80,
+      "species": "Splash",
+      "len": "2' 11\"",
+      "wt": "38 lbs",
+      "attacks": [
+        {
+          "name": "Water Gun",
+          "cost": [
+            "Water",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Wave Slap",
+          "cost": [
+            "Water",
+            "Water"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Electric",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It splashes happily whenever Ari fills the tub.",
+        "Loves blowing bubbles for Ari to chase."
+      ]
+    },
+    {
+      "id": "074",
+      "number": "074/151",
+      "name": "GeodudeAri",
+      "dex": 74,
+      "status": "todo",
+      "artFile": null,
+      "type": "Fighting",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 70,
+      "species": "Strong",
+      "len": "1' 0\"",
+      "wt": "31 lbs",
+      "attacks": [
+        {
+          "name": "Rock Throw",
+          "cost": [
+            "Fighting"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Double Kick",
+          "cost": [
+            "Fighting",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Psychic",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It carries Ari’s heaviest blocks without a grumble.",
+        "Practices tumbles so Ari can copy along."
+      ]
+    },
+    {
+      "id": "075",
+      "number": "075/151",
+      "name": "GravelerAri",
+      "dex": 75,
+      "status": "todo",
+      "artFile": null,
+      "type": "Fighting",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Geodude",
+      "hp": 100,
+      "species": "Strong",
+      "len": "4' 11\"",
+      "wt": "32 lbs",
+      "attacks": [
+        {
+          "name": "Seismic Toss",
+          "cost": [
+            "Fighting",
+            "Fighting"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Psychic",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It carries Ari’s heaviest blocks without a grumble.",
+        "Practices tumbles so Ari can copy along."
+      ]
+    },
+    {
+      "id": "076",
+      "number": "076/151",
+      "name": "GolemAri",
+      "dex": 76,
+      "status": "todo",
+      "artFile": null,
+      "type": "Fighting",
+      "rarity": "Rare",
+      "stage": "Stage 2",
+      "evoFrom": "Graveler",
+      "hp": 100,
+      "species": "Strong",
+      "len": "3' 10\"",
+      "wt": "33 lbs",
+      "attacks": [
+        {
+          "name": "Earth Power",
+          "cost": [
+            "Fighting",
+            "Colorless"
+          ],
+          "dmg": "30"
+        },
+        {
+          "name": "Karate Chop",
+          "cost": [
+            "Fighting",
+            "Fighting",
+            "Colorless"
+          ],
+          "dmg": "80"
+        }
+      ],
+      "weakness": "Psychic",
+      "resistance": null,
+      "retreat": [
+        "Colorless",
+        "Colorless"
+      ],
+      "flavor": [
+        "It carries Ari’s heaviest blocks without a grumble.",
+        "Practices tumbles so Ari can copy along."
+      ]
+    },
+    {
+      "id": "077",
+      "number": "077/151",
+      "name": "PonytaAri",
+      "dex": 77,
+      "status": "todo",
+      "artFile": null,
+      "type": "Fire",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 60,
+      "species": "Flame",
+      "len": "2' 9\"",
+      "wt": "34 lbs",
+      "attacks": [
+        {
+          "name": "Heat Tackle",
+          "cost": [
+            "Fire"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Sky Blaze",
+          "cost": [
+            "Fire",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Water",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It keeps Ari’s room cozy on the coldest nights.",
+        "Its tail-glow is Ari’s favorite nightlight."
+      ]
+    },
+    {
+      "id": "078",
+      "number": "078/151",
+      "name": "RapidashAri",
+      "dex": 78,
+      "status": "todo",
+      "artFile": null,
+      "type": "Fire",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Ponyta",
+      "hp": 90,
+      "species": "Flame",
+      "len": "1' 4\"",
+      "wt": "27 lbs",
+      "attacks": [
+        {
+          "name": "Inferno Flight",
+          "cost": [
+            "Fire",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Sky Blaze",
+          "cost": [
+            "Fire",
+            "Fire"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Water",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It keeps Ari’s room cozy on the coldest nights.",
+        "Its tail-glow is Ari’s favorite nightlight."
+      ]
+    },
+    {
+      "id": "079",
+      "number": "079/151",
+      "name": "SlowpokeAri",
+      "dex": 79,
+      "status": "todo",
+      "artFile": null,
+      "type": "Water",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 80,
+      "species": "Splash",
+      "len": "4' 5\"",
+      "wt": "28 lbs",
+      "attacks": [
+        {
+          "name": "Water Gun",
+          "cost": [
+            "Water"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Splash Crash",
+          "cost": [
+            "Water",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Electric",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It splashes happily whenever Ari fills the tub.",
+        "Loves blowing bubbles for Ari to chase."
+      ]
+    },
+    {
+      "id": "080",
+      "number": "080/151",
+      "name": "SlowbroAri",
+      "dex": 80,
+      "status": "todo",
+      "artFile": null,
+      "type": "Water",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Slowpoke",
+      "hp": 100,
+      "species": "Splash",
+      "len": "2' 1\"",
+      "wt": "82 lbs",
+      "attacks": [
+        {
+          "name": "Water Gun",
+          "cost": [
+            "Water",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Splash Crash",
+          "cost": [
+            "Water",
+            "Water"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Electric",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It splashes happily whenever Ari fills the tub.",
+        "Loves blowing bubbles for Ari to chase."
+      ]
+    },
+    {
+      "id": "081",
+      "number": "081/151",
+      "name": "MagnemiteAri",
+      "dex": 81,
+      "status": "todo",
+      "artFile": null,
+      "type": "Electric",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 70,
+      "species": "Spark",
+      "len": "1' 0\"",
+      "wt": "81 lbs",
+      "attacks": [
+        {
+          "name": "Spark",
+          "cost": [
+            "Electric"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Zap Jab",
+          "cost": [
+            "Electric",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It gives the gentlest static boop on Ari’s nose.",
+        "Charges up fast and lights up when Ari giggles."
+      ]
+    },
+    {
+      "id": "082",
+      "number": "082/151",
+      "name": "MagnetonAri",
+      "dex": 82,
+      "status": "todo",
+      "artFile": null,
+      "type": "Electric",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Magnemite",
+      "hp": 80,
+      "species": "Spark",
+      "len": "4' 3\"",
+      "wt": "84 lbs",
+      "attacks": [
+        {
+          "name": "Volt Tackle",
+          "cost": [
+            "Electric",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Static Take",
+          "cost": [
+            "Electric",
+            "Electric"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It gives the gentlest static boop on Ari’s nose.",
+        "Charges up fast and lights up when Ari giggles."
+      ]
+    },
+    {
+      "id": "083",
+      "number": "083/151",
+      "name": "FarfetchdAri",
+      "dex": 83,
+      "status": "todo",
+      "artFile": null,
+      "type": "Colorless",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 50,
+      "species": "Friend",
+      "len": "3' 2\"",
+      "wt": "83 lbs",
+      "attacks": [
+        {
+          "name": "Gnaw",
+          "cost": [
+            "Colorless",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It follows Ari everywhere around the house.",
+        "A loyal little buddy that never leaves Ari’s side."
+      ]
+    },
+    {
+      "id": "084",
+      "number": "084/151",
+      "name": "DoduoAri",
+      "dex": 84,
+      "status": "todo",
+      "artFile": null,
+      "type": "Colorless",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 80,
+      "species": "Friend",
+      "len": "2' 5\"",
+      "wt": "78 lbs",
+      "attacks": [
+        {
+          "name": "Gnaw",
+          "cost": [
+            "Colorless"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Fury Swipes",
+          "cost": [
+            "Colorless",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It follows Ari everywhere around the house.",
+        "A loyal little buddy that never leaves Ari’s side."
+      ]
+    },
+    {
+      "id": "085",
+      "number": "085/151",
+      "name": "DodrioAri",
+      "dex": 85,
+      "status": "todo",
+      "artFile": null,
+      "type": "Colorless",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Doduo",
+      "hp": 90,
+      "species": "Friend",
+      "len": "1' 4\"",
+      "wt": "77 lbs",
+      "attacks": [
+        {
+          "name": "Fury Swipes",
+          "cost": [
+            "Colorless",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Gnaw",
+          "cost": [
+            "Colorless",
+            "Colorless"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It follows Ari everywhere around the house.",
+        "A loyal little buddy that never leaves Ari’s side."
+      ]
+    },
+    {
+      "id": "086",
+      "number": "086/151",
+      "name": "SeelAri",
+      "dex": 86,
+      "status": "todo",
+      "artFile": null,
+      "type": "Water",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 60,
+      "species": "Splash",
+      "len": "4' 7\"",
+      "wt": "80 lbs",
+      "attacks": [
+        {
+          "name": "Wave Slap",
+          "cost": [
+            "Water",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Electric",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It splashes happily whenever Ari fills the tub.",
+        "Loves blowing bubbles for Ari to chase."
+      ]
+    },
+    {
+      "id": "087",
+      "number": "087/151",
+      "name": "DewgongAri",
+      "dex": 87,
+      "status": "todo",
+      "artFile": null,
+      "type": "Water",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Seel",
+      "hp": 70,
+      "species": "Splash",
+      "len": "3' 6\"",
+      "wt": "79 lbs",
+      "attacks": [
+        {
+          "name": "Bubble",
+          "cost": [
+            "Water",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Water Gun",
+          "cost": [
+            "Water",
+            "Water"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Electric",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It splashes happily whenever Ari fills the tub.",
+        "Loves blowing bubbles for Ari to chase."
+      ]
+    },
+    {
+      "id": "088",
+      "number": "088/151",
+      "name": "GrimerAri",
+      "dex": 88,
+      "status": "todo",
+      "artFile": null,
+      "type": "Grass",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 80,
+      "species": "Seed",
+      "len": "2' 5\"",
+      "wt": "90 lbs",
+      "attacks": [
+        {
+          "name": "Spore Puff",
+          "cost": [
+            "Grass"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Razor Leaf",
+          "cost": [
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "089",
+      "number": "089/151",
+      "name": "MukAri",
+      "dex": 89,
+      "status": "todo",
+      "artFile": null,
+      "type": "Grass",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Grimer",
+      "hp": 90,
+      "species": "Seed",
+      "len": "1' 4\"",
+      "wt": "89 lbs",
+      "attacks": [
+        {
+          "name": "Toxic Spike",
+          "cost": [
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Mega Drain",
+          "cost": [
+            "Grass",
+            "Grass"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "090",
+      "number": "090/151",
+      "name": "ShellderAri",
+      "dex": 90,
+      "status": "todo",
+      "artFile": null,
+      "type": "Water",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 50,
+      "species": "Splash",
+      "len": "3' 6\"",
+      "wt": "21 lbs",
+      "attacks": [
+        {
+          "name": "Aqua Tail",
+          "cost": [
+            "Water"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Hydro Pump",
+          "cost": [
+            "Water",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Electric",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It splashes happily whenever Ari fills the tub.",
+        "Loves blowing bubbles for Ari to chase."
+      ]
+    },
+    {
+      "id": "091",
+      "number": "091/151",
+      "name": "CloysterAri",
+      "dex": 91,
+      "status": "todo",
+      "artFile": null,
+      "type": "Water",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Shellder",
+      "hp": 100,
+      "species": "Splash",
+      "len": "4' 5\"",
+      "wt": "22 lbs",
+      "attacks": [
+        {
+          "name": "Water Gun",
+          "cost": [
+            "Water",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Aqua Tail",
+          "cost": [
+            "Water",
+            "Water"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Electric",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It splashes happily whenever Ari fills the tub.",
+        "Loves blowing bubbles for Ari to chase."
+      ]
+    },
+    {
+      "id": "092",
+      "number": "092/151",
+      "name": "GastlyAri",
+      "dex": 92,
+      "status": "todo",
+      "artFile": null,
+      "type": "Psychic",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 70,
+      "species": "Dream",
+      "len": "1' 8\"",
+      "wt": "19 lbs",
+      "attacks": [
+        {
+          "name": "Psybeam",
+          "cost": [
+            "Psychic",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Psychic",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It always seems to know what Ari is thinking.",
+        "Floats Ari’s toys back to the toy box at bedtime."
+      ]
+    },
+    {
+      "id": "093",
+      "number": "093/151",
+      "name": "HaunterAri",
+      "dex": 93,
+      "status": "todo",
+      "artFile": null,
+      "type": "Psychic",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Gastly",
+      "hp": 80,
+      "species": "Dream",
+      "len": "2' 7\"",
+      "wt": "20 lbs",
+      "attacks": [
+        {
+          "name": "Psywave",
+          "cost": [
+            "Psychic",
+            "Psychic"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Psychic",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It always seems to know what Ari is thinking.",
+        "Floats Ari’s toys back to the toy box at bedtime."
+      ]
+    },
+    {
+      "id": "094",
+      "number": "094/151",
+      "name": "GengarAri",
+      "dex": 94,
+      "status": "todo",
+      "artFile": null,
+      "type": "Psychic",
+      "rarity": "Rare",
+      "stage": "Stage 2",
+      "evoFrom": "Haunter",
+      "hp": 100,
+      "species": "Dream",
+      "len": "3' 2\"",
+      "wt": "25 lbs",
+      "attacks": [
+        {
+          "name": "Confuse Ray",
+          "cost": [
+            "Psychic",
+            "Colorless"
+          ],
+          "dmg": "30"
+        },
+        {
+          "name": "Dream Eater",
+          "cost": [
+            "Psychic",
+            "Psychic",
+            "Colorless"
+          ],
+          "dmg": "80"
+        }
+      ],
+      "weakness": "Psychic",
+      "resistance": null,
+      "retreat": [
+        "Colorless",
+        "Colorless"
+      ],
+      "flavor": [
+        "It always seems to know what Ari is thinking.",
+        "Floats Ari’s toys back to the toy box at bedtime."
+      ]
+    },
+    {
+      "id": "095",
+      "number": "095/151",
+      "name": "OnixAri",
+      "dex": 95,
+      "status": "todo",
+      "artFile": null,
+      "type": "Fighting",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 80,
+      "species": "Strong",
+      "len": "4' 9\"",
+      "wt": "26 lbs",
+      "attacks": [
+        {
+          "name": "Double Kick",
+          "cost": [
+            "Fighting"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Seismic Toss",
+          "cost": [
+            "Fighting",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Psychic",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It carries Ari’s heaviest blocks without a grumble.",
+        "Practices tumbles so Ari can copy along."
+      ]
+    },
+    {
+      "id": "096",
+      "number": "096/151",
+      "name": "DrowzeeAri",
+      "dex": 96,
+      "status": "todo",
+      "artFile": null,
+      "type": "Psychic",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 70,
+      "species": "Dream",
+      "len": "1' 0\"",
+      "wt": "23 lbs",
+      "attacks": [
+        {
+          "name": "Psychic Control",
+          "cost": [
+            "Psychic"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Psybeam",
+          "cost": [
+            "Psychic",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Psychic",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It always seems to know what Ari is thinking.",
+        "Floats Ari’s toys back to the toy box at bedtime."
+      ]
+    },
+    {
+      "id": "097",
+      "number": "097/151",
+      "name": "HypnoAri",
+      "dex": 97,
+      "status": "todo",
+      "artFile": null,
+      "type": "Psychic",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Drowzee",
+      "hp": 80,
+      "species": "Dream",
+      "len": "2' 1\"",
+      "wt": "24 lbs",
+      "attacks": [
+        {
+          "name": "Mind Crush",
+          "cost": [
+            "Psychic",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Confuse Ray",
+          "cost": [
+            "Psychic",
+            "Psychic"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Psychic",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It always seems to know what Ari is thinking.",
+        "Floats Ari’s toys back to the toy box at bedtime."
+      ]
+    },
+    {
+      "id": "098",
+      "number": "098/151",
+      "name": "KrabbyAri",
+      "dex": 98,
+      "status": "todo",
+      "artFile": null,
+      "type": "Water",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 50,
+      "species": "Splash",
+      "len": "3' 10\"",
+      "wt": "29 lbs",
+      "attacks": [
+        {
+          "name": "Bubble",
+          "cost": [
+            "Water"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Splash Crash",
+          "cost": [
+            "Water",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Electric",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It splashes happily whenever Ari fills the tub.",
+        "Loves blowing bubbles for Ari to chase."
+      ]
+    },
+    {
+      "id": "099",
+      "number": "099/151",
+      "name": "KinglerAri",
+      "dex": 99,
+      "status": "todo",
+      "artFile": null,
+      "type": "Water",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Krabby",
+      "hp": 100,
+      "species": "Splash",
+      "len": "4' 9\"",
+      "wt": "30 lbs",
+      "attacks": [
+        {
+          "name": "Wave Slap",
+          "cost": [
+            "Water",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Water Gun",
+          "cost": [
+            "Water",
+            "Water"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Electric",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It splashes happily whenever Ari fills the tub.",
+        "Loves blowing bubbles for Ari to chase."
+      ]
+    },
+    {
+      "id": "100",
+      "number": "100/151",
+      "name": "VoltorbAri",
+      "dex": 100,
+      "status": "todo",
+      "artFile": null,
+      "type": "Electric",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 50,
+      "species": "Spark",
+      "len": "3' 2\"",
+      "wt": "37 lbs",
+      "attacks": [
+        {
+          "name": "Spark",
+          "cost": [
+            "Electric"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Thunder Advisory",
+          "cost": [
+            "Electric",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It gives the gentlest static boop on Ari’s nose.",
+        "Charges up fast and lights up when Ari giggles."
+      ]
+    },
+    {
+      "id": "101",
+      "number": "101/151",
+      "name": "ElectrodeAri",
+      "dex": 101,
+      "status": "todo",
+      "artFile": null,
+      "type": "Electric",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Voltorb",
+      "hp": 100,
+      "species": "Spark",
+      "len": "4' 1\"",
+      "wt": "38 lbs",
+      "attacks": [
+        {
+          "name": "Thunder Advisory",
+          "cost": [
+            "Electric",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Charge Beam",
+          "cost": [
+            "Electric",
+            "Electric"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It gives the gentlest static boop on Ari’s nose.",
+        "Charges up fast and lights up when Ari giggles."
+      ]
+    },
+    {
+      "id": "102",
+      "number": "102/151",
+      "name": "ExeggcuteAri",
+      "dex": 102,
+      "status": "todo",
+      "artFile": null,
+      "type": "Grass",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 70,
+      "species": "Seed",
+      "len": "1' 4\"",
+      "wt": "39 lbs",
+      "attacks": [
+        {
+          "name": "Razor Leaf",
+          "cost": [
+            "Grass"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Spore Puff",
+          "cost": [
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "103",
+      "number": "103/151",
+      "name": "ExeggutorAri",
+      "dex": 103,
+      "status": "todo",
+      "artFile": null,
+      "type": "Grass",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Exeggcute",
+      "hp": 80,
+      "species": "Seed",
+      "len": "2' 3\"",
+      "wt": "40 lbs",
+      "attacks": [
+        {
+          "name": "Vine Whip",
+          "cost": [
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Mega Drain",
+          "cost": [
+            "Grass",
+            "Grass"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "104",
+      "number": "104/151",
+      "name": "CuboneAri",
+      "dex": 104,
+      "status": "todo",
+      "artFile": null,
+      "type": "Fighting",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 50,
+      "species": "Strong",
+      "len": "3' 10\"",
+      "wt": "41 lbs",
+      "attacks": [
+        {
+          "name": "Earth Power",
+          "cost": [
+            "Fighting"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Karate Chop",
+          "cost": [
+            "Fighting",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Psychic",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It carries Ari’s heaviest blocks without a grumble.",
+        "Practices tumbles so Ari can copy along."
+      ]
+    },
+    {
+      "id": "105",
+      "number": "105/151",
+      "name": "MarowakAri",
+      "dex": 105,
+      "status": "todo",
+      "artFile": null,
+      "type": "Fighting",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Cubone",
+      "hp": 100,
+      "species": "Strong",
+      "len": "4' 9\"",
+      "wt": "42 lbs",
+      "attacks": [
+        {
+          "name": "Double Kick",
+          "cost": [
+            "Fighting",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Earth Power",
+          "cost": [
+            "Fighting",
+            "Fighting"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Psychic",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It carries Ari’s heaviest blocks without a grumble.",
+        "Practices tumbles so Ari can copy along."
+      ]
+    },
+    {
+      "id": "106",
+      "number": "106/151",
+      "name": "HitmonleeAri",
+      "dex": 106,
+      "status": "todo",
+      "artFile": null,
+      "type": "Fighting",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 70,
+      "species": "Strong",
+      "len": "1' 0\"",
+      "wt": "43 lbs",
+      "attacks": [
+        {
+          "name": "Rock Throw",
+          "cost": [
+            "Fighting"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Double Kick",
+          "cost": [
+            "Fighting",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Psychic",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It carries Ari’s heaviest blocks without a grumble.",
+        "Practices tumbles so Ari can copy along."
+      ]
+    },
+    {
+      "id": "107",
+      "number": "107/151",
+      "name": "HitmonchanAri",
+      "dex": 107,
+      "status": "todo",
+      "artFile": null,
+      "type": "Fighting",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 60,
+      "species": "Strong",
+      "len": "2' 11\"",
+      "wt": "44 lbs",
+      "attacks": [
+        {
+          "name": "Seismic Toss",
+          "cost": [
+            "Fighting",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Psychic",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It carries Ari’s heaviest blocks without a grumble.",
+        "Practices tumbles so Ari can copy along."
+      ]
+    },
+    {
+      "id": "108",
+      "number": "108/151",
+      "name": "LickitungAri",
+      "dex": 108,
+      "status": "todo",
+      "artFile": null,
+      "type": "Colorless",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 50,
+      "species": "Friend",
+      "len": "3' 10\"",
+      "wt": "45 lbs",
+      "attacks": [
+        {
+          "name": "Quick Attack",
+          "cost": [
+            "Colorless",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It follows Ari everywhere around the house.",
+        "A loyal little buddy that never leaves Ari’s side."
+      ]
+    },
+    {
+      "id": "109",
+      "number": "109/151",
+      "name": "KoffingAri",
+      "dex": 109,
+      "status": "todo",
+      "artFile": null,
+      "type": "Grass",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 80,
+      "species": "Seed",
+      "len": "4' 9\"",
+      "wt": "46 lbs",
+      "attacks": [
+        {
+          "name": "Mega Drain",
+          "cost": [
+            "Grass"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Spore Puff",
+          "cost": [
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "110",
+      "number": "110/151",
+      "name": "WeezingAri",
+      "dex": 110,
+      "status": "todo",
+      "artFile": null,
+      "type": "Grass",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Koffing",
+      "hp": 80,
+      "species": "Seed",
+      "len": "4' 7\"",
+      "wt": "64 lbs",
+      "attacks": [
+        {
+          "name": "Toxic Spike",
+          "cost": [
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Poison Sting",
+          "cost": [
+            "Grass",
+            "Grass"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "111",
+      "number": "111/151",
+      "name": "RhyhornAri",
+      "dex": 111,
+      "status": "todo",
+      "artFile": null,
+      "type": "Fighting",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 70,
+      "species": "Strong",
+      "len": "1' 8\"",
+      "wt": "65 lbs",
+      "attacks": [
+        {
+          "name": "Rock Throw",
+          "cost": [
+            "Fighting"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Seismic Toss",
+          "cost": [
+            "Fighting",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Psychic",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It carries Ari’s heaviest blocks without a grumble.",
+        "Practices tumbles so Ari can copy along."
+      ]
+    },
+    {
+      "id": "112",
+      "number": "112/151",
+      "name": "RhydonAri",
+      "dex": 112,
+      "status": "todo",
+      "artFile": null,
+      "type": "Fighting",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Rhyhorn",
+      "hp": 100,
+      "species": "Strong",
+      "len": "2' 5\"",
+      "wt": "66 lbs",
+      "attacks": [
+        {
+          "name": "Double Kick",
+          "cost": [
+            "Fighting",
+            "Fighting"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Psychic",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It carries Ari’s heaviest blocks without a grumble.",
+        "Practices tumbles so Ari can copy along."
+      ]
+    },
+    {
+      "id": "113",
+      "number": "113/151",
+      "name": "ChanseyAri",
+      "dex": 113,
+      "status": "todo",
+      "artFile": null,
+      "type": "Colorless",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 50,
+      "species": "Friend",
+      "len": "3' 6\"",
+      "wt": "67 lbs",
+      "attacks": [
+        {
+          "name": "Gnaw",
+          "cost": [
+            "Colorless",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It follows Ari everywhere around the house.",
+        "A loyal little buddy that never leaves Ari’s side."
+      ]
+    },
+    {
+      "id": "114",
+      "number": "114/151",
+      "name": "TangelaAri",
+      "dex": 114,
+      "status": "todo",
+      "artFile": null,
+      "type": "Grass",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 60,
+      "species": "Seed",
+      "len": "4' 11\"",
+      "wt": "60 lbs",
+      "attacks": [
+        {
+          "name": "Poison Sting",
+          "cost": [
+            "Grass"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Mega Drain",
+          "cost": [
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "115",
+      "number": "115/151",
+      "name": "KangaskhanAri",
+      "dex": 115,
+      "status": "todo",
+      "artFile": null,
+      "type": "Colorless",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 70,
+      "species": "Friend",
+      "len": "1' 0\"",
+      "wt": "61 lbs",
+      "attacks": [
+        {
+          "name": "Fury Swipes",
+          "cost": [
+            "Colorless"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Gnaw",
+          "cost": [
+            "Colorless",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It follows Ari everywhere around the house.",
+        "A loyal little buddy that never leaves Ari’s side."
+      ]
+    },
+    {
+      "id": "116",
+      "number": "116/151",
+      "name": "HorseaAri",
+      "dex": 116,
+      "status": "todo",
+      "artFile": null,
+      "type": "Water",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 80,
+      "species": "Splash",
+      "len": "2' 9\"",
+      "wt": "62 lbs",
+      "attacks": [
+        {
+          "name": "Wave Slap",
+          "cost": [
+            "Water"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Aqua Tail",
+          "cost": [
+            "Water",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Electric",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It splashes happily whenever Ari fills the tub.",
+        "Loves blowing bubbles for Ari to chase."
+      ]
+    },
+    {
+      "id": "117",
+      "number": "117/151",
+      "name": "SeadraAri",
+      "dex": 117,
+      "status": "todo",
+      "artFile": null,
+      "type": "Water",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Horsea",
+      "hp": 70,
+      "species": "Splash",
+      "len": "3' 10\"",
+      "wt": "63 lbs",
+      "attacks": [
+        {
+          "name": "Bubble",
+          "cost": [
+            "Water",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Hydro Pump",
+          "cost": [
+            "Water",
+            "Water"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Electric",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It splashes happily whenever Ari fills the tub.",
+        "Loves blowing bubbles for Ari to chase."
+      ]
+    },
+    {
+      "id": "118",
+      "number": "118/151",
+      "name": "GoldeenAri",
+      "dex": 118,
+      "status": "todo",
+      "artFile": null,
+      "type": "Water",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 60,
+      "species": "Splash",
+      "len": "4' 3\"",
+      "wt": "56 lbs",
+      "attacks": [
+        {
+          "name": "Splash Crash",
+          "cost": [
+            "Water"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Water Gun",
+          "cost": [
+            "Water",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Electric",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It splashes happily whenever Ari fills the tub.",
+        "Loves blowing bubbles for Ari to chase."
+      ]
+    },
+    {
+      "id": "119",
+      "number": "119/151",
+      "name": "SeakingAri",
+      "dex": 119,
+      "status": "todo",
+      "artFile": null,
+      "type": "Water",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Goldeen",
+      "hp": 90,
+      "species": "Splash",
+      "len": "1' 4\"",
+      "wt": "57 lbs",
+      "attacks": [
+        {
+          "name": "Hydro Pump",
+          "cost": [
+            "Water",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Aqua Tail",
+          "cost": [
+            "Water",
+            "Water"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Electric",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It splashes happily whenever Ari fills the tub.",
+        "Loves blowing bubbles for Ari to chase."
+      ]
+    },
+    {
+      "id": "120",
+      "number": "120/151",
+      "name": "StaryuAri",
+      "dex": 120,
+      "status": "todo",
+      "artFile": null,
+      "type": "Water",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 70,
+      "species": "Splash",
+      "len": "1' 0\"",
+      "wt": "37 lbs",
+      "attacks": [
+        {
+          "name": "Bubble",
+          "cost": [
+            "Water"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Wave Slap",
+          "cost": [
+            "Water",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Electric",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It splashes happily whenever Ari fills the tub.",
+        "Loves blowing bubbles for Ari to chase."
+      ]
+    },
+    {
+      "id": "121",
+      "number": "121/151",
+      "name": "StarmieAri",
+      "dex": 121,
+      "status": "todo",
+      "artFile": null,
+      "type": "Water",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Staryu",
+      "hp": 80,
+      "species": "Splash",
+      "len": "2' 1\"",
+      "wt": "38 lbs",
+      "attacks": [
+        {
+          "name": "Wave Slap",
+          "cost": [
+            "Water",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Splash Crash",
+          "cost": [
+            "Water",
+            "Water"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Electric",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It splashes happily whenever Ari fills the tub.",
+        "Loves blowing bubbles for Ari to chase."
+      ]
+    },
+    {
+      "id": "122",
+      "number": "122/151",
+      "name": "MrMimeAri",
+      "dex": 122,
+      "status": "todo",
+      "artFile": null,
+      "type": "Psychic",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 50,
+      "species": "Dream",
+      "len": "3' 2\"",
+      "wt": "35 lbs",
+      "attacks": [
+        {
+          "name": "Psychic Control",
+          "cost": [
+            "Psychic",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Psychic",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It always seems to know what Ari is thinking.",
+        "Floats Ari’s toys back to the toy box at bedtime."
+      ]
+    },
+    {
+      "id": "123",
+      "number": "123/151",
+      "name": "ScytherAri",
+      "dex": 123,
+      "status": "todo",
+      "artFile": null,
+      "type": "Grass",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 80,
+      "species": "Seed",
+      "len": "4' 3\"",
+      "wt": "36 lbs",
+      "attacks": [
+        {
+          "name": "Mega Drain",
+          "cost": [
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "124",
+      "number": "124/151",
+      "name": "JynxAri",
+      "dex": 124,
+      "status": "todo",
+      "artFile": null,
+      "type": "Psychic",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 70,
+      "species": "Dream",
+      "len": "1' 8\"",
+      "wt": "41 lbs",
+      "attacks": [
+        {
+          "name": "Confuse Ray",
+          "cost": [
+            "Psychic"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Psywave",
+          "cost": [
+            "Psychic",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Psychic",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It always seems to know what Ari is thinking.",
+        "Floats Ari’s toys back to the toy box at bedtime."
+      ]
+    },
+    {
+      "id": "125",
+      "number": "125/151",
+      "name": "ElectabuzzAri",
+      "dex": 125,
+      "status": "todo",
+      "artFile": null,
+      "type": "Electric",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 60,
+      "species": "Spark",
+      "len": "2' 9\"",
+      "wt": "42 lbs",
+      "attacks": [
+        {
+          "name": "Volt Tackle",
+          "cost": [
+            "Electric"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Zap Jab",
+          "cost": [
+            "Electric",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It gives the gentlest static boop on Ari’s nose.",
+        "Charges up fast and lights up when Ari giggles."
+      ]
+    },
+    {
+      "id": "126",
+      "number": "126/151",
+      "name": "MagmarAri",
+      "dex": 126,
+      "status": "todo",
+      "artFile": null,
+      "type": "Fire",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 50,
+      "species": "Flame",
+      "len": "3' 10\"",
+      "wt": "39 lbs",
+      "attacks": [
+        {
+          "name": "Ember",
+          "cost": [
+            "Fire"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Heat Tackle",
+          "cost": [
+            "Fire",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Water",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It keeps Ari’s room cozy on the coldest nights.",
+        "Its tail-glow is Ari’s favorite nightlight."
+      ]
+    },
+    {
+      "id": "127",
+      "number": "127/151",
+      "name": "PinsirAri",
+      "dex": 127,
+      "status": "todo",
+      "artFile": null,
+      "type": "Grass",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 80,
+      "species": "Seed",
+      "len": "4' 11\"",
+      "wt": "40 lbs",
+      "attacks": [
+        {
+          "name": "Vine Whip",
+          "cost": [
+            "Grass"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Poison Sting",
+          "cost": [
+            "Grass",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fire",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It naps in Ari’s garden and always smells of fresh leaves.",
+        "Quietly tends the little sprouts beside Ari’s window."
+      ]
+    },
+    {
+      "id": "128",
+      "number": "128/151",
+      "name": "TaurosAri",
+      "dex": 128,
+      "status": "todo",
+      "artFile": null,
+      "type": "Colorless",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 70,
+      "species": "Friend",
+      "len": "1' 8\"",
+      "wt": "29 lbs",
+      "attacks": [
+        {
+          "name": "Fury Swipes",
+          "cost": [
+            "Colorless"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Gnaw",
+          "cost": [
+            "Colorless",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It follows Ari everywhere around the house.",
+        "A loyal little buddy that never leaves Ari’s side."
+      ]
+    },
+    {
+      "id": "129",
+      "number": "129/151",
+      "name": "MagikarpAri",
+      "dex": 129,
+      "status": "todo",
+      "artFile": null,
+      "type": "Water",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 60,
+      "species": "Splash",
+      "len": "2' 9\"",
+      "wt": "30 lbs",
+      "attacks": [
+        {
+          "name": "Water Gun",
+          "cost": [
+            "Water"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Hydro Pump",
+          "cost": [
+            "Water",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Electric",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It splashes happily whenever Ari fills the tub.",
+        "Loves blowing bubbles for Ari to chase."
+      ]
+    },
+    {
+      "id": "130",
+      "number": "130/151",
+      "name": "GyaradosAri",
+      "dex": 130,
+      "status": "todo",
+      "artFile": null,
+      "type": "Water",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Magikarp",
+      "hp": 100,
+      "species": "Splash",
+      "len": "4' 9\"",
+      "wt": "98 lbs",
+      "attacks": [
+        {
+          "name": "Wave Slap",
+          "cost": [
+            "Water",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Splash Crash",
+          "cost": [
+            "Water",
+            "Water"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Electric",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It splashes happily whenever Ari fills the tub.",
+        "Loves blowing bubbles for Ari to chase."
+      ]
+    },
+    {
+      "id": "131",
+      "number": "131/151",
+      "name": "LaprasAri",
+      "dex": 131,
+      "status": "todo",
+      "artFile": null,
+      "type": "Water",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 50,
+      "species": "Splash",
+      "len": "3' 10\"",
+      "wt": "97 lbs",
+      "attacks": [
+        {
+          "name": "Hydro Pump",
+          "cost": [
+            "Water"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Aqua Tail",
+          "cost": [
+            "Water",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Electric",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It splashes happily whenever Ari fills the tub.",
+        "Loves blowing bubbles for Ari to chase."
+      ]
+    },
+    {
+      "id": "132",
+      "number": "132/151",
+      "name": "DittoAri",
+      "dex": 132,
+      "status": "todo",
+      "artFile": null,
+      "type": "Colorless",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 60,
+      "species": "Friend",
+      "len": "2' 11\"",
+      "wt": "10 lbs",
+      "attacks": [
+        {
+          "name": "Quick Attack",
+          "cost": [
+            "Colorless",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It follows Ari everywhere around the house.",
+        "A loyal little buddy that never leaves Ari’s side."
+      ]
+    },
+    {
+      "id": "133",
+      "number": "133/151",
+      "name": "EveAri",
+      "dex": 133,
+      "status": "live",
+      "artFile": "assets/cards/133_EveAri.png",
+      "type": "Colorless",
+      "rarity": "Rare",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 70,
+      "species": "Friend",
+      "len": "1' 0\"",
+      "wt": "99 lbs",
+      "attacks": [
+        {
+          "name": "Fury Swipes",
+          "cost": [
+            "Colorless"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Gnaw",
+          "cost": [
+            "Colorless",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It follows Ari everywhere around the house.",
+        "A loyal little buddy that never leaves Ari’s side."
+      ]
+    },
+    {
+      "id": "134",
+      "number": "134/151",
+      "name": "VaporeonAri",
+      "dex": 134,
+      "status": "todo",
+      "artFile": null,
+      "type": "Water",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Eevee",
+      "hp": 100,
+      "species": "Splash",
+      "len": "4' 1\"",
+      "wt": "94 lbs",
+      "attacks": [
+        {
+          "name": "Splash Crash",
+          "cost": [
+            "Water",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Hydro Pump",
+          "cost": [
+            "Water",
+            "Water"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Electric",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It splashes happily whenever Ari fills the tub.",
+        "Loves blowing bubbles for Ari to chase."
+      ]
+    },
+    {
+      "id": "135",
+      "number": "135/151",
+      "name": "JolteonAri",
+      "dex": 135,
+      "status": "todo",
+      "artFile": null,
+      "type": "Electric",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Eevee",
+      "hp": 70,
+      "species": "Spark",
+      "len": "3' 2\"",
+      "wt": "93 lbs",
+      "attacks": [
+        {
+          "name": "Spark",
+          "cost": [
+            "Electric",
+            "Electric"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It gives the gentlest static boop on Ari’s nose.",
+        "Charges up fast and lights up when Ari giggles."
+      ]
+    },
+    {
+      "id": "136",
+      "number": "136/151",
+      "name": "FlareonAri",
+      "dex": 136,
+      "status": "todo",
+      "artFile": null,
+      "type": "Fire",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Eevee",
+      "hp": 80,
+      "species": "Flame",
+      "len": "2' 3\"",
+      "wt": "96 lbs",
+      "attacks": [
+        {
+          "name": "Fire Spin",
+          "cost": [
+            "Fire",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Flame Dash",
+          "cost": [
+            "Fire",
+            "Fire"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Water",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It keeps Ari’s room cozy on the coldest nights.",
+        "Its tail-glow is Ari’s favorite nightlight."
+      ]
+    },
+    {
+      "id": "137",
+      "number": "137/151",
+      "name": "PorygonAri",
+      "dex": 137,
+      "status": "todo",
+      "artFile": null,
+      "type": "Colorless",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 70,
+      "species": "Friend",
+      "len": "1' 4\"",
+      "wt": "95 lbs",
+      "attacks": [
+        {
+          "name": "Tackle",
+          "cost": [
+            "Colorless"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Quick Attack",
+          "cost": [
+            "Colorless",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It follows Ari everywhere around the house.",
+        "A loyal little buddy that never leaves Ari’s side."
+      ]
+    },
+    {
+      "id": "138",
+      "number": "138/151",
+      "name": "OmanyteAri",
+      "dex": 138,
+      "status": "todo",
+      "artFile": null,
+      "type": "Water",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 80,
+      "species": "Splash",
+      "len": "4' 1\"",
+      "wt": "90 lbs",
+      "attacks": [
+        {
+          "name": "Water Gun",
+          "cost": [
+            "Water"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Hydro Pump",
+          "cost": [
+            "Water",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Electric",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It splashes happily whenever Ari fills the tub.",
+        "Loves blowing bubbles for Ari to chase."
+      ]
+    },
+    {
+      "id": "139",
+      "number": "139/151",
+      "name": "OmastarAri",
+      "dex": 139,
+      "status": "todo",
+      "artFile": null,
+      "type": "Water",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Omanyte",
+      "hp": 70,
+      "species": "Splash",
+      "len": "3' 2\"",
+      "wt": "89 lbs",
+      "attacks": [
+        {
+          "name": "Bubble",
+          "cost": [
+            "Water",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Splash Crash",
+          "cost": [
+            "Water",
+            "Water"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Electric",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It splashes happily whenever Ari fills the tub.",
+        "Loves blowing bubbles for Ari to chase."
+      ]
+    },
+    {
+      "id": "140",
+      "number": "140/151",
+      "name": "KabutoAri",
+      "dex": 140,
+      "status": "todo",
+      "artFile": null,
+      "type": "Water",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 50,
+      "species": "Splash",
+      "len": "3' 6\"",
+      "wt": "61 lbs",
+      "attacks": [
+        {
+          "name": "Bubble",
+          "cost": [
+            "Water"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Hydro Pump",
+          "cost": [
+            "Water",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Electric",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It splashes happily whenever Ari fills the tub.",
+        "Loves blowing bubbles for Ari to chase."
+      ]
+    },
+    {
+      "id": "141",
+      "number": "141/151",
+      "name": "KabutopsAri",
+      "dex": 141,
+      "status": "todo",
+      "artFile": null,
+      "type": "Water",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Kabuto",
+      "hp": 100,
+      "species": "Splash",
+      "len": "2' 7\"",
+      "wt": "60 lbs",
+      "attacks": [
+        {
+          "name": "Water Gun",
+          "cost": [
+            "Water",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Bubble",
+          "cost": [
+            "Water",
+            "Water"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Electric",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It splashes happily whenever Ari fills the tub.",
+        "Loves blowing bubbles for Ari to chase."
+      ]
+    },
+    {
+      "id": "142",
+      "number": "142/151",
+      "name": "AerodactylAri",
+      "dex": 142,
+      "status": "todo",
+      "artFile": null,
+      "type": "Colorless",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 70,
+      "species": "Friend",
+      "len": "1' 4\"",
+      "wt": "59 lbs",
+      "attacks": [
+        {
+          "name": "Wing Buffet",
+          "cost": [
+            "Colorless"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Body Slam",
+          "cost": [
+            "Colorless",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It follows Ari everywhere around the house.",
+        "A loyal little buddy that never leaves Ari’s side."
+      ]
+    },
+    {
+      "id": "143",
+      "number": "143/151",
+      "name": "SnorlaxAri",
+      "dex": 143,
+      "status": "todo",
+      "artFile": null,
+      "type": "Colorless",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 60,
+      "species": "Friend",
+      "len": "4' 5\"",
+      "wt": "58 lbs",
+      "attacks": [
+        {
+          "name": "Gnaw",
+          "cost": [
+            "Colorless"
+          ],
+          "dmg": "10"
+        },
+        {
+          "name": "Quick Attack",
+          "cost": [
+            "Colorless",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It follows Ari everywhere around the house.",
+        "A loyal little buddy that never leaves Ari’s side."
+      ]
+    },
+    {
+      "id": "144",
+      "number": "144/151",
+      "name": "ArticunoAri",
+      "dex": 144,
+      "status": "todo",
+      "artFile": null,
+      "type": "Water",
+      "rarity": "Rare Holo",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 100,
+      "species": "Splash",
+      "len": "3' 2\"",
+      "wt": "65 lbs",
+      "attacks": [
+        {
+          "name": "Aqua Tail",
+          "cost": [
+            "Water"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Hydro Pump",
+          "cost": [
+            "Water",
+            "Colorless"
+          ],
+          "dmg": "40"
+        }
+      ],
+      "weakness": "Electric",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It splashes happily whenever Ari fills the tub.",
+        "Loves blowing bubbles for Ari to chase."
+      ]
+    },
+    {
+      "id": "145",
+      "number": "145/151",
+      "name": "ZapdosAri",
+      "dex": 145,
+      "status": "todo",
+      "artFile": null,
+      "type": "Electric",
+      "rarity": "Rare Holo",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 130,
+      "species": "Spark",
+      "len": "2' 3\"",
+      "wt": "64 lbs",
+      "attacks": [
+        {
+          "name": "Volt Tackle",
+          "cost": [
+            "Electric"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Charge Beam",
+          "cost": [
+            "Electric",
+            "Colorless"
+          ],
+          "dmg": "40"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It gives the gentlest static boop on Ari’s nose.",
+        "Charges up fast and lights up when Ari giggles."
+      ]
+    },
+    {
+      "id": "146",
+      "number": "146/151",
+      "name": "MoltresAri",
+      "dex": 146,
+      "status": "todo",
+      "artFile": null,
+      "type": "Fire",
+      "rarity": "Rare Holo",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 120,
+      "species": "Flame",
+      "len": "1' 0\"",
+      "wt": "63 lbs",
+      "attacks": [
+        {
+          "name": "Sky Blaze",
+          "cost": [
+            "Fire"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Flame Dash",
+          "cost": [
+            "Fire",
+            "Colorless"
+          ],
+          "dmg": "40"
+        }
+      ],
+      "weakness": "Water",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It keeps Ari’s room cozy on the coldest nights.",
+        "Its tail-glow is Ari’s favorite nightlight."
+      ]
+    },
+    {
+      "id": "147",
+      "number": "147/151",
+      "name": "DratiniAri",
+      "dex": 147,
+      "status": "todo",
+      "artFile": null,
+      "type": "Colorless",
+      "rarity": "Common",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 60,
+      "species": "Friend",
+      "len": "4' 1\"",
+      "wt": "62 lbs",
+      "attacks": [
+        {
+          "name": "Body Slam",
+          "cost": [
+            "Colorless",
+            "Colorless"
+          ],
+          "dmg": "20"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It follows Ari everywhere around the house.",
+        "A loyal little buddy that never leaves Ari’s side."
+      ]
+    },
+    {
+      "id": "148",
+      "number": "148/151",
+      "name": "DragonairAri",
+      "dex": 148,
+      "status": "todo",
+      "artFile": null,
+      "type": "Colorless",
+      "rarity": "Uncommon",
+      "stage": "Stage 1",
+      "evoFrom": "Dratini",
+      "hp": 70,
+      "species": "Friend",
+      "len": "3' 10\"",
+      "wt": "69 lbs",
+      "attacks": [
+        {
+          "name": "Tackle",
+          "cost": [
+            "Colorless",
+            "Colorless"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Body Slam",
+          "cost": [
+            "Colorless",
+            "Colorless"
+          ],
+          "dmg": "50"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It follows Ari everywhere around the house.",
+        "A loyal little buddy that never leaves Ari’s side."
+      ]
+    },
+    {
+      "id": "149",
+      "number": "149/151",
+      "name": "DragoniteAri",
+      "dex": 149,
+      "status": "todo",
+      "artFile": null,
+      "type": "Colorless",
+      "rarity": "Rare Holo",
+      "stage": "Stage 2",
+      "evoFrom": "Dragonair",
+      "hp": 130,
+      "species": "Friend",
+      "len": "2' 11\"",
+      "wt": "68 lbs",
+      "attacks": [
+        {
+          "name": "Wing Buffet",
+          "cost": [
+            "Colorless",
+            "Colorless"
+          ],
+          "dmg": "40"
+        },
+        {
+          "name": "Quick Attack",
+          "cost": [
+            "Colorless",
+            "Colorless",
+            "Colorless"
+          ],
+          "dmg": "100"
+        }
+      ],
+      "weakness": "Fighting",
+      "resistance": null,
+      "retreat": [
+        "Colorless",
+        "Colorless"
+      ],
+      "flavor": [
+        "It follows Ari everywhere around the house.",
+        "A loyal little buddy that never leaves Ari’s side."
+      ]
+    },
+    {
+      "id": "150",
+      "number": "150/151",
+      "name": "MewtwoAri",
+      "dex": 150,
+      "status": "live",
+      "artFile": "assets/cards/150_MewtwoAri.png",
+      "type": "Psychic",
+      "rarity": "Rare",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 130,
+      "species": "Dream",
+      "len": "2' 5\"",
+      "wt": "44 lbs",
+      "attacks": [
+        {
+          "name": "Mind Crush",
+          "cost": [
+            "Psychic"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Psywave",
+          "cost": [
+            "Psychic",
+            "Colorless"
+          ],
+          "dmg": "40"
+        }
+      ],
+      "weakness": "Psychic",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It always seems to know what Ari is thinking.",
+        "Floats Ari’s toys back to the toy box at bedtime."
+      ]
+    },
+    {
+      "id": "151",
+      "number": "151/151",
+      "name": "MewAri",
+      "dex": 151,
+      "status": "live",
+      "artFile": "assets/cards/151_MewAri.png",
+      "type": "Psychic",
+      "rarity": "Rare",
+      "stage": "Basic",
+      "evoFrom": null,
+      "hp": 120,
+      "species": "Dream",
+      "len": "1' 4\"",
+      "wt": "43 lbs",
+      "attacks": [
+        {
+          "name": "Psybeam",
+          "cost": [
+            "Psychic"
+          ],
+          "dmg": "20"
+        },
+        {
+          "name": "Dream Eater",
+          "cost": [
+            "Psychic",
+            "Colorless"
+          ],
+          "dmg": "40"
+        }
+      ],
+      "weakness": "Psychic",
+      "resistance": null,
+      "retreat": [
+        "Colorless"
+      ],
+      "flavor": [
+        "It always seems to know what Ari is thinking.",
+        "Floats Ari’s toys back to the toy box at bedtime."
+      ]
+    }
+  ]
+}

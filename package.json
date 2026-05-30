@@ -9,11 +9,15 @@
     "seed": "node scripts/seed.js",
     "sync": "node scripts/sync-drive.js",
     "build:cards": "node scripts/build-cards-manifest.mjs",
-    "check:cards": "node scripts/build-cards-manifest.mjs --check"
+    "check:cards": "node scripts/build-cards-manifest.mjs --check",
+    "build:bible": "node tools/build-bible.mjs",
+    "gen:art": "node tools/gen-art.mjs",
+    "compose:cards": "node tools/compose-cards.mjs"
   },
   "dependencies": {
     "express": "^4.19.2",
-    "googleapis": "^144.0.0"
+    "googleapis": "^144.0.0",
+    "sharp": "^0.34.5"
   },
   "engines": {
     "node": ">=20"

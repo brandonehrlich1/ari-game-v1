@@ -3,3 +3,6 @@ node_modules/
 .env
 .DS_Store
 service-account*.json
+
+# intermediate generated character art (pre-compose)
+tools/art-raw/
