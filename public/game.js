@@ -14,6 +14,10 @@
 import { resolveCharacters, resolveConfig } from './storage.js';
 
 const FT_PER_M = 3.28084;
+const ARI_SPHERE_ASSET = 'assets/F5BAFFD4-8565-45B8-8E75-AEC99FAD12BB.png';
+const TENNIS_BALL_RADIUS_M = 0.0335;
+const MIN_TAP_TARGET_RADIUS_M = 0.18;
+const XR_AUTO_CATCH_RADIUS_M = 0.45;
 
 const els = {
   gate: document.getElementById('gate'),
@@ -122,7 +126,8 @@ function renderSpawns() {
   for (const s of state.spawns) {
     if (!s.character) continue;
     const style = sphereStyle(s.character.id);
-    const radius = style.radius ?? 0.6;
+    const visualRadius = style.radius ?? TENNIS_BALL_RADIUS_M;
+    const hitRadius = Math.max(visualRadius, style.hitRadius ?? MIN_TAP_TARGET_RADIUS_M);
 
     // In look-around (non-XR) mode there's no walking, so pull spheres onto a
     // viewable dome (2.5-7 m) along their bearing instead of true distance.
@@ -138,27 +143,37 @@ function renderSpawns() {
     wrap.setAttribute('position', `${x} ${y} ${z}`);
     wrap.dataset.spawnId = s.id;
 
-    const sphere = document.createElement('a-sphere');
-    sphere.setAttribute('radius', radius);
-    sphere.setAttribute('color', style.color ?? '#44aaff');
-    sphere.setAttribute('opacity', style.opacity ?? 0.4);
-    sphere.setAttribute('transparent', 'true');
-    sphere.setAttribute('metalness', style.metalness ?? 0.1);
-    sphere.setAttribute('roughness', style.roughness ?? 0.4);
-    sphere.setAttribute('wireframe', String(!!style.wireframe));
-    sphere.setAttribute('side', 'double');
+    // Visible Ari sphere: tennis-ball scale in real-world WebXR meters.
+    const ball = document.createElement('a-image');
+    ball.classList.add('ari-sphere-visual');
+    ball.setAttribute('src', ARI_SPHERE_ASSET);
+    ball.setAttribute('width', visualRadius * 2);
+    ball.setAttribute('height', visualRadius * 2);
+    ball.setAttribute('transparent', 'true');
+    ball.setAttribute('look-at', '#cam');
     if (style.bobble) {
-      sphere.setAttribute('animation', 'property: position; dir: alternate; dur: 2200; easing: easeInOutSine; loop: true; to: 0 0.2 0');
+      ball.setAttribute('animation', 'property: position; dir: alternate; dur: 2200; easing: easeInOutSine; loop: true; to: 0 0.03 0');
     }
-    wrap.appendChild(sphere);
+    wrap.appendChild(ball);
+
+    // Larger invisible hit target keeps tapping reliable while preserving the
+    // small physical visual size.
+    const hit = document.createElement('a-sphere');
+    hit.classList.add('ari-sphere-hit-target');
+    hit.setAttribute('radius', hitRadius);
+    hit.setAttribute('opacity', '0');
+    hit.setAttribute('transparent', 'true');
+    hit.setAttribute('visible', 'false');
+    wrap.appendChild(hit);
 
     const img = document.createElement('a-image');
-    const scale = radius * (style.characterScale ?? 1.5) * 2;
+    const scale = visualRadius * (style.characterScale ?? 1.5) * 2;
     img.setAttribute('src', s.character.src);
     img.setAttribute('width', scale);
     img.setAttribute('height', scale);
     img.setAttribute('transparent', 'true');
     img.setAttribute('look-at', '#cam');
+    img.setAttribute('position', `0 0 ${visualRadius * 0.08}`);
     wrap.appendChild(img);
 
     wrap.addEventListener('click', () => tryCatch(s, wrap));
@@ -171,7 +186,7 @@ function renderSpawns() {
 function tryCatch(spawn, entity) {
   if (state.found.has(spawn.id)) return;
   state.found.add(spawn.id);
-  entity.querySelector('a-sphere')?.setAttribute('animation__catch', 'property: scale; to: 0.01 0.01 0.01; dur: 320; easing: easeInBack');
+  entity.setAttribute('animation__catch', 'property: scale; to: 0.01 0.01 0.01; dur: 320; easing: easeInBack');
   setTimeout(() => entity.remove(), 340);
   els.count.textContent = state.found.size;
   toast(`Caught ${spawn.character.name}! ✨`);
@@ -196,7 +211,7 @@ AFRAME.registerComponent('proximity-catcher', {
       if (state.found.has(id)) return;
       const p = new THREE.Vector3();
       entity.object3D.getWorldPosition(p);
-      if (camPos.distanceTo(p) < 1.4) {
+      if (camPos.distanceTo(p) < XR_AUTO_CATCH_RADIUS_M) {
         const spawn = state.spawns.find((s) => s.id === id);
         if (spawn) tryCatch(spawn, entity);
       }
