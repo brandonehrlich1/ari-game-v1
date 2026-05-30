@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>AR Character Hunt</title>
+  <title>AriMon Card Hunt</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -16,26 +16,36 @@
 
   <div id="gate" class="overlay">
     <div class="card">
-      <h1>AR Character Hunt</h1>
-      <p>Point your phone around to find characters floating inside glowing spheres, scattered every 10–20 feet around you — indoors or out.</p>
+      <h1>AriMon Card Hunt</h1>
+      <p>Find floating Ari Balls in the room. Catch one to reveal the AriMon card hiding inside.</p>
       <ul class="reqs">
         <li>📷 Allow camera access</li>
+        <li>🎴 First card: Turtwig Ari</li>
         <li>🚶 Best with room to walk around</li>
       </ul>
       <button id="start">Start hunting</button>
       <p id="mode" class="hint">Checking AR support…</p>
-      <a class="adminlink" href="admin.html">Set up characters (admin) →</a>
+      <a class="adminlink" href="admin.html">Admin tools →</a>
     </div>
   </div>
 
   <div id="hud" class="hud hidden">
     <div id="status" class="status">Loading…</div>
-    <div id="score" class="score">Caught <b id="count">0</b> / <span id="total">0</span></div>
-    <button id="regen" class="regen" title="Reshuffle nearby spheres">⟲</button>
+    <div id="score" class="score">Collection <b id="count">0</b> / <span id="total">151</span></div>
+    <button id="regen" class="regen" title="Reshuffle nearby Ari Balls">⟲</button>
   </div>
 
   <div id="reticle" class="reticle hidden"></div>
   <div id="toast" class="toast hidden"></div>
+
+  <div id="reveal" class="reveal hidden" role="dialog" aria-modal="true" aria-labelledby="reveal-title">
+    <div class="reveal-card-wrap">
+      <div class="reveal-kicker">Caught AriMon #001</div>
+      <h2 id="reveal-title">Turtwig Ari</h2>
+      <img id="reveal-img" alt="Turtwig Ari card" />
+      <button id="reveal-close">Keep hunting</button>
+    </div>
+  </div>
 
   <a-scene
     id="scene"
