@@ -1,0 +1,17 @@
+{
+  "name": "AriMon Card Hunt",
+  "short_name": "AriMon",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#e21b23",
+  "icons": [
+    {
+      "src": "ari-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
