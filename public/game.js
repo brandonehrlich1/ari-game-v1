@@ -1,6 +1,6 @@
 /* AriMon Card Hunt — game logic (static / self-contained). */
 import { resolveConfig } from './storage.js';
-import { initStuffies, renderStuffiesBinder } from './stuffies.js';
+import { initStuffies, renderStuffiesBinder, startStuffiesHunt, pauseStuffiesHunt, tryStuffyTap, stuffyTapPending } from './stuffies.js';
 
 const FT_PER_M = 3.28084;
 const ARI_SPHERE_ASSET = 'assets/F5BAFFD4-8565-45B8-8E75-AEC99FAD12BB.png';
@@ -57,14 +57,15 @@ const state = {
   zoneTimer: null
 };
 let xrSupported = false;
+let revealPending = false, galleryPending = false;
 
 navigator.xr?.isSessionSupported?.('immersive-ar').then((ok) => {
   xrSupported = ok;
   els.mode.textContent = ok
-    ? 'Full AR supported — walk around to find Ari Balls.'
-    : 'Look-around hunt — scan the room slowly to reveal Ari Balls.';
+    ? 'Unified camera hunt — tap Ari Balls or real stuffies.'
+    : 'Unified camera hunt — tap Ari Balls or real stuffies.';
 }).catch(() => {
-  els.mode.textContent = 'Look-around hunt — scan the room slowly to reveal Ari Balls.';
+  els.mode.textContent = 'Unified camera hunt — tap Ari Balls or real stuffies.';
 });
 
 async function loadData() {
@@ -201,14 +202,14 @@ function renderSpawns() {
     ball.setAttribute('transparent', 'true');
     ball.setAttribute('look-at', '#cam');
     ball.setAttribute('animation', 'property: position; dir: alternate; dur: 5600; easing: easeInOutSine; loop: true; to: 0 0.002 0');
-    ball.addEventListener('click', (e) => { e.stopPropagation(); tryCatch(s, wrap); });
+    ball.addEventListener('click', (e) => { if(state.xr){e.stopPropagation();tryCatch(s,wrap);} });
     wrap.appendChild(ball);
 
     const hit = document.createElement('a-sphere');
     hit.classList.add('ari-sphere-hit-target', 'catchable');
     hit.setAttribute('radius', hitRadius);
     hit.setAttribute('material', 'opacity: 0.001; transparent: true; depthWrite: false; color: #ffffff');
-    hit.addEventListener('click', (e) => { e.stopPropagation(); tryCatch(s, wrap); });
+    hit.addEventListener('click', (e) => { if(state.xr){e.stopPropagation();tryCatch(s,wrap);} });
     wrap.appendChild(hit);
 
     els.scene.appendChild(wrap);
@@ -249,6 +250,8 @@ function setSpawnVisible(spawnId, visible) {
 
 function tryCatch(spawn, entity) {
   if (state.found.has(spawn.id) || !document.getElementById('stuffies-panel').classList.contains('hidden') || !els.gallery.classList.contains('hidden') || !els.reveal.classList.contains('hidden')) return;
+  if(revealPending||stuffyTapPending()||galleryPending)return;
+  revealPending=true;pauseStuffiesHunt();
   state.found.add(spawn.id);
   entity.setAttribute('animation__catch', 'property: scale; to: 0.01 0.01 0.01; dur: 280; easing: easeInBack');
   setTimeout(() => entity.remove(), 300);
@@ -257,7 +260,7 @@ function tryCatch(spawn, entity) {
   state.collection.add(spawn.card.id);
   saveCollection();
   updateCollectionCount();
-  setTimeout(() => showReveal(spawn.card, wasNew), 300);
+  setTimeout(() => {revealPending=false;showReveal(spawn.card, wasNew);}, 300);
 }
 
 function flashScreen() {
@@ -269,7 +272,7 @@ function flashScreen() {
 }
 
 function showReveal(card, wasNew) {
-  closeGallery();
+  pauseStuffiesHunt();closeGallery();
   els.revealTitle.textContent = card.name;
   els.revealImg.src = card.src;
   els.revealImg.alt = `${card.name} card`;
@@ -290,6 +293,8 @@ function toast(msg) {
 async function openGallery(e) {
   e?.preventDefault?.();
   e?.stopPropagation?.();
+  if(revealPending||stuffyTapPending()||galleryPending)return;
+  galleryPending=true;pauseStuffiesHunt();
   try {
     await ensureDataLoaded();
     state.collection = loadCollection();
@@ -298,7 +303,7 @@ async function openGallery(e) {
   } catch (err) {
     toast('Binder failed to load');
     console.error(err);
-  }
+  } finally {galleryPending=false;}
 }
 function closeGallery() { els.gallery?.classList.add('hidden'); }
 async function renderGallery() {
@@ -373,7 +378,7 @@ function renderBinderSlot(card, id, compact) {
 }
 
 function catchNearestScreenBall(clientX, clientY) {
-  if (!state.running || !els.reveal.classList.contains('hidden') || !els.gallery.classList.contains('hidden') || !document.getElementById('stuffies-panel').classList.contains('hidden')) return false;
+  if (!canHunt() || stuffyTapPending()) return false;
   const camera = els.cam.getObject3D('camera');
   const canvas = els.scene.canvas;
   if (!camera || !canvas) return false;
@@ -400,11 +405,14 @@ function catchNearestScreenBall(clientX, clientY) {
   return true;
 }
 
+function canHunt(){return state.running&&!revealPending&&!galleryPending&&els.reveal.classList.contains('hidden')&&els.gallery.classList.contains('hidden')&&document.getElementById('stuffies-panel').classList.contains('hidden');}
 function installScreenTapFallback() {
   window.addEventListener('pointerup', (e) => {
     if (!state.running) return;
     if (e.target.closest?.('.hud, .reveal, .overlay, .panel, .stuffies-hunt')) return;
+    if (!canHunt() || stuffyTapPending()) return;
     if (catchNearestScreenBall(e.clientX, e.clientY)) e.preventDefault();
+    else void tryStuffyTap(e.clientX,e.clientY);
   }, { passive: false });
 }
 
@@ -452,20 +460,12 @@ async function start() {
   els.cam.setAttribute('proximity-catcher', '');
   state.running = true;
   const begin = () => { generateSpawns(); renderSpawns(); };
-  if (xrSupported) {
-    state.xr = true;
-    try {
-      await els.scene.enterAR();
-      els.reticle.classList.remove('hidden');
-      els.scene.addEventListener('exit-vr', () => els.reticle.classList.add('hidden'));
-      begin();
-      return;
-    } catch (e) { state.xr = false; }
-  }
+  // Unified hunt requires readable camera frames; use look-around AR on all devices.
   state.xr = false;
   await startPassthrough();
   els.reticle.classList.remove('hidden');
   begin();
+  void startStuffiesHunt(els.video);
 }
 
 els.start.addEventListener('click', start);
@@ -478,4 +478,4 @@ els.galleryClose?.addEventListener('click', closeGallery);
 els.galleryClose?.addEventListener('touchend', (e) => { e.preventDefault(); closeGallery(); }, { passive: false });
 els.gallery?.addEventListener('click', (e) => { if (e.target === els.gallery) closeGallery(); });
 installScreenTapFallback();
-initStuffies({ closeGallery, cameraStream: () => els.video.srcObject, isImmersive: () => state.xr && els.scene.is('ar-mode'), onClaim: () => flashScreen() });
+initStuffies({ closeGallery, canHunt, resume: () => {if(state.running)void startStuffiesHunt(els.video);}, startHunt: () => {if(!state.running&&!els.start.disabled)void start();}, onLiveClaim: card => {flashScreen();showReveal(card,true);void startStuffiesHunt(els.video);} });

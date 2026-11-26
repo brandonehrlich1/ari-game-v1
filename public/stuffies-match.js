@@ -20,3 +20,24 @@ export function advanceMatch(previous, candidate, needed=3) {
   const count=previous.id===candidate.id?previous.count+1:1;
   return {id:candidate.id,count,claim:count>=needed};
 }
+
+export function matchViews(probes,roster) {
+  if(!probes.length)return null;
+  const dot=(a,b)=>a.length===b.length?a.reduce((sum,x,i)=>sum+x*b[i],0):-1;
+  const ranked=roster.filter(r=>r.refs?.length>=2).map(r=>{
+    const views=probes.map(p=>r.refs.map(ref=>dot(p,ref)).sort((a,b)=>b-a)).sort((a,b)=>b[0]-a[0]);
+    return {id:r.id,claimed:r.claimed,score:views[0][0],second:views[0][1]};
+  }).sort((a,b)=>b.score-a.score);
+  const best=ranked[0];
+  if(!best||best.score<.84||(best.second<.69&&best.score<.91)||(ranked[1]&&best.score-ranked[1].score<.075))return null;
+  return best;
+}
+
+export function frameCrop(vw,vh,rect,x,y,ratio) {
+  const scale=Math.max(rect.width/vw,rect.height/vh);
+  const visibleW=rect.width/scale,visibleH=rect.height/scale;
+  const px=(x-rect.left)/scale+(vw-visibleW)/2;
+  const py=(y-rect.top)/scale+(vh-visibleH)/2;
+  const side=Math.min(vw,vh,visibleW,visibleH)*ratio;
+  return {left:Math.max(0,Math.min(vw-side,px-side/2)),top:Math.max(0,Math.min(vh-side,py-side/2)),side};
+}

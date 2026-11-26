@@ -21,14 +21,14 @@
   <div id="gate" class="overlay">
     <div class="card">
       <h1>AriMon Card Hunt</h1>
-      <p>Find Ari Balls hidden in the room. Catch one to reveal the AriMon card inside.</p>
+      <p>Find hidden Ari Balls and your real stuffed animals. Tap either one to catch its card.</p>
       <ul class="reqs">
         <li>📷 Allow camera access</li>
         <li>🎴 Collect the first AriMon set</li>
         <li>🔎 Pan around slowly to discover nearby Ari Balls</li>
       </ul>
       <button id="start">Start hunting</button>
-      <button id="stuffies-open" class="stuffies-action" type="button">🧸 Stuffies · Create & scan</button>
+      <button id="stuffies-open" class="stuffies-action" type="button">🧸 Manage stuffies</button>
       <p id="mode" class="hint">Checking AR support…</p>
       <a class="adminlink" href="admin.html">Admin tools →</a>
     </div>
@@ -68,14 +68,16 @@
     </div>
   </div>
 
-  <button id="stuffies-hunt" class="stuffies-hunt hidden" type="button">🧸 Scan stuffies</button>
+  <button id="stuffies-hunt" class="stuffies-hunt hidden" type="button">🧸 Stuffies setup</button>
+  <div id="stuffy-target" class="stuffy-target hidden" aria-hidden="true"><div id="stuffy-target-label"></div></div>
+  <div id="stuffy-hunt-status" class="stuffy-hunt-status hidden" aria-live="polite"></div>
 
   <div id="stuffies-panel" class="panel hidden stuffies-panel" role="dialog" aria-modal="true" aria-labelledby="stuffies-title">
     <div class="panel-card">
       <div class="panel-head"><div><div class="panel-kicker">Real-world hunt</div><h2 id="stuffies-title">Stuffies</h2></div><button id="stuffies-close" class="iconbtn" type="button" aria-label="Close Stuffies">×</button></div>
       <section data-stuffies-view="home">
         <p id="stuffies-count" class="stuffies-note" aria-live="polite">Loading…</p>
-        <button id="stuffies-scan" class="stuffies-action primary" type="button">📷 Scan for stuffies</button>
+        <button id="stuffies-scan" class="stuffies-action primary" type="button">🎯 Start / resume hunt</button>
         <button id="stuffies-new" class="stuffies-action" type="button">＋ Create a stuffy</button>
         <div id="stuffies-list"></div>
         <p class="stuffies-note">Photos and collections stay on this browser. Internet is needed for the first recognition-model download.</p>
@@ -92,16 +94,9 @@
         <button id="stuffies-save" class="stuffies-action primary" type="button" disabled>Save collectible</button>
         <div class="stuffies-buttons"><button id="stuffies-reset" class="stuffies-action" type="button">Reset photos</button><button data-stuffies-home class="stuffies-action" type="button">Back</button></div>
       </section>
-      <section data-stuffies-view="scan" class="hidden">
-        <div class="stuffies-viewfinder"><video id="stuffies-video" autoplay playsinline muted></video><div class="stuffies-frame" aria-hidden="true"></div></div>
-        <p id="stuffies-scan-status" class="stuffies-note" aria-live="polite">Starting camera…</p>
-        <p class="stuffies-note">Point at the actual toy, not a person. A strong repeated match automatically claims the digital card. Similar-looking toys may need different reference photos.</p>
-        <button id="stuffies-retry" class="stuffies-action primary" type="button">Scan again</button>
-        <button data-stuffies-home class="stuffies-action" type="button">Back</button>
-      </section>
       <section data-stuffies-view="reward" class="hidden">
         <h2 id="stuffies-reward-title">Claimed!</h2><img id="stuffies-reward-img" alt="Stuffies collectible card">
-        <button id="stuffies-scan-again" class="stuffies-action primary" type="button">Find another stuffy</button><button data-stuffies-home class="stuffies-action" type="button">My stuffies</button>
+        <button id="stuffies-scan-again" class="stuffies-action primary" type="button">Keep hunting</button><button data-stuffies-home class="stuffies-action" type="button">My stuffies</button>
       </section>
     </div>
   </div>

@@ -136,3 +136,7 @@ use (internet required); reference features, rendered images, and claims live
 in separate local IndexedDB on the playing browser. Photos are not sent to a
 server or committed to the public repo. No cross-device sync or backup yet.
 Browser data removal can erase the local collection.
+
+### Unified camera hunt update
+
+Start hunting now uses one camera view for both Ari Balls and real Stuffies. Tap a ball or tap the real toy. Multiple crop sizes and two matching checks on the tapped region replace automatic claiming. A repeated center match shows an aiming cue, not a detected bounding box. The same local registrations and binder claims are retained. Unified hunt uses look-around AR on all devices (no immersive WebXR camera access). Recognition is experimental; no physical accuracy benchmark yet.
