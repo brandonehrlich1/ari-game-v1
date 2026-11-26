@@ -21,7 +21,7 @@ export function advanceMatch(previous, candidate, needed=3) {
   return {id:candidate.id,count,claim:count>=needed};
 }
 
-export function matchViews(probes,roster) {
+export function matchViews(probes,roster,{minimum=.77,margin=.075}={}) {
   if(!probes.length)return null;
   const dot=(a,b)=>a.length===b.length?a.reduce((sum,x,i)=>sum+x*b[i],0):-1;
   const ranked=roster.filter(r=>r.refs?.length>=2).map(r=>{
@@ -29,8 +29,12 @@ export function matchViews(probes,roster) {
     return {id:r.id,claimed:r.claimed,score:views[0][0],second:views[0][1]};
   }).sort((a,b)=>b.score-a.score);
   const best=ranked[0];
-  if(!best||best.score<.84||(best.second<.69&&best.score<.91)||(ranked[1]&&best.score-ranked[1].score<.075))return null;
+  if(!best||best.score<minimum||(ranked[1]&&best.score-ranked[1].score<margin))return null;
   return best;
+}
+
+export function confirmMatch(first,second) {
+  return !!first&&!!second&&!first.claimed&&!second.claimed&&first.id===second.id&&Math.max(first.score,second.score)>=.81&&(first.score+second.score)/2>=.79;
 }
 
 export function frameCrop(vw,vh,rect,x,y,ratio) {

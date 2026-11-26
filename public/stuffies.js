@@ -1,5 +1,5 @@
 /* Stuffies: local creator, camera matching, and binder extension. */
-import { normalize, matchViews, frameCrop, advanceMatch } from './stuffies-match.js';
+import { normalize, matchViews, frameCrop, advanceMatch, confirmMatch } from './stuffies-match.js';
 
 const DB = 'arimon-stuffies-v1';
 const LIMIT = 4;
@@ -34,6 +34,14 @@ async function store(mode, operation) {
 }
 const records=()=>store('readonly',(s,set)=>{const r=s.getAll();r.onsuccess=()=>set(r.result);});
 const addRecord=r=>store('readwrite',(s)=>s.add(r));
+function appendReferences(id,vectors){
+  return store('readwrite',(s,set)=>{
+    const req=s.get(id);req.onsuccess=()=>{
+      const item=req.result;if(!item){set(false);return;}
+      item.refs=[...item.refs,...vectors].slice(-60);s.put(item);set(true);
+    };
+  });
+}
 function claim(id) {
   return store('readwrite',(s,set)=>{
     const r=s.get(id);
@@ -158,9 +166,34 @@ async function showHome() {
       const row=document.createElement('div');row.className='stuffies-roster-row';
       const img=document.createElement('img');img.src=asset(r,'art');img.alt='';
       const label=document.createElement('span');label.textContent=r.name+' · '+(r.claimed?'Claimed':'Ready to find');
-      row.append(img,label);list.append(row);
+      const train=document.createElement('label');train.className='stuffies-train';train.textContent='Teach views';
+      const input=document.createElement('input');input.type='file';input.accept='image/*';input.multiple=true;
+      input.setAttribute('aria-label','Add reference photos for '+r.name);
+      input.addEventListener('change',async()=>{const files=Array.from(input.files||[]);input.value='';await teach(r.id,r.name,files);});
+      train.append(input);row.append(img,label,train);list.append(row);
     }
   } catch(e){status('stuffies-count','Could not read this device’s collection: '+e.message);}
+}
+async function referenceVectors(m,p) {
+  const result=[];
+  for(const ratio of [1,.82,.60])result.push(await embedding(m,square(p,p.width,p.height,ratio)));
+  return result;
+}
+async function teach(id,name,files) {
+  if(busy||!files.length)return;busy=true;
+  try{
+    status('stuffies-count','Teaching '+name+' new views…');
+    while(inference)await inference.catch(()=>{});
+    const m=await model(),vectors=[];
+    for(const f of files.slice(0,6)){
+      if(f.size>30*1024*1024)throw Error('Use photos under 30 MB.');
+      const p=fitImage(await decode(f),768);
+      vectors.push(...await referenceVectors(m,p));
+    }
+    if(!await appendReferences(id,vectors))throw Error('Stuffy no longer exists');
+    await showHome();status('stuffies-count',name+' learned '+Math.min(files.length,6)+' new views! Resume hunting.');
+  }catch(e){status('stuffies-count','Could not teach: '+e.message);}
+  finally{busy=false;}
 }
 function showCreator() {
   stopScan();section('creator');
@@ -208,7 +241,7 @@ async function save() {
   try {
     status('stuffies-create-status','Preparing recognition on this device. First use downloads the model…');
     const m=await model(), vectors=[];
-    for(const p of refs)vectors.push(await embedding(m,square(p,p.width,p.height)));
+    for(const p of refs)vectors.push(...await referenceVectors(m,p));
     const r={id:'stuffy-'+crypto.randomUUID(),name,rarity,refs:vectors,art:await asBlob(source),card:await asBlob(drawCard(source,name,rarity)),claimed:false,createdAt:Date.now()};
     await addRecord(r);
     busy=false;photos=[];original=null;art=null;
@@ -254,10 +287,11 @@ export async function startStuffiesHunt(video) {
     const tick=async()=>{
       if(generation!==scanGeneration||!active)return;
       try{
-        if(!canScan()||tapBusy){clearRecognition();huntStatus('');}
+        if(tapBusy){clearRecognition();}
+        else if(!canScan()){clearRecognition();huntStatus('');}
         else {
           const rect=video.getBoundingClientRect();
-          const m=await compareAt(video,rect.left+rect.width/2,rect.top+rect.height/2,[.82,.55],liveModel,liveRoster);
+          const m=await compareAt(video,rect.left+rect.width/2,rect.top+rect.height/2,[1,.72,.45],liveModel,liveRoster);
           if(generation!==scanGeneration||!active)return;
           if(!canScan()||tapBusy){clearRecognition();}
           else {
@@ -283,12 +317,13 @@ export async function tryStuffyTap(x,y) {
   const expected=centered&&readyMatch&&now()-lastSeen<2300?readyMatch.id:null;
   tapBusy=true;clearRecognition();huntStatus('Checking your stuffy…');
   try {
-    const first=await compareAt(video,x,y,[.82,.55,.35],m,roster);
+    const first=await compareAt(video,x,y,[1,.82,.55,.35],m,roster);
     if(generation!==scanGeneration||!canScan()||!first||first.claimed||(expected&&first.id!==expected)){
       if(generation===scanGeneration)huntStatus('No match yet — center the toy and try again');return false;
     }
-    const second=await compareAt(video,x,y,[.82,.55],m,roster);
-    if(generation!==scanGeneration||!canScan()||!second||second.id!==first.id||second.claimed){
+    await new Promise(resolve=>setTimeout(resolve,220));
+    const second=await compareAt(video,x,y,[1,.82,.55,.35],m,roster);
+    if(generation!==scanGeneration||!canScan()||!confirmMatch(first,second)){
       if(generation===scanGeneration)huntStatus('Hold the camera steady and tap again');return false;
     }
     const caught=await claim(first.id);
