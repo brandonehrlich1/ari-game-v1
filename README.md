@@ -142,3 +142,5 @@ Start hunting now uses one camera view for both Ari Balls and real Stuffies. Tap
 ### 3D plush preview
 
 The first procedural model is Turtwig (registered names containing Turtwig or Turtle Wig). On a successful catch or when opened in the Stuffies binder, the actual 3D mesh can rotate by touch, with a toggle back to the original collectible card. The geometry is an approximation of the plush, not a photogrammetric reconstruction. Other registered toys continue to display their original card. No reference-photo or storage migration; the 3D asset does not change recognition.
+
+The 3D roster now includes Pikachu and Charmander, with sculpted plush proportions, facial stitching, back markings and tails based on supplied photos. Register each on the playing device under its name (2–4 real photos). The model activates after camera claim or in the binder. No personal photos are bundled in the public repository.
