@@ -121,12 +121,10 @@ contrasting background; adjust edge-based background removal, or keep the
 original. The browser renders a full-body PNG and a collectible card. No AI
 image generation or 3D mesh is used.
 
-In **Scan for stuffies**, center the actual toy in the camera square. MobileNet
-image embeddings are compared locally against the references. Three repeated
-matches above conservative similarity/margin thresholds automatically claim
-the card, once per toy. The matcher is experimental and can confuse similar
+In the unified camera hunt, tap the actual toy to claim it after matching. MobileNet
+image embeddings are compared locally against the references. The matcher is experimental and can confuse similar
 toys or photos of toys; it is not a verified object detector or liveness check.
-There is no random spawn or manual claim for Stuffies. The existing AriMon
+There is no random spawn for Stuffies. The existing AriMon
 cards and collection keys are unchanged; the Binder has a separate Stuffies
 section. The scan screen works with the regular phone camera, not immersive
 WebXR camera pixels.
@@ -140,3 +138,7 @@ Browser data removal can erase the local collection.
 ### Unified camera hunt update
 
 Start hunting now uses one camera view for both Ari Balls and real Stuffies. Tap a ball or tap the real toy. Multiple crop sizes and two matching checks on the tapped region replace automatic claiming. A repeated center match shows an aiming cue, not a detected bounding box. The same local registrations and binder claims are retained. Unified hunt uses look-around AR on all devices (no immersive WebXR camera access). Recognition is experimental; no physical accuracy benchmark yet.
+
+### 3D plush preview
+
+The first procedural model is Turtwig (registered names containing Turtwig or Turtle Wig). On a successful catch or when opened in the Stuffies binder, the actual 3D mesh can rotate by touch, with a toggle back to the original collectible card. The geometry is an approximation of the plush, not a photogrammetric reconstruction. Other registered toys continue to display their original card. No reference-photo or storage migration; the 3D asset does not change recognition.

@@ -413,3 +413,7 @@ a-scene { position: fixed; inset: 0; z-index: 1; background: transparent; }
 #stuffy-target-label {position:absolute;top:-38px;left:50%;transform:translateX(-50%);background:#163f33ed;color:#fff;white-space:nowrap;padding:8px 13px;border-radius:999px;font-weight:800;font-size:14px}
 .stuffy-hunt-status {position:fixed;left:50%;bottom:max(74px,calc(env(safe-area-inset-bottom) + 58px));transform:translateX(-50%);z-index:32;pointer-events:none;background:#102036d9;color:white;border-radius:999px;padding:9px 14px;text-align:center;font-size:13px;width:max-content;max-width:90vw}
 body:has(.panel:not(.hidden)) .stuffy-target,body:has(.reveal:not(.hidden)) .stuffy-target,body:has(.panel:not(.hidden)) .stuffy-hunt-status,body:has(.reveal:not(.hidden)) .stuffy-hunt-status {display:none}
+
+.reveal-model {width:100%;height:min(43vh,360px);min-height:210px;border-radius:20px;overflow:hidden;background:radial-gradient(ellipse at center,#d2f4d7 0%,#8fb6ad 55%,#557e89 100%)}
+.reveal-model canvas {display:block;width:100%;height:100%;touch-action:none;cursor:grab}
+#reveal-model-hint{text-align:center;margin:6px 0}

@@ -318,7 +318,7 @@ export async function renderStuffiesBinder(container) {
     for(const r of items){
       const item=document.createElement('button');item.type='button';item.className='gallery-item binder-slot '+(r.claimed?'owned':'registered locked');
       const name=document.createElement('strong');name.textContent=r.claimed?r.name:'Unclaimed stuffy';
-      if(r.claimed){const im=document.createElement('img');im.src=asset(r,'card');im.alt=r.name;item.append(im);item.addEventListener('click',()=>{hooks.closeGallery?.();panel.classList.remove('hidden');showReward(r,false);});}
+      if(r.claimed){const im=document.createElement('img');im.src=asset(r,'card');im.alt=r.name;item.append(im);item.addEventListener('click',()=>{hooks.closeGallery?.();hooks.onViewCard?.({id:r.id,name:r.name,src:asset(r,'card'),number:'Real-life Stuffy'});});}
       else{const back=document.createElement('div');back.className='card-back';back.textContent='?';item.append(back);item.disabled=true;}
       item.append(name);grid.append(item);
     }

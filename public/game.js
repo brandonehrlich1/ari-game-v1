@@ -1,5 +1,6 @@
 /* AriMon Card Hunt — game logic (static / self-contained). */
 import { resolveConfig } from './storage.js';
+import { modelKey, openModelPreview, closeModelPreview } from './stuffies-3d.js';
 import { initStuffies, renderStuffiesBinder, startStuffiesHunt, pauseStuffiesHunt, tryStuffyTap, stuffyTapPending } from './stuffies.js';
 
 const FT_PER_M = 3.28084;
@@ -271,17 +272,27 @@ function flashScreen() {
   setTimeout(() => els.flash.classList.add('hidden'), 360);
 }
 
-function showReveal(card, wasNew) {
+let revealedModel=null, showingModel=false;
+const modelHost=document.getElementById('reveal-model'),modelToggle=document.getElementById('reveal-model-toggle'),modelHint=document.getElementById('reveal-model-hint');
+function setModelVisible(show){
+  closeModelPreview();showingModel=false;modelHost.classList.add('hidden');modelHint.classList.add('hidden');els.revealImg.classList.remove('hidden');modelToggle.textContent='View 3D friend';
+  if(!show||!revealedModel)return;
+  try{modelHost.classList.remove('hidden');openModelPreview(revealedModel,modelHost);showingModel=true;els.revealImg.classList.add('hidden');modelHint.classList.remove('hidden');modelToggle.textContent='View collectible card';}
+  catch(e){modelHost.classList.add('hidden');toast('3D unavailable — your card is safe');}
+}
+modelToggle.addEventListener('click',()=>setModelVisible(!showingModel));
+function showReveal(card, wasNew, viewing=false) {
   pauseStuffiesHunt();closeGallery();
   els.revealTitle.textContent = card.name;
   els.revealImg.src = card.src;
   els.revealImg.alt = `${card.name} card`;
   const kicker = els.reveal.querySelector('.reveal-kicker');
-  if (kicker) kicker.textContent = `${wasNew ? 'New card caught' : 'Duplicate card'} · ${card.number || card.id}`;
+  if (kicker) kicker.textContent = `${viewing ? 'Your collection' : wasNew ? 'New card caught' : 'Duplicate card'} · ${card.number || card.id}`;
   els.reveal.classList.remove('hidden');
-  toast(`${wasNew ? 'Added' : 'Duplicate'} ${card.name}! 🎴`);
+  revealedModel=modelKey(card);modelToggle.classList.toggle('hidden',!revealedModel);setModelVisible(Boolean(revealedModel));
+  if(!viewing)toast(`${wasNew ? 'Added' : 'Duplicate'} ${card.name}! 🎴`);
 }
-function hideReveal() { els.reveal.classList.add('hidden'); }
+function hideReveal() { setModelVisible(false);revealedModel=null;els.reveal.classList.add('hidden'); }
 let toastTimer;
 function toast(msg) {
   els.toast.textContent = msg;
@@ -478,4 +489,4 @@ els.galleryClose?.addEventListener('click', closeGallery);
 els.galleryClose?.addEventListener('touchend', (e) => { e.preventDefault(); closeGallery(); }, { passive: false });
 els.gallery?.addEventListener('click', (e) => { if (e.target === els.gallery) closeGallery(); });
 installScreenTapFallback();
-initStuffies({ closeGallery, canHunt, resume: () => {if(state.running)void startStuffiesHunt(els.video);}, startHunt: () => {if(!state.running&&!els.start.disabled)void start();}, onLiveClaim: card => {flashScreen();showReveal(card,true);void startStuffiesHunt(els.video);} });
+initStuffies({ closeGallery, canHunt, resume: () => {if(state.running)void startStuffiesHunt(els.video);}, startHunt: () => {if(!state.running&&!els.start.disabled)void start();}, onLiveClaim: card => {flashScreen();showReveal(card,true);void startStuffiesHunt(els.video);}, onViewCard: card => showReveal(card,false,true) });
