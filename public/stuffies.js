@@ -1,6 +1,6 @@
 /* Stuffies: local creator, camera matching, and binder extension. */
 import { normalize, matchViews, frameCrop, advanceMatch, confirmMatch, mergeReferences, referenceName, rankViews, applyTraining } from './stuffies-match.js';
-import { HOSTED_VERSION, HOSTED_STUFFIES, hostedIdentity, nextCatch, resolveOfficialStuffyCard } from './stuffies-catalog.js';
+import { HOSTED_VERSION, HOSTED_STUFFIES, hostedIdentity, nextCatch, resolveOfficialStuffyCard } from './stuffies-catalog.js?v=4';
 
 const DB = 'arimon-stuffies-v1';
 const LIMIT = 6;
@@ -61,14 +61,15 @@ async function hostedPhoto(view) {
 async function ensureHosted() {
   if(!hostedPromise)hostedPromise=(async()=>{
     const existing=await rawRecords(),errors=[];
-    for(const seed of HOSTED_STUFFIES){
+    // Install bonus characters before any network-dependent recognition initialization.
+    const ordered=[...HOSTED_STUFFIES].sort((a,b)=>Number(Boolean(b.bonusCard))-Number(Boolean(a.bonusCard)));
+    for(const seed of ordered){
       if(existing.some(r=>hostedIdentity(r,seed)&&r.hostedVersion>=HOSTED_VERSION))continue;
       try{
         if(!seed.views.length&&seed.bonusCard){
-          const res=await fetch(seed.bonusCard.src);if(!res.ok)throw Error('Bonus card unavailable');
-          const card=await res.blob();
-          const source=fitImage(await decode(card),768);
-          await installHosted(seed,{refs:[],art:await asBlob(source),card:await asBlob(source)});
+          // The hosted SVG is already the card. Do not gate roster registration on
+          // SVG decoding, canvas serialization, or the recognition model.
+          await installHosted(seed,{refs:[],art:seed.bonusCard.src,card:seed.bonusCard.src});
           continue;
         }
         const photos=await Promise.all(seed.views.map(hostedPhoto));
@@ -138,6 +139,9 @@ function claim(id) {
   });
 }
 function asset(r, kind='card') {
+  if(typeof r[kind]==='string')return r[kind];
+  const bonus=HOSTED_STUFFIES.find(seed=>hostedIdentity(r,seed))?.bonusCard;
+  if(!(r[kind] instanceof Blob)&&bonus)return bonus.src;
   const key=r.id+':'+kind;
   if(!urls.has(key))urls.set(key,URL.createObjectURL(r[kind]));
   return urls.get(key);
@@ -533,14 +537,14 @@ export async function renderStuffiesBinder(container) {
     label.textContent=items.filter(r=>r.claimed).length+' / '+items.length+' claimed · linked AriMon cards also unlock in the main set';
     for(const r of items){
       const item=document.createElement('button');item.type='button';item.className='gallery-item binder-slot '+(r.claimed?'owned':'registered locked');
-      const name=document.createElement('strong');name.textContent=r.claimed?r.name:'Unclaimed stuffy';
+      const name=document.createElement('strong');name.textContent=r.claimed?r.name:((r.refs?.length||0)<2?r.name+' · Train to catch':'Unclaimed stuffy');
       if(r.claimed){
         const card=displayCard(r),im=document.createElement('img');
         im.src=card.src;im.alt=card.name;item.append(im);
         const number=document.createElement('span');number.textContent=card.number+' · '+card.name;item.append(number);
         item.addEventListener('click',()=>{hooks.closeGallery?.();hooks.onViewCard?.(card);});
       }
-      else{const back=document.createElement('div');back.className='card-back';back.textContent='?';item.append(back);item.disabled=true;}
+      else{const back=document.createElement('div');back.className='card-back';back.textContent='?';item.append(back);if((r.refs?.length||0)<2){item.addEventListener('click',()=>{hooks.closeGallery?.();open();});}else item.disabled=true;}
       item.append(name);grid.append(item);
     }
   }catch(e){label.textContent='Stuffies storage unavailable: '+e.message;}

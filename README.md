@@ -168,3 +168,5 @@ Live captures and photo uploads store reference embeddings, a small view thumbna
 ### Linked AriMon cards and Chimchar
 
 Turtwig, Charmander and Pikachu use numbered AriMon cards 001, 004 and 025 for 2D display. A real-toy catch also unlocks its numbered binder card; previous catches reconcile on binder open. The Stuffies record and repeat-catch count stay separate. Chimchar is a hosted bonus entry (ChimchAri, BONUS 001) with a handcrafted SVG card and procedural 3D plush model. Its reference list starts empty until real toy photos are added or Teach live captures are saved on the device. The numbered 151-card manifest is unchanged.
+
+Chimchar bonus registration no longer requires image decoding or recognition-model initialization. The setup roster lists it before training, and its untrained binder entry is named and links to setup. Versioned game imports prevent older cached modules from masking the fourth entry after reload.
