@@ -5,6 +5,7 @@ const DB = 'arimon-stuffies-v1';
 const LIMIT = 4;
 const $ = id => document.getElementById(id);
 let panel, modelPromise, photos = [], original = null, art = null, active = false;
+let teaching=null, teachStream=null, teachGeneration=0;
 let scanGeneration = 0, scanTimer, busy = false;
 let liveVideo = null, liveRoster = [], liveModel = null, inference = null, tapBusy = false, readyMatch = null, tracking = {id:null,count:0}, lastSeen = 0;
 const now = () => performance.now();
@@ -146,13 +147,14 @@ function drawCard(src,name,rarity) {
 }
 function status(id,msg){$(id).textContent=msg;}
 function section(name) {
+  if(name!=='live-teach')stopLiveTeach();
   for(const x of panel.querySelectorAll('[data-stuffies-view]'))x.classList.toggle('hidden',x.dataset.stuffiesView!==name);
 }
 function stopScan() {
   active=false;scanGeneration++;clearTimeout(scanTimer);
   liveVideo=null;liveRoster=[];liveModel=null;readyMatch=null;tracking={id:null,count:0};hideTarget();huntStatus('');
 }
-function close() {if(busy||tapBusy)return;stopScan();panel.classList.add('hidden');hooks.resume?.();}
+function close() {if(busy||tapBusy)return;stopLiveTeach();stopScan();panel.classList.add('hidden');hooks.resume?.();}
 function open() {
   if(tapBusy)return;hooks.closeGallery?.();panel.classList.remove('hidden');showHome();
 }
@@ -170,9 +172,60 @@ async function showHome() {
       const input=document.createElement('input');input.type='file';input.accept='image/*';input.multiple=true;
       input.setAttribute('aria-label','Add reference photos for '+r.name);
       input.addEventListener('change',async()=>{const files=Array.from(input.files||[]);input.value='';await teach(r.id,r.name,files);});
-      train.append(input);row.append(img,label,train);list.append(row);
+      train.append(input);
+      const live=document.createElement('button');live.type='button';live.className='stuffies-live-button';live.textContent='Teach live';live.addEventListener('click',()=>{if(!busy)void startLiveTeach(r);});
+      const controls=document.createElement('div');controls.className='stuffies-train-controls';controls.append(live,train);
+      row.append(img,label,controls);list.append(row);
     }
   } catch(e){status('stuffies-count','Could not read this device’s collection: '+e.message);}
+}
+function stopLiveTeach(){
+  teachGeneration++;teaching=null;
+  const video=$('stuffies-teach-video');
+  if(video){video.pause();video.srcObject=null;}
+  if(teachStream){teachStream.getTracks().forEach(t=>t.stop());teachStream=null;}
+}
+async function startLiveTeach(r){
+  stopScan();stopLiveTeach();section('live-teach');
+  const generation=teachGeneration;
+  teaching={id:r.id,name:r.name,count:0};
+  status('stuffies-teach-title','Teach '+r.name);
+  status('stuffies-teach-status','Starting camera…');
+  $('stuffies-teach-save').disabled=true;
+  try{
+    const existing=hooks.cameraStream?.();
+    let stream=existing;
+    if(!stream?.getVideoTracks().some(t=>t.readyState==='live')){
+      stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:false});
+      if(generation!==teachGeneration){stream.getTracks().forEach(t=>t.stop());return;}
+      teachStream=stream;
+    }
+    if(generation!==teachGeneration)return;
+    const video=$('stuffies-teach-video');video.srcObject=stream;await video.play();
+    if(generation!==teachGeneration)return;
+    status('stuffies-teach-status','Center only '+r.name+' in the square. Capture the front, side, and another angle.');
+    $('stuffies-teach-save').disabled=false;
+  }catch(e){if(generation===teachGeneration)status('stuffies-teach-status','Camera unavailable: '+e.message);}
+}
+async function captureLiveTeach(){
+  if(busy||!teaching)return;
+  const t=teaching,generation=teachGeneration,video=$('stuffies-teach-video');
+  if(video.readyState<2||!video.videoWidth)return;
+  busy=true;$('stuffies-teach-save').disabled=true;
+  try{
+    const rect=video.getBoundingClientRect();
+    const samples=[.96,.78,.58].map(r=>cropAt(video,rect.left+rect.width/2,rect.top+rect.height/2,r));
+    status('stuffies-teach-status','Learning this view…');
+    while(inference)await inference.catch(()=>{});
+    const m=await model(),vectors=[];
+    for(const sample of samples)vectors.push(await embedding(m,sample));
+    if(generation!==teachGeneration)return;
+    if(!await appendReferences(t.id,vectors))throw Error('Stuffy no longer exists');
+    if(generation!==teachGeneration)return;
+    t.count++;
+    status('stuffies-teach-status',t.count+' views saved. Turn '+t.name+' a little and capture another, or return to hunt.');
+  }catch(e){if(generation===teachGeneration)status('stuffies-teach-status','Could not save: '+e.message);}
+  finally{busy=false;if(generation===teachGeneration)$('stuffies-teach-save').disabled=false;}
 }
 async function referenceVectors(m,p) {
   const result=[];
@@ -365,6 +418,8 @@ export function initStuffies(options={}) {
   $('stuffies-hunt').addEventListener('click',()=>open());
   $('stuffies-close').addEventListener('click',close);
   $('stuffies-new').addEventListener('click',showCreator);
+  $('stuffies-teach-save').addEventListener('click',captureLiveTeach);
+  $('stuffies-teach-done').addEventListener('click',()=>{if(!busy){close();hooks.startHunt?.();}});
   $('stuffies-scan').addEventListener('click',()=>{if(!busy){close();hooks.startHunt?.();}});
   $('stuffies-scan-again').addEventListener('click',()=>{if(!busy){close();hooks.startHunt?.();}});
   for(const x of panel.querySelectorAll('[data-stuffies-home]'))x.addEventListener('click',()=>{if(!busy)showHome();});
@@ -373,5 +428,5 @@ export function initStuffies(options={}) {
   $('stuffies-save').addEventListener('click',save);
   $('stuffies-reset').addEventListener('click',()=>{if(!busy)showCreator();});
   document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseStuffiesHunt();});
-  window.addEventListener('pagehide',stopScan);
+  window.addEventListener('pagehide',()=>{stopLiveTeach();stopScan();});
 }

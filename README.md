@@ -148,3 +148,7 @@ The 3D roster now includes Pikachu and Charmander, with sculpted plush proportio
 ### Recognition field-test adjustment
 
 A match no longer requires two different reference angles to score highly at once. Tap claims require two agreeing frames, with a minimum score and competing-toy margin, and stronger combined evidence. New registrations use three crop scales per reference. In Stuffies setup, **Teach views** appends reference embeddings to an existing toy without changing its ID, card, or claim state. Use real photos from the current room and different angles. Matching thresholds are heuristic; physical accuracy is not yet validated.
+
+### Live teaching and precise tap routing
+
+Stuffies setup → Teach live captures several real camera crop sizes for the selected existing toy. Capture multiple viewpoints and return to the hunt; IDs, card art and claim status are unchanged. Virtual ball taps are limited to the projected sprite plus a small touch allowance, with behind-camera and off-screen sprites excluded. Existing reference vectors remain compatible. Physical accuracy must be tested on the device.

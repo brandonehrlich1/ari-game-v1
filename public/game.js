@@ -9,7 +9,7 @@ const TENNIS_BALL_RADIUS_M = 0.0335;
 const FALLBACK_BALL_RADIUS_M = 0.0052;
 const MIN_TAP_TARGET_RADIUS_M = 0.18;
 const XR_AUTO_CATCH_RADIUS_M = 0.45;
-const SCREEN_TAP_RADIUS_PX = 110;
+const MIN_BALL_TAP_RADIUS_PX = 22;
 const COLLECTION_KEY = 'arimon.collection.v1';
 const BINDER_PAGE_SIZE = 9;
 const FALLBACK_TOTAL_BALLS = 4;
@@ -402,14 +402,21 @@ function catchNearestScreenBall(clientX, clientY) {
     if (!id || state.found.has(id)) return;
     const world = new THREE.Vector3();
     entity.object3D.getWorldPosition(world);
+    if(world.clone().applyMatrix4(camera.matrixWorldInverse).z>=0)return;
     const projected = world.clone().project(camera);
     if (projected.z < -1 || projected.z > 1) return;
     const sx = rect.left + ((projected.x + 1) / 2) * rect.width;
     const sy = rect.top + ((-projected.y + 1) / 2) * rect.height;
     const dist = Math.hypot(clientX - sx, clientY - sy);
-    if (dist < bestDist) { bestDist = dist; best = entity; }
+    // Only accept the visible sprite plus a small touch allowance.
+    const sprite=entity.querySelector('.ari-sphere-visual');
+    const radius=Number(sprite?.getAttribute('width'))/2;
+    const edge=world.clone().add(new THREE.Vector3(1,0,0).applyQuaternion(camera.getWorldQuaternion(new THREE.Quaternion())).multiplyScalar(Number.isFinite(radius)?radius:0)).project(camera);
+    const visualPx=Math.abs(edge.x-projected.x)*rect.width/2;
+    if(sx<rect.left-visualPx||sx>rect.right+visualPx||sy<rect.top-visualPx||sy>rect.bottom+visualPx)return;
+    if(dist<=Math.max(MIN_BALL_TAP_RADIUS_PX,visualPx+10)&&dist<bestDist){bestDist=dist;best=entity;}
   });
-  if (!best || bestDist > SCREEN_TAP_RADIUS_PX) return false;
+  if (!best) return false;
   const spawn = state.spawns.find((s) => s.id === best.dataset.spawnId);
   if (!spawn) return false;
   tryCatch(spawn, best);
@@ -489,4 +496,4 @@ els.galleryClose?.addEventListener('click', closeGallery);
 els.galleryClose?.addEventListener('touchend', (e) => { e.preventDefault(); closeGallery(); }, { passive: false });
 els.gallery?.addEventListener('click', (e) => { if (e.target === els.gallery) closeGallery(); });
 installScreenTapFallback();
-initStuffies({ closeGallery, canHunt, resume: () => {if(state.running)void startStuffiesHunt(els.video);}, startHunt: () => {if(!state.running&&!els.start.disabled)void start();}, onLiveClaim: card => {flashScreen();showReveal(card,true);void startStuffiesHunt(els.video);}, onViewCard: card => showReveal(card,false,true) });
+initStuffies({ closeGallery, canHunt, cameraStream: () => els.video.srcObject, resume: () => {if(state.running)void startStuffiesHunt(els.video);}, startHunt: () => {if(!state.running&&!els.start.disabled)void start();}, onLiveClaim: card => {flashScreen();showReveal(card,true);void startStuffiesHunt(els.video);}, onViewCard: card => showReveal(card,false,true) });

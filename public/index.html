@@ -85,6 +85,14 @@
         <div id="stuffies-list"></div>
         <p class="stuffies-note">Photos and collections stay on this browser. Internet is needed for the first recognition-model download.</p>
       </section>
+      <section data-stuffies-view="live-teach" class="hidden">
+        <h2 id="stuffies-teach-title">Teach your stuffy</h2>
+        <div class="stuffies-viewfinder"><video id="stuffies-teach-video" autoplay playsinline muted></video><div class="stuffies-frame" aria-hidden="true"></div></div>
+        <p id="stuffies-teach-status" class="stuffies-note" aria-live="polite"></p>
+        <button id="stuffies-teach-save" class="stuffies-action primary" type="button" disabled>Capture this view</button>
+        <button id="stuffies-teach-done" class="stuffies-action" type="button">Return to hunt</button>
+        <button data-stuffies-home class="stuffies-action" type="button">Back</button>
+      </section>
       <section data-stuffies-view="creator" class="hidden">
         <p class="stuffies-note">Parent setup: use a full-body photo on a plain contrasting background, then add a different angle or lighting. Center the toy and keep the whole body visible.</p>
         <label class="stuffies-field">Name <input id="stuffies-name" maxlength="40" autocomplete="off" placeholder="Teddy"></label>
