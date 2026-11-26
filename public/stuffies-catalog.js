@@ -60,6 +60,26 @@ export const HOSTED_STUFFIES=[
     "number": "BONUS • 001",
     "src": "assets/stuffies/chimchari-card.svg"
   }
+},
+{
+  "id": "stuffy-hosted-mewtwo",
+  "key": "mewtwo",
+  "cardId": "150",
+  "name": "Mewtwo",
+  "aliases": [
+    "mewtwo",
+    "mewtwoari",
+    "mew two"
+  ],
+  "views": [
+    "mewtwo-front",
+    "mewtwo-side",
+    "mewtwo-back"
+  ],
+  "referenceVersion": 2,
+  "preview": "assets/stuffies/mewtwo-side.webp",
+  "previewCard": "assets/cards/150_MewtwoAri.png",
+  "rarity": "Rare"
 }
 ];
 export function hostedIdentity(r,seed) {

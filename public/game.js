@@ -1,7 +1,7 @@
 /* AriMon Card Hunt — game logic (static / self-contained). */
 import { resolveConfig } from './storage.js';
-import { modelKey, openModelPreview, closeModelPreview } from './stuffies-3d.js?v=4';
-import { initStuffies, renderStuffiesBinder, claimedStuffyCards, startStuffiesHunt, pauseStuffiesHunt, tryStuffyTap, stuffyTapPending } from './stuffies.js?v=4';
+import { modelKey, openModelPreview, closeModelPreview } from './stuffies-3d.js?v=5';
+import { initStuffies, renderStuffiesBinder, claimedStuffyCards, startStuffiesHunt, pauseStuffiesHunt, tryStuffyTap, stuffyTapPending } from './stuffies.js?v=5';
 
 const FT_PER_M = 3.28084;
 const ARI_SPHERE_ASSET = 'assets/F5BAFFD4-8565-45B8-8E75-AEC99FAD12BB.png';

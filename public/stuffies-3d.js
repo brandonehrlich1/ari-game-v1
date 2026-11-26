@@ -1,11 +1,12 @@
 export function modelKey(card) {
   if(!card||!String(card.id).startsWith('stuffy-'))return null;
-  if(['turtwig','pikachu','charmander','chimchar'].includes(card.modelKey))return card.modelKey;
+  if(['turtwig','pikachu','charmander','chimchar','mewtwo'].includes(card.modelKey))return card.modelKey;
   const name=String(card.name||'').toLowerCase().replace(/[^a-z0-9]/g,'');
   if(/turtwig|turtlewig/.test(name))return 'turtwig';
   if(/pikachu|peekachu|pikachoo/.test(name))return 'pikachu';
   if(/charmander|charmandar/.test(name))return 'charmander';
   if(/chimchar|chimchari|chimari/.test(name))return 'chimchar';
+  if(/mewtwo/.test(name))return 'mewtwo';
   return null;
 }
 
@@ -198,7 +199,52 @@ function chimchar(T) {
   return k;
 }
 
-const models={turtwig,pikachu,charmander,chimchar};
+
+/* Mewtwo: plush proportions from supplied front, side and rear photographs. */
+function mewtwo(T) {
+  const k=plushKit(T),{mat,ell,line,mesh}=k;
+  const pale=mat(0xd4c1d8), purple=mat(0xa080a0), seam=mat(0xb9a6c0),
+    white=mat(0xf9f3f6,false), iris=mat(0x936581,false), ink=mat(0x302439,false);
+  ell(pale,0,.88,0,.41,.54,.30);
+  ell(purple,0,.83,.245,.27,.48,.085);
+  ell(pale,0,1.42,-.015,.225,.44,.21);
+  ell(pale,0,1.75,.02,.39,.25,.255);
+  ell(pale,0,1.78,.185,.335,.20,.115);
+  ell(pale,0,2.02,0,.16,.23,.16);
+  ell(pale,0,2.28,.05,.34,.35,.29);
+  ell(pale,0,2.14,.23,.245,.15,.16);
+  for(const s of [-1,1]){
+    ell(pale,s*.25,2.55,.005,.10,.18,.095,0,0,-s*.30);
+    ell(white,s*.175,2.28,.302,.093,.082,.023,0,s*.34,-s*.20);
+    ell(iris,s*.175,2.27,.322,.036,.060,.018,0,s*.34);
+    ell(ink,s*.175,2.27,.333,.017,.040,.013,0,s*.34);
+    ell(pale,s*.16,2.35,.29,.155,.085,.105,0,s*.15,s*.32);
+    ell(ink,s*.052,2.13,.378,.015,.011,.008);
+    ell(pale,s*.30,.82,0,.255,.53,.255,0,0,-s*.12);
+    ell(pale,s*.29,.28,.025,.095,.27,.12,0,0,s*.16);
+    ell(pale,s*.29,.105,.18,.115,.11,.255);
+    for(const j of [-1,1])ell(pale,s*.29+j*.065,.095,.365,.077,.085,.16);
+    ell(pale,s*.43,1.70,.01,.12,.30,.105,0,0,s*1.02);
+    ell(pale,s*.66,1.52,.04,.105,.26,.11,0,0,s*.57);
+    ell(pale,s*.78,1.31,.06,.14,.18,.115,0,0,s*.30);
+    for(let j=-1;j<=1;j++)ell(pale,s*(.80+j*.09),1.22-j*.055,.105,.075,.08,.082);
+    line([[s*.29,1.20,.14],[s*.38,.98,.20],[s*.40,.64,.16],[s*.31,.38,.09]],seam,.007);
+  }
+  line([[-.075,2.08,.357],[0,2.07,.381],[.075,2.08,.357]],seam,.006);
+  line([[0,1.96,.16],[0,1.84,.30],[0,1.67,.27]],seam,.006);
+  line([[0,1.24,.23],[0,1.04,.325],[0,.62,.32],[0,.41,.21]],seam,.007);
+  const points=[[0,.76,-.23],[-.08,.72,-.47],[-.45,.91,-.65],[-.81,1.11,-.73],[-1.02,.90,-.72],[-1.05,.51,-.62],[-.87,.26,-.45],[-.58,.24,-.31]];
+  const curve=new T.CatmullRomCurve3(points.map(p=>new T.Vector3(...p)));
+  const g=new T.TubeGeometry(curve,52,.11,20,false),pos=g.attributes.position;
+  for(let i=0;i<=52;i++){const c=curve.getPointAt(i/52),t=i/52,f=1.05-.40*Math.sin(Math.PI*t)+.25*t;for(let j=0;j<=20;j++){const ix=i*21+j;const v=new T.Vector3().fromBufferAttribute(pos,ix).sub(c).multiplyScalar(f).add(c);pos.setXYZ(ix,v.x,v.y,v.z);}}
+  pos.needsUpdate=true;g.computeVertexNormals();mesh(g,purple);
+  ell(purple,-.56,.24,-.31,.18,.13,.14,0,-.4);
+  const neck=new T.CatmullRomCurve3([[0,1.71,-.19],[0,1.95,-.33],[0,2.18,-.26]].map(p=>new T.Vector3(...p)));
+  mesh(new T.TubeGeometry(neck,20,.055,12,false),pale);
+  return k;
+}
+
+const models={turtwig,pikachu,charmander,chimchar,mewtwo};
 let current=null;
 export function closeModelPreview(){
   if(!current)return;

@@ -1,6 +1,6 @@
 /* Stuffies: local creator, camera matching, and binder extension. */
 import { normalize, matchViews, frameCrop, advanceMatch, confirmMatch, mergeReferences, referenceName, rankViews, applyTraining } from './stuffies-match.js';
-import { HOSTED_VERSION, HOSTED_STUFFIES, hostedIdentity, nextCatch, resolveOfficialStuffyCard } from './stuffies-catalog.js?v=4';
+import { HOSTED_VERSION, HOSTED_STUFFIES, hostedIdentity, nextCatch, resolveOfficialStuffyCard } from './stuffies-catalog.js?v=5';
 
 const DB = 'arimon-stuffies-v1';
 const LIMIT = 6;
@@ -36,18 +36,19 @@ async function store(mode, operation) {
 }
 const rawRecords=()=>store('readonly',(s,set)=>{const r=s.getAll();r.onsuccess=()=>set(r.result);});
 let hostedPromise=null,hostedError='';
-function installHosted(seed, prepared) {
+function installHosted(seed, prepared, placeholder=false) {
+  const version=seed.referenceVersion||HOSTED_VERSION;
   return store('readwrite',(s,set)=>{
     const req=s.getAll();
     req.onsuccess=()=>{
       const all=req.result;
       const existing=all.find(r=>r.id===seed.id)||all.find(r=>r.hostedKey===seed.key)||all.find(r=>hostedIdentity(r,seed));
-      if(existing?.hostedVersion>=HOSTED_VERSION){set(existing);return;}
+      if(existing&&(placeholder||existing.hostedVersion>=version)){set(existing);return;}
       if(existing){
-        const item={...existing,hostedKey:seed.key,hostedVersion:HOSTED_VERSION,refs:mergeReferences(existing.refs||[],prepared.refs)};
+        const item={...existing,hostedKey:seed.key,hostedVersion:version,refs:mergeReferences(existing.refs||[],prepared.refs)};
         s.put(item);set(item);
       }else{
-        const item={id:seed.id,name:seed.name,hostedKey:seed.key,hostedVersion:HOSTED_VERSION,rarity:'Common',refs:prepared.refs,art:prepared.art,card:prepared.card,claimed:false,catchCount:0,createdAt:Date.now()};
+        const item={id:seed.id,name:seed.name,hostedKey:seed.key,hostedVersion:placeholder?0:version,rarity:seed.rarity||'Common',refs:prepared.refs,art:prepared.art,card:prepared.card,claimed:false,catchCount:0,createdAt:Date.now()};
         s.add(item);set(item);
       }
     };
@@ -60,11 +61,15 @@ async function hostedPhoto(view) {
 }
 async function ensureHosted() {
   if(!hostedPromise)hostedPromise=(async()=>{
-    const existing=await rawRecords(),errors=[];
+    const errors=[];
+    for(const seed of HOSTED_STUFFIES.filter(s=>s.previewCard)){
+      await installHosted(seed,{refs:[],art:seed.preview||seed.previewCard,card:seed.previewCard},true);
+    }
+    const existing=await rawRecords();
     // Install bonus characters before any network-dependent recognition initialization.
     const ordered=[...HOSTED_STUFFIES].sort((a,b)=>Number(Boolean(b.bonusCard))-Number(Boolean(a.bonusCard)));
     for(const seed of ordered){
-      if(existing.some(r=>hostedIdentity(r,seed)&&r.hostedVersion>=HOSTED_VERSION))continue;
+      if(existing.some(r=>hostedIdentity(r,seed)&&r.hostedVersion>=(seed.referenceVersion||HOSTED_VERSION)))continue;
       try{
         if(!seed.views.length&&seed.bonusCard){
           // The hosted SVG is already the card. Do not gate roster registration on
