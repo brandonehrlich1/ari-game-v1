@@ -496,4 +496,4 @@ els.galleryClose?.addEventListener('click', closeGallery);
 els.galleryClose?.addEventListener('touchend', (e) => { e.preventDefault(); closeGallery(); }, { passive: false });
 els.gallery?.addEventListener('click', (e) => { if (e.target === els.gallery) closeGallery(); });
 installScreenTapFallback();
-initStuffies({ closeGallery, canHunt, cameraStream: () => els.video.srcObject, resume: () => {if(state.running)void startStuffiesHunt(els.video);}, startHunt: () => {if(!state.running&&!els.start.disabled)void start();}, onLiveClaim: card => {flashScreen();showReveal(card,true);void startStuffiesHunt(els.video);}, onViewCard: card => showReveal(card,false,true) });
+initStuffies({ closeGallery, canHunt, cameraStream: () => els.video.srcObject, resume: () => {if(state.running)void startStuffiesHunt(els.video);}, startHunt: () => {if(!state.running&&!els.start.disabled)void start();}, onLiveClaim: (card,wasNew) => {flashScreen();showReveal(card,wasNew);void startStuffiesHunt(els.video);}, onViewCard: card => showReveal(card,false,true) });

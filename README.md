@@ -156,3 +156,7 @@ Stuffies setup → Teach live captures several real camera crop sizes for the se
 ### Adding more real-life Stuffies
 
 Any toy can be registered locally with a unique name and 2–6 photos. Existing toys can learn more views via upload or live camera. New photo enrollment includes a full-silhouette crop in addition to square crops; duplicate reference vectors are skipped, and the oldest anchor views are retained when pruning the 60-reference budget. Teach live includes a non-claiming recognition test against the whole roster; displayed similarity is a model score, not a calibrated probability. The 3D model roster remains optional: unmodeled toys use their generated photo card. No change to Ari Ball logic or collection storage.
+
+### Hosted starter Stuffies and repeat catches
+
+Turtwig, Pikachu and Charmander ship as a hosted catalog with two isolated reference views each. On first use the game downloads the references and computes compatible embeddings locally; prior matching-name registrations keep their IDs, art and catches. First and repeat catches both reveal the character; the binder retains one entry and tracks catch count. Camera frames, additional training and catch history remain device-local, not synced. The three procedural 3D models have refined mesh density, materials, proportions and lighting. More toys can still be added in setup.

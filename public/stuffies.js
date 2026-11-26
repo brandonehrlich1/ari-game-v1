@@ -1,5 +1,6 @@
 /* Stuffies: local creator, camera matching, and binder extension. */
 import { normalize, matchViews, frameCrop, advanceMatch, confirmMatch, mergeReferences, referenceName, rankViews } from './stuffies-match.js';
+import { HOSTED_VERSION, HOSTED_STUFFIES, hostedIdentity, nextCatch } from './stuffies-catalog.js';
 
 const DB = 'arimon-stuffies-v1';
 const LIMIT = 6;
@@ -33,7 +34,52 @@ async function store(mode, operation) {
     tx.onabort=()=>reject(tx.error||Error('Storage operation canceled'));
   });
 }
-const records=()=>store('readonly',(s,set)=>{const r=s.getAll();r.onsuccess=()=>set(r.result);});
+const rawRecords=()=>store('readonly',(s,set)=>{const r=s.getAll();r.onsuccess=()=>set(r.result);});
+let hostedPromise=null,hostedError='';
+function installHosted(seed, prepared) {
+  return store('readwrite',(s,set)=>{
+    const req=s.getAll();
+    req.onsuccess=()=>{
+      const all=req.result;
+      const existing=all.find(r=>r.id===seed.id)||all.find(r=>r.hostedKey===seed.key)||all.find(r=>hostedIdentity(r,seed));
+      if(existing?.hostedVersion>=HOSTED_VERSION){set(existing);return;}
+      if(existing){
+        const item={...existing,hostedKey:seed.key,hostedVersion:HOSTED_VERSION,refs:mergeReferences(existing.refs||[],prepared.refs)};
+        s.put(item);set(item);
+      }else{
+        const item={id:seed.id,name:seed.name,hostedKey:seed.key,hostedVersion:HOSTED_VERSION,rarity:'Common',refs:prepared.refs,art:prepared.art,card:prepared.card,claimed:false,catchCount:0,createdAt:Date.now()};
+        s.add(item);set(item);
+      }
+    };
+  });
+}
+async function hostedPhoto(view) {
+  const res=await fetch('assets/stuffies/'+view+'.webp');
+  if(!res.ok)throw Error('Hosted reference unavailable: '+view);
+  return fitImage(await decode(await res.blob()),768);
+}
+async function ensureHosted() {
+  if(!hostedPromise)hostedPromise=(async()=>{
+    const existing=await rawRecords(),errors=[];
+    for(const seed of HOSTED_STUFFIES){
+      if(existing.some(r=>hostedIdentity(r,seed)&&r.hostedVersion>=HOSTED_VERSION))continue;
+      try{
+        const photos=await Promise.all(seed.views.map(hostedPhoto));
+        while(inference)await inference.catch(()=>{});
+        const m=await model(),vectors=[];
+        for(const photo of photos)vectors.push(...await referenceVectors(m,photo));
+        const refs=mergeReferences([],vectors);
+        if(refs.length<2)throw Error('Hosted recognition references incomplete');
+        const source=renderCutout(photos[0],26);
+        await installHosted(seed,{refs,art:await asBlob(source),card:await asBlob(drawCard(source,seed.name,'Common'))});
+      }catch(e){errors.push(seed.name+': '+e.message);}
+    }
+    hostedError=errors.join('; ');
+    if(errors.length){hostedPromise=null;console.warn('Hosted stuffies:',hostedError);}
+  })().catch(e=>{hostedError=e.message;hostedPromise=null;console.warn('Hosted stuffies:',e);});
+  return hostedPromise;
+}
+async function records(){await ensureHosted();return rawRecords();}
 const addRecord=r=>store('readwrite',(s)=>s.add(r));
 function appendReferences(id,vectors){
   return store('readwrite',(s,set)=>{
@@ -48,8 +94,8 @@ function claim(id) {
     const r=s.get(id);
     r.onsuccess=()=>{
       const item=r.result;
-      if(!item||item.claimed){set(null);return;}
-      item.claimed=true;item.claimedAt=Date.now();s.put(item);set(item);
+      const caught=nextCatch(item,Date.now());if(!caught){set(null);return;}
+      s.put(caught.record);set(caught);
     };
   });
 }
@@ -162,12 +208,13 @@ async function showHome() {
   stopScan();section('home');
   const list=$('stuffies-list');list.replaceChildren();
   try {
+    status('stuffies-count','Loading hosted stuffies and saved collection…');
     const items=(await records()).sort((a,b)=>a.name.localeCompare(b.name));
-    status('stuffies-count',items.filter(x=>x.claimed).length+' of '+items.length+' stuffed animals claimed');
+    status('stuffies-count',items.filter(x=>x.claimed).length+' of '+items.length+' stuffed animals claimed'+(hostedError?' · Some hosted references failed to load; reopen setup to retry.':''));
     for(const r of items){
       const row=document.createElement('div');row.className='stuffies-roster-row';
       const img=document.createElement('img');img.src=asset(r,'art');img.alt='';
-      const label=document.createElement('span');label.textContent=r.name+' · '+(r.claimed?'Claimed':'Ready to find')+' · '+(r.refs?.length||0)+' reference samples';
+      const label=document.createElement('span');label.textContent=r.name+' · '+(r.claimed?'Caught '+Math.max(1,r.catchCount||0)+' times':'Ready to find')+' · '+(r.refs?.length||0)+' reference samples';
       const train=document.createElement('label');train.className='stuffies-train';train.textContent='Teach views';
       const input=document.createElement('input');input.type='file';input.accept='image/*';input.multiple=true;
       input.setAttribute('aria-label','Add reference photos for '+r.name);
@@ -356,8 +403,9 @@ export function pauseStuffiesHunt() {clearRecognition();huntStatus('');}
 export async function startStuffiesHunt(video) {
   stopScan();liveVideo=video;const generation=scanGeneration;
   try{
+    huntStatus('Preparing stuffy recognition…');
     const roster=await records();if(generation!==scanGeneration)return;liveRoster=roster;
-    if(!liveRoster.some(r=>!r.claimed))return;
+    if(!liveRoster.length){huntStatus(hostedError?'Could not load hosted stuffies · reopen Stuffies setup to retry':'Add a stuffy to start');return;}
     if(!video?.srcObject){huntStatus('Camera unavailable · Ari Balls still work');return;}
     huntStatus('Loading stuffy recognition…');
     const loadedModel=await model();if(generation!==scanGeneration)return;liveModel=loadedModel;
@@ -375,8 +423,8 @@ export async function startStuffiesHunt(video) {
           else {
             tracking=advanceMatch(tracking,m,2);
             const r=m&&liveRoster.find(x=>x.id===m.id);
-            if(tracking.claim&&r&&!r.claimed){readyMatch=r;lastSeen=now();paintTarget(r);huntStatus('Tap the real stuffy!');}
-            else {readyMatch=null;hideTarget();huntStatus(r?.claimed?r.name+' is already collected':r?'Hold still…':'Aim at a stuffy or tap it directly');}
+            if(tracking.claim&&r){readyMatch=r;lastSeen=now();paintTarget(r);huntStatus('Tap the real stuffy!');}
+            else {readyMatch=null;hideTarget();huntStatus(r?'Hold still…':'Aim at a stuffy or tap it directly');}
           }
         }
       }catch(e){if(generation===scanGeneration){clearRecognition();huntStatus('Recognition paused · open Stuffies setup to retry');active=false;}return;}
@@ -387,7 +435,7 @@ export async function startStuffiesHunt(video) {
 }
 export function stuffyTapPending(){return tapBusy;}
 export async function tryStuffyTap(x,y) {
-  if(!canScan()||tapBusy||!liveRoster.some(r=>!r.claimed))return false;
+  if(!canScan()||tapBusy||!liveRoster.length)return false;
   const generation=scanGeneration,video=liveVideo,m=liveModel,roster=liveRoster;
   const rect=video.getBoundingClientRect();
   if(x<rect.left||x>rect.right||y<rect.top||y>rect.bottom)return false;
@@ -396,7 +444,7 @@ export async function tryStuffyTap(x,y) {
   tapBusy=true;clearRecognition();huntStatus('Checking your stuffy…');
   try {
     const first=await compareAt(video,x,y,[1,.82,.55,.35],m,roster);
-    if(generation!==scanGeneration||!canScan()||!first||first.claimed||(expected&&first.id!==expected)){
+    if(generation!==scanGeneration||!canScan()||!first||(expected&&first.id!==expected)){
       if(generation===scanGeneration)huntStatus('No match yet — center the toy and try again');return false;
     }
     await new Promise(resolve=>setTimeout(resolve,220));
@@ -407,7 +455,7 @@ export async function tryStuffyTap(x,y) {
     const caught=await claim(first.id);
     if(!caught)return false;
     if(generation!==scanGeneration)return true;
-    hooks.onLiveClaim?.({id:caught.id,name:caught.name,src:asset(caught,'card'),number:'Real-life Stuffy'});
+    const r=caught.record;hooks.onLiveClaim?.({id:r.id,name:r.name,src:asset(r,'card'),number:'Real-life Stuffy',modelKey:r.hostedKey},caught.wasNew);
     return true;
   }catch(e){if(generation===scanGeneration)huntStatus('Could not claim — try again');return false;}
   finally{tapBusy=false;}
@@ -431,7 +479,7 @@ export async function renderStuffiesBinder(container) {
     for(const r of items){
       const item=document.createElement('button');item.type='button';item.className='gallery-item binder-slot '+(r.claimed?'owned':'registered locked');
       const name=document.createElement('strong');name.textContent=r.claimed?r.name:'Unclaimed stuffy';
-      if(r.claimed){const im=document.createElement('img');im.src=asset(r,'card');im.alt=r.name;item.append(im);item.addEventListener('click',()=>{hooks.closeGallery?.();hooks.onViewCard?.({id:r.id,name:r.name,src:asset(r,'card'),number:'Real-life Stuffy'});});}
+      if(r.claimed){const im=document.createElement('img');im.src=asset(r,'card');im.alt=r.name;item.append(im);item.addEventListener('click',()=>{hooks.closeGallery?.();hooks.onViewCard?.({id:r.id,name:r.name,src:asset(r,'card'),number:'Real-life Stuffy',modelKey:r.hostedKey});});}
       else{const back=document.createElement('div');back.className='card-back';back.textContent='?';item.append(back);item.disabled=true;}
       item.append(name);grid.append(item);
     }

@@ -1,5 +1,6 @@
 export function modelKey(card) {
   if(!card||!String(card.id).startsWith('stuffy-'))return null;
+  if(['turtwig','pikachu','charmander'].includes(card.modelKey))return card.modelKey;
   const name=String(card.name||'').toLowerCase().replace(/[^a-z0-9]/g,'');
   if(/turtwig|turtlewig/.test(name))return 'turtwig';
   if(/pikachu|peekachu|pikachoo/.test(name))return 'pikachu';
@@ -25,8 +26,8 @@ function turtwig(T) {
   for(let i=0;i<image.data.length;i+=4){seed=(Math.imul(seed,1664525)+1013904223)>>>0;const v=100+(seed>>>25);image.data[i]=image.data[i+1]=image.data[i+2]=v;image.data[i+3]=255;}
   ctx.putImageData(image,0,0);
   const tex=new T.CanvasTexture(textureCanvas);tex.wrapS=tex.wrapT=T.RepeatWrapping;tex.repeat.set(5,5);
-  for(const m of [sage,yellow,tan,navy,green]){m.bumpMap=tex;m.bumpScale=.018;}
-  const sphere=new T.SphereGeometry(1,40,28);
+  for(const m of [sage,yellow,tan,navy,green]){m.bumpMap=tex;m.bumpScale=.012;}
+  const sphere=new T.SphereGeometry(1,56,40);
   function ellipsoid(m,x,y,z,sx,sy,sz,rx=0,ry=0,rz=0) {
     const o=new T.Mesh(sphere,m);o.position.set(x,y,z);o.scale.set(sx,sy,sz);o.rotation.set(rx,ry,rz);root.add(o);return o;
   }
@@ -50,7 +51,7 @@ function turtwig(T) {
   ellipsoid(sage,0,.46,-.99,.12,.13,.20,-.4);
   // Huge softly rounded head with a pale yellow lower jaw.
   ellipsoid(yellow,0,.79,.69,.565,.34,.49);
-  ellipsoid(sage,0,1.04,.69,.59,.57,.55);
+  ellipsoid(sage,0,1.04,.69,.61,.56,.57);
   ellipsoid(tan,0,1.49,.56,.42,.18,.38);
   ellipsoid(tan,0,1.68,.48,.115,.25,.13,-.24);
   // Two leaf-shaped fabric lobes atop the head.
@@ -79,8 +80,8 @@ function plushKit(T) {
   for(let i=0;i<data.data.length;i+=4){seed=(Math.imul(seed,1664525)+1013904223)>>>0;const v=110+(seed>>>25);data.data[i]=data.data[i+1]=data.data[i+2]=v;data.data[i+3]=255;}
   ctx.putImageData(data,0,0);
   const tex=new T.CanvasTexture(c);tex.wrapS=tex.wrapT=T.RepeatWrapping;tex.repeat.set(5,5);
-  const sphere=new T.SphereGeometry(1,40,28);geometries.add(sphere);
-  function mat(color,bump=true){const m=new T.MeshStandardMaterial({color,roughness:.96,metalness:0});if(bump){m.bumpMap=tex;m.bumpScale=.014;}materials.push(m);return m;}
+  const sphere=new T.SphereGeometry(1,56,40);geometries.add(sphere);
+  function mat(color,bump=true){const m=new T.MeshStandardMaterial({color,roughness:.96,metalness:0});if(bump){m.bumpMap=tex;m.bumpScale=.011;}materials.push(m);return m;}
   function mesh(g,m,x=0,y=0,z=0){geometries.add(g);const o=new T.Mesh(g,m);o.position.set(x,y,z);root.add(o);return o;}
   function ell(m,x,y,z,sx,sy,sz,rx=0,ry=0,rz=0){const o=mesh(sphere,m,x,y,z);o.scale.set(sx,sy,sz);o.rotation.set(rx,ry,rz);return o;}
   function line(points,m,r=.012){return mesh(new T.TubeGeometry(new T.CatmullRomCurve3(points.map(p=>new T.Vector3(...p))),32,r,8,false),m);}
@@ -94,17 +95,17 @@ function pikachu(T) {
   const k=plushKit(T),{mat,ell,line,patch}=k;
   const yellow=mat(0xe8ca4b), black=mat(0x24262c), red=mat(0xd92128), brown=mat(0x92552c), white=mat(0xf8f5e9,false), seam=mat(0xcdb347);
   // The toy's seated, elongated body, cheeks and raised paws.
-  ell(yellow,0,.70,0,.47,.69,.34);
-  ell(yellow,0,1.49,.045,.49,.43,.37);
+  ell(yellow,0,.70,0,.49,.69,.38);
+  ell(yellow,0,1.49,.045,.51,.43,.39);
   for(const s of [-1,1]){
     ell(yellow,s*.43,1.03,.23,.14,.29,.155,0,0,s*.18);
     ell(yellow,s*.37,.18,.20,.23,.18,.28,0,s*.24,s*.18);
-    ell(black,s*.184,1.55,.382,.089,.114,.027,0,s*.25,s*-.13);
-    ell(white,s*.172,1.59,.408,.032,.042,.012,0,s*.2,s*-.13);
-    ell(red,s*.366,1.35,.314,.11,.12,.032,0,s*.54);
+    ell(black,s*.184,1.55,.407,.089,.114,.027,0,s*.25,s*-.13);
+    ell(white,s*.172,1.59,.433,.032,.042,.012,0,s*.2,s*-.13);
+    ell(red,s*.366,1.35,.335,.11,.12,.032,0,s*.54);
   }
-  ell(black,0,1.46,.416,.036,.021,.014);
-  line([[-.17,1.38,.388],[-.10,1.345,.414],[0,1.37,.424],[.10,1.345,.414],[.17,1.38,.388]],black,.009);
+  ell(black,0,1.46,.437,.036,.021,.014);
+  line([[-.17,1.38,.413],[-.10,1.345,.439],[0,1.37,.449],[.10,1.345,.439],[.17,1.38,.413]],black,.009);
   // Asymmetric ears: the photographed toy has one angled ear.
   for(const [s,angle] of [[-1,.85],[1,-.22]]){
     const baseX=s*.31,baseY=1.78, len=.61;
@@ -154,6 +155,8 @@ function charmander(T) {
   const underside=new T.CatmullRomCurve3([[0,.20,-.27],[0,.115,-.52],[0,.095,-.76],[0,.21,-1.00],[0,.43,-1.17]].map(p=>new T.Vector3(...p)));
   mesh(new T.TubeGeometry(underside,30,.105,16,false),cream);
   ell(red,0,.86,-1.20,.17,.32,.12,-.18);
+  ell(red,-.075,.93,-1.20,.08,.19,.09,-.2,0,.24);
+  ell(red,.075,.96,-1.20,.075,.20,.09,-.15,0,-.22);
   ell(red,0,1.06,-1.22,.105,.20,.09,-.30);
   ell(flameYellow,0,.84,-1.10,.13,.23,.07,-.15);
   ell(flameYellow,0,.96,-1.105,.08,.13,.055,-.18);
@@ -187,9 +190,10 @@ export function openModelPreview(key,host){
     const distance=radius/Math.sin(Math.min(1,width/height)*33*Math.PI/360);
     const direction=new T.Vector3(.72,.28,1).normalize();
     camera.position.copy(center).addScaledVector(direction,distance);camera.lookAt(center);
-    scene.add(new T.HemisphereLight(0xfff6de,0x6e7892,2.1));
-    const light=new T.DirectionalLight(0xfff7ea,2.3);light.position.set(3,5,4);scene.add(light);
-    const fill=new T.DirectionalLight(0xb3dafa,.8);fill.position.set(-4,2,-3);scene.add(fill);
+    scene.add(new T.HemisphereLight(0xfff6de,0x6e7892,1.55));
+    const light=new T.DirectionalLight(0xfff7ea,1.8);light.position.set(3,5,4);scene.add(light);
+    const fill=new T.DirectionalLight(0xb3dafa,1.1);fill.position.set(-4,2,-3);scene.add(fill);
+    const rim=new T.DirectionalLight(0xffffff,.65);rim.position.set(0,4,-4);scene.add(rim);
     scene.add(asset.root);
     const floor=new T.Mesh(new T.CircleGeometry(1.05,48),new T.MeshBasicMaterial({color:0x9bdfb9,transparent:true,opacity:.16,depthWrite:false}));
     floor.rotation.x=-Math.PI/2;floor.position.y=-.012;scene.add(floor);

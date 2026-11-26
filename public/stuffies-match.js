@@ -16,7 +16,7 @@ export function chooseMatch(probe, roster, threshold=.84, margin=.075, secondThr
 }
 
 export function advanceMatch(previous, candidate, needed=3) {
-  if(!candidate||candidate.claimed)return {id:null,count:0,claim:false};
+  if(!candidate)return {id:null,count:0,claim:false};
   const count=previous.id===candidate.id?previous.count+1:1;
   return {id:candidate.id,count,claim:count>=needed};
 }
@@ -52,7 +52,7 @@ export function matchViews(probes,roster,{minimum=.77,margin=.075}={}) {
 }
 
 export function confirmMatch(first,second) {
-  return !!first&&!!second&&!first.claimed&&!second.claimed&&first.id===second.id&&Math.max(first.score,second.score)>=.81&&(first.score+second.score)/2>=.79;
+  return !!first&&!!second&&first.id===second.id&&Math.max(first.score,second.score)>=.81&&(first.score+second.score)/2>=.79;
 }
 
 export function frameCrop(vw,vh,rect,x,y,ratio) {
