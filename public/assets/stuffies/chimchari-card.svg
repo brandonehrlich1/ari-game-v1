@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="840" viewBox="0 0 600 840">
+<defs>
+ <linearGradient id="frame" x2="1" y2="1"><stop stop-color="#ffec9d"/><stop offset=".45" stop-color="#f7c75b"/><stop offset="1" stop-color="#ba722a"/></linearGradient>
+ <linearGradient id="bg" x2=".85" y2="1"><stop stop-color="#fff4c8"/><stop offset=".55" stop-color="#ffb96f"/><stop offset="1" stop-color="#e86f37"/></linearGradient>
+ <radialGradient id="body" cx=".35" cy=".25" r=".9"><stop stop-color="#ffc06c"/><stop offset=".65" stop-color="#ed8b39"/><stop offset="1" stop-color="#b75525"/></radialGradient>
+ <radialGradient id="face" cx=".4" cy=".3" r=".8"><stop stop-color="#fff2c9"/><stop offset="1" stop-color="#dfae76"/></radialGradient>
+</defs>
+<rect width="600" height="840" rx="34" fill="url(#frame)"/><rect x="17" y="17" width="566" height="806" rx="25" fill="#fff1d2" stroke="#9f5e2d" stroke-width="3"/>
+<text x="35" y="48" font-family="system-ui,sans-serif" font-size="16" font-weight="800" fill="#984a23" letter-spacing="3">ARIMON • BONUS</text>
+<text x="35" y="105" font-family="system-ui,sans-serif" font-size="46" font-weight="900" fill="#412a25">ChimchAri</text>
+<text x="555" y="94" text-anchor="end" font-family="system-ui,sans-serif" font-size="24" font-weight="800" fill="#b33c27">HP 60</text>
+<rect x="35" y="126" width="530" height="416" rx="16" fill="url(#bg)" stroke="#ae6936" stroke-width="4"/>
+<circle cx="310" cy="305" r="160" fill="#fff3c7" opacity=".40"/><path d="M38 440 Q170 370 270 460T562 424V539H38Z" fill="#ca6c36" opacity=".40"/>
+<g transform="translate(300 340)">
+<ellipse cx="0" cy="170" rx="132" ry="22" fill="#75391c" opacity=".22"/>
+<path d="M60 112 Q162 126 158 25" stroke="#c3692d" stroke-width="35" fill="none" stroke-linecap="round"/>
+<path d="M158 68 C117 45 140 15 136 -1 C161 8 164 -27 178 -50 C203 -14 212 23 190 48 C183 60 170 65 158 68Z" fill="#da3c25" stroke="#b83a25" stroke-width="4"/>
+<path d="M164 48 Q144 25 169 -5 Q189 21 183 35 Q177 47 164 48" fill="#ffd74d"/>
+<ellipse cx="-54" cy="140" rx="50" ry="39" fill="url(#face)" stroke="#a75a2c" stroke-width="3"/>
+<ellipse cx="54" cy="140" rx="50" ry="39" fill="url(#face)" stroke="#a75a2c" stroke-width="3"/>
+<ellipse cy="80" rx="85" ry="100" fill="url(#body)" stroke="#b15b29" stroke-width="4"/>
+<ellipse cy="89" rx="54" ry="65" fill="url(#face)"/>
+<g transform="rotate(24 -89 65)"><ellipse cx="-89" cy="65" rx="30" ry="76" fill="url(#body)" stroke="#b15b29" stroke-width="3"/><ellipse cx="-89" cy="119" rx="29" ry="28" fill="url(#face)"/></g>
+<g transform="rotate(-24 89 65)"><ellipse cx="89" cy="65" rx="30" ry="76" fill="url(#body)" stroke="#b15b29" stroke-width="3"/><ellipse cx="89" cy="119" rx="29" ry="28" fill="url(#face)"/></g>
+<circle cx="-112" cy="-61" r="46" fill="url(#body)" stroke="#b15b29" stroke-width="4"/><circle cx="112" cy="-61" r="46" fill="url(#body)" stroke="#b15b29" stroke-width="4"/>
+<circle cx="-112" cy="-61" r="28" fill="#e7b67c"/><circle cx="112" cy="-61" r="28" fill="#e7b67c"/>
+<path d="M-118 -60 Q-126 -134 -44 -147 Q-38 -192 -74 -199 Q-11 -208 13 -151 Q33 -178 70 -178 Q56 -151 65 -140 Q135 -118 122 -55 Q125 36 0 50 Q-125 36 -118 -60Z" fill="url(#body)" stroke="#b15b29" stroke-width="4"/>
+<path d="M0 -104 Q-57 -127 -91 -86 Q-124 -48 -95 -5 Q-61 38 0 38 Q61 38 95 -5 Q124 -48 91 -86 Q57 -127 0 -104Z" fill="url(#face)"/>
+<g fill="#fff8e6" stroke="#b27b46" stroke-width="2"><ellipse cx="-40" cy="-60" rx="27" ry="35"/><ellipse cx="40" cy="-60" rx="27" ry="35"/></g>
+<g fill="#774631"><ellipse cx="-40" cy="-59" rx="19" ry="27"/><ellipse cx="40" cy="-59" rx="19" ry="27"/></g>
+<g fill="#332325"><ellipse cx="-40" cy="-62" rx="13" ry="21"/><ellipse cx="40" cy="-62" rx="13" ry="21"/></g>
+<g fill="white"><circle cx="-46" cy="-71" r="7"/><circle cx="34" cy="-71" r="7"/></g>
+<ellipse cy="-25" rx="8" ry="5" fill="#805234"/><path d="M-26 -6 Q0 17 26 -6" fill="none" stroke="#69422e" stroke-width="5" stroke-linecap="round"/>
+<path d="M-60 142v14m14 -14v15m14 -15v14M32 142v14m14 -14v15m14 -15v14" stroke="#b98354" stroke-width="2" stroke-linecap="round"/>
+</g>
+<text x="46" y="566" font-family="system-ui,sans-serif" font-size="15" font-weight="800" fill="#97542e">FIRE • LITTLE FLAME FRIEND</text>
+<line x1="35" y1="582" x2="565" y2="582" stroke="#d6a568" stroke-width="2"/>
+<g font-family="system-ui,sans-serif" fill="#412a25"><circle cx="57" cy="620" r="16" fill="#d84e2c"/><path d="M57 608q9 11 4 18q-10 8-12-2q-2-5 4-9" fill="#ffdf75"/><text x="86" y="629" font-size="27" font-weight="800">Ember Hop</text><text x="551" y="629" text-anchor="end" font-size="27" font-weight="800">20</text><text x="44" y="664" font-size="18">A little spark and a big adventure.</text><line x1="35" y1="693" x2="565" y2="693" stroke="#d6a568" stroke-width="2"/><text x="44" y="731" font-size="18" font-weight="700">Real-world friend • Catch again anytime</text><text x="44" y="783" font-size="16" fill="#805c39">AriMon Collection</text><text x="556" y="783" text-anchor="end" font-size="16" font-weight="800" fill="#805c39">BONUS 001</text></g>
+</svg>

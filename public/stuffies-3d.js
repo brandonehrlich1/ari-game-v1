@@ -1,10 +1,11 @@
 export function modelKey(card) {
   if(!card||!String(card.id).startsWith('stuffy-'))return null;
-  if(['turtwig','pikachu','charmander'].includes(card.modelKey))return card.modelKey;
+  if(['turtwig','pikachu','charmander','chimchar'].includes(card.modelKey))return card.modelKey;
   const name=String(card.name||'').toLowerCase().replace(/[^a-z0-9]/g,'');
   if(/turtwig|turtlewig/.test(name))return 'turtwig';
   if(/pikachu|peekachu|pikachoo/.test(name))return 'pikachu';
   if(/charmander|charmandar/.test(name))return 'charmander';
+  if(/chimchar|chimchari|chimari/.test(name))return 'chimchar';
   return null;
 }
 
@@ -163,7 +164,41 @@ function charmander(T) {
   return k;
 }
 
-const models={turtwig,pikachu,charmander};
+
+function chimchar(T) {
+  const k=plushKit(T),{mat,ell,line,mesh}=k;
+  const orange=mat(0xe88737), cream=mat(0xf5d8a1), inner=mat(0xe4b17c), dark=mat(0x302324), white=mat(0xfff5e5,false), brown=mat(0x805237), red=mat(0xe94c2b), yellow=mat(0xffd446);
+  ell(orange,0,.67,0,.36,.49,.29);
+  ell(cream,0,.66,.254,.26,.34,.09);
+  ell(orange,0,1.39,.04,.50,.48,.39);
+  ell(cream,0,1.35,.344,.412,.32,.105);
+  ell(orange,-.09,1.83,.015,.20,.30,.17,0,0,-.40);
+  ell(orange,.12,1.78,.025,.15,.22,.15,0,0,.44);
+  for(const s of [-1,1]){
+    ell(orange,s*.49,1.42,.02,.22,.23,.13,0,s*.12);
+    ell(inner,s*.51,1.42,.125,.15,.16,.05);
+    ell(white,s*.165,1.46,.424,.105,.14,.027,0,s*.20);
+    ell(brown,s*.165,1.45,.452,.07,.105,.024,0,s*.20);
+    ell(dark,s*.165,1.47,.472,.049,.077,.018,0,s*.20);
+    ell(white,s*.147,1.50,.490,.019,.027,.010);
+    ell(orange,s*.38,.74,.055,.13,.33,.13,0,0,s*.45);
+    ell(cream,s*.50,.50,.12,.12,.14,.10);
+    ell(orange,s*.24,.27,.015,.19,.24,.17);
+    ell(cream,s*.24,.115,.18,.19,.12,.24);
+    for(let j=-1;j<=1;j++)line([[s*.24+j*.067,.13,.37],[s*.24+j*.067,.10,.40]],brown,.006);
+  }
+  ell(brown,0,1.32,.453,.032,.023,.010);
+  line([[-.16,1.22,.419],[-.085,1.19,.451],[0,1.18,.46],[.085,1.19,.451],[.16,1.22,.419]],dark,.010);
+  const tail=new T.CatmullRomCurve3([[0,.42,-.20],[0,.38,-.42],[0,.50,-.61],[0,.70,-.64]].map(p=>new T.Vector3(...p)));
+  mesh(new T.TubeGeometry(tail,32,.085,16,false),orange);
+  ell(red,0,.83,-.64,.18,.28,.14,-.2);
+  ell(red,-.10,.92,-.64,.09,.17,.09,-.2,0,.35);
+  ell(red,.07,.99,-.65,.075,.20,.08,-.3,0,-.3);
+  ell(yellow,0,.84,-.50,.11,.20,.075,-.15);
+  return k;
+}
+
+const models={turtwig,pikachu,charmander,chimchar};
 let current=null;
 export function closeModelPreview(){
   if(!current)return;

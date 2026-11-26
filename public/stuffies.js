@@ -1,6 +1,6 @@
 /* Stuffies: local creator, camera matching, and binder extension. */
 import { normalize, matchViews, frameCrop, advanceMatch, confirmMatch, mergeReferences, referenceName, rankViews, applyTraining } from './stuffies-match.js';
-import { HOSTED_VERSION, HOSTED_STUFFIES, hostedIdentity, nextCatch } from './stuffies-catalog.js';
+import { HOSTED_VERSION, HOSTED_STUFFIES, hostedIdentity, nextCatch, resolveOfficialStuffyCard } from './stuffies-catalog.js';
 
 const DB = 'arimon-stuffies-v1';
 const LIMIT = 6;
@@ -64,6 +64,13 @@ async function ensureHosted() {
     for(const seed of HOSTED_STUFFIES){
       if(existing.some(r=>hostedIdentity(r,seed)&&r.hostedVersion>=HOSTED_VERSION))continue;
       try{
+        if(!seed.views.length&&seed.bonusCard){
+          const res=await fetch(seed.bonusCard.src);if(!res.ok)throw Error('Bonus card unavailable');
+          const card=await res.blob();
+          const source=fitImage(await decode(card),768);
+          await installHosted(seed,{refs:[],art:await asBlob(source),card:await asBlob(source)});
+          continue;
+        }
         const photos=await Promise.all(seed.views.map(hostedPhoto));
         while(inference)await inference.catch(()=>{});
         const m=await model(),vectors=[];
@@ -134,6 +141,11 @@ function asset(r, kind='card') {
   const key=r.id+':'+kind;
   if(!urls.has(key))urls.set(key,URL.createObjectURL(r[kind]));
   return urls.get(key);
+}
+// Resolve 2D display from the official card manifest, retaining the stuffy's own ID.
+function displayCard(r) {
+  return resolveOfficialStuffyCard(r,hooks.getCards?.()||[],HOSTED_STUFFIES,hostedIdentity)
+    || {id:r.id,name:r.name,src:asset(r,'card'),number:'Real-life Stuffy',modelKey:r.hostedKey};
 }
 function canvas(w,h) {const c=document.createElement('canvas');c.width=w;c.height=h;return c;}
 function asBlob(c) {return new Promise((resolve,reject)=>c.toBlob(b=>b?resolve(b):reject(Error('Could not render image')),'image/png'));}
@@ -245,7 +257,7 @@ async function showHome() {
     for(const r of items){
       const row=document.createElement('div');row.className='stuffies-roster-row';
       const img=document.createElement('img');img.src=asset(r,'art');img.alt='';
-      const label=document.createElement('span');label.textContent=r.name+' · '+(r.claimed?'Caught '+Math.max(1,r.catchCount||0)+' times':'Ready to find')+' · '+(r.trainingCount||0)+' trained views · '+(r.refs?.length||0)+' reference samples';
+      const label=document.createElement('span');label.textContent=r.name+' · '+(r.claimed?'Caught '+Math.max(1,r.catchCount||0)+' times':(r.refs?.length||0)<2?'Needs camera training':'Ready to find')+' · '+(r.trainingCount||0)+' trained views · '+(r.refs?.length||0)+' reference samples';
       const train=document.createElement('label');train.className='stuffies-train';train.textContent='Teach views';
       const input=document.createElement('input');input.type='file';input.accept='image/*';input.multiple=true;
       input.setAttribute('aria-label','Add reference photos for '+r.name);
@@ -495,7 +507,7 @@ export async function tryStuffyTap(x,y) {
     const caught=await claim(first.id);
     if(!caught)return false;
     if(generation!==scanGeneration)return true;
-    const r=caught.record;hooks.onLiveClaim?.({id:r.id,name:r.name,src:asset(r,'card'),number:'Real-life Stuffy',modelKey:r.hostedKey},caught.wasNew);
+    const r=caught.record;hooks.onLiveClaim?.(displayCard(r),caught.wasNew);
     return true;
   }catch(e){if(generation===scanGeneration)huntStatus('Could not claim — try again');return false;}
   finally{tapBusy=false;}
@@ -503,8 +515,11 @@ export async function tryStuffyTap(x,y) {
 function showReward(r,isNew) {
   stopScan();section('reward');
   $('stuffies-reward-title').textContent=isNew?'🎉 '+r.name+' claimed!':r.name;
-  $('stuffies-reward-img').src=asset(r,'card');$('stuffies-reward-img').alt=r.name+' collectible card';
+  const card=displayCard(r);$('stuffies-reward-img').src=card.src;$('stuffies-reward-img').alt=card.name+' collectible card';
   if(isNew){navigator.vibrate?.(90);hooks.onClaim?.(r);}
+}
+export async function claimedStuffyCards(){
+  return (await records()).filter(r=>r.claimed).map(displayCard).filter(c=>c.arimonCardId);
 }
 export async function renderStuffiesBinder(container) {
   const sectionEl=document.createElement('section');sectionEl.className='binder-page binder-page-featured stuffies-binder';
@@ -515,11 +530,16 @@ export async function renderStuffiesBinder(container) {
   sectionEl.append(title,label,btn,grid);container.prepend(sectionEl);
   try{
     const items=await records();
-    label.textContent=items.filter(r=>r.claimed).length+' / '+items.length+' claimed · separate from the 151-card set';
+    label.textContent=items.filter(r=>r.claimed).length+' / '+items.length+' claimed · linked AriMon cards also unlock in the main set';
     for(const r of items){
       const item=document.createElement('button');item.type='button';item.className='gallery-item binder-slot '+(r.claimed?'owned':'registered locked');
       const name=document.createElement('strong');name.textContent=r.claimed?r.name:'Unclaimed stuffy';
-      if(r.claimed){const im=document.createElement('img');im.src=asset(r,'card');im.alt=r.name;item.append(im);item.addEventListener('click',()=>{hooks.closeGallery?.();hooks.onViewCard?.({id:r.id,name:r.name,src:asset(r,'card'),number:'Real-life Stuffy',modelKey:r.hostedKey});});}
+      if(r.claimed){
+        const card=displayCard(r),im=document.createElement('img');
+        im.src=card.src;im.alt=card.name;item.append(im);
+        const number=document.createElement('span');number.textContent=card.number+' · '+card.name;item.append(number);
+        item.addEventListener('click',()=>{hooks.closeGallery?.();hooks.onViewCard?.(card);});
+      }
       else{const back=document.createElement('div');back.className='card-back';back.textContent='?';item.append(back);item.disabled=true;}
       item.append(name);grid.append(item);
     }

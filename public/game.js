@@ -1,7 +1,7 @@
 /* AriMon Card Hunt — game logic (static / self-contained). */
 import { resolveConfig } from './storage.js';
 import { modelKey, openModelPreview, closeModelPreview } from './stuffies-3d.js';
-import { initStuffies, renderStuffiesBinder, startStuffiesHunt, pauseStuffiesHunt, tryStuffyTap, stuffyTapPending } from './stuffies.js';
+import { initStuffies, renderStuffiesBinder, claimedStuffyCards, startStuffiesHunt, pauseStuffiesHunt, tryStuffyTap, stuffyTapPending } from './stuffies.js';
 
 const FT_PER_M = 3.28084;
 const ARI_SPHERE_ASSET = 'assets/F5BAFFD4-8565-45B8-8E75-AEC99FAD12BB.png';
@@ -319,6 +319,8 @@ async function openGallery(e) {
 function closeGallery() { els.gallery?.classList.add('hidden'); }
 async function renderGallery() {
   if (!els.galleryGrid) return;
+  // Reconcile prior real-stuffy catches into the existing numbered binder.
+  try {const linked=await claimedStuffyCards();let changed=false;for(const c of linked)if(!state.collection.has(c.arimonCardId)){state.collection.add(c.arimonCardId);changed=true;}if(changed){saveCollection();updateCollectionCount();}}catch(e){console.warn('Stuffy card reconciliation unavailable',e);}
   const cardById = new Map(state.cards.map((card) => [String(card.id).padStart(3, '0'), card]));
   const available = state.cards.length;
   const caughtAvailable = state.cards.filter((c) => state.collection.has(c.id)).length;
@@ -496,4 +498,4 @@ els.galleryClose?.addEventListener('click', closeGallery);
 els.galleryClose?.addEventListener('touchend', (e) => { e.preventDefault(); closeGallery(); }, { passive: false });
 els.gallery?.addEventListener('click', (e) => { if (e.target === els.gallery) closeGallery(); });
 installScreenTapFallback();
-initStuffies({ closeGallery, canHunt, cameraStream: () => els.video.srcObject, resume: () => {if(state.running)void startStuffiesHunt(els.video);}, startHunt: () => {if(!state.running&&!els.start.disabled)void start();}, onLiveClaim: (card,wasNew) => {flashScreen();showReveal(card,wasNew);void startStuffiesHunt(els.video);}, onViewCard: card => showReveal(card,false,true) });
+initStuffies({ closeGallery, canHunt, getCards: () => state.cards, cameraStream: () => els.video.srcObject, resume: () => {if(state.running)void startStuffiesHunt(els.video);}, startHunt: () => {if(!state.running&&!els.start.disabled)void start();}, onLiveClaim: (card,wasNew) => {if(card.arimonCardId){const isNewCard=!state.collection.has(card.arimonCardId);state.collection.add(card.arimonCardId);try{saveCollection();updateCollectionCount();}catch(e){console.warn('Linked binder save unavailable',e);}wasNew=isNewCard;}flashScreen();showReveal(card,wasNew);void startStuffiesHunt(els.video);}, onViewCard: card => showReveal(card,false,true) });

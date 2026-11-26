@@ -164,3 +164,7 @@ Turtwig, Pikachu and Charmander ship as a hosted catalog with two isolated refer
 ### Verified training saves
 
 Live captures and photo uploads store reference embeddings, a small view thumbnail, and a persistent trained-view count together on the existing toy record in IndexedDB. A separate read transaction verifies the save before displaying success. Reopening Teach live shows the eight most recent saved thumbnails and the lifetime count; up to 24 thumbnails and 60 embedding references are retained. Similar embeddings can be deduplicated without hiding a captured view. Older records retain their references and catches but do not have retroactive thumbnails. Training stays on this browser, separate from the hosted starter catalog.
+
+### Linked AriMon cards and Chimchar
+
+Turtwig, Charmander and Pikachu use numbered AriMon cards 001, 004 and 025 for 2D display. A real-toy catch also unlocks its numbered binder card; previous catches reconcile on binder open. The Stuffies record and repeat-catch count stay separate. Chimchar is a hosted bonus entry (ChimchAri, BONUS 001) with a handcrafted SVG card and procedural 3D plush model. Its reference list starts empty until real toy photos are added or Teach live captures are saved on the device. The numbered 151-card manifest is unchanged.
