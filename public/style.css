@@ -380,3 +380,30 @@ a-scene { position: fixed; inset: 0; z-index: 1; background: transparent; }
   28% { opacity: 1; transform: scale(1); }
   100% { opacity: 0; transform: scale(1); }
 }
+
+/* Real-life Stuffies: camera & creator, separate from the numbered card set. */
+.stuffies-panel {z-index:90}
+.stuffies-panel .panel-card {max-height:90dvh}
+.stuffies-action {box-sizing:border-box;display:block;width:100%;padding:12px 10px;margin:8px 0;border:1px solid #ffffff38;border-radius:14px;color:#fff;background:#ffffff16;font:inherit;font-weight:800;text-align:center;cursor:pointer}
+.stuffies-action.primary {background:linear-gradient(90deg,#247a69,#318ac0);border:0}
+.stuffies-action:disabled {opacity:.45;cursor:default}
+.stuffies-note {font-size:13px;color:#d3e2f5;line-height:1.45;text-align:left;margin:9px 0}
+.stuffies-field {display:block;text-align:left;font-size:13px;font-weight:700;margin:10px 0}
+.stuffies-field input,.stuffies-field select {display:block;width:100%;box-sizing:border-box;border:1px solid #ffffff42;border-radius:10px;padding:9px;margin-top:5px;background:#182139;color:#fff;font-size:16px}
+.stuffies-buttons {display:flex;gap:8px}
+.stuffies-buttons>* {flex:1;min-width:0}
+.stuffies-action.file {position:relative;overflow:hidden}
+.stuffies-action.file input {position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer}
+#stuffies-ref-list {display:flex;gap:5px;flex-wrap:wrap}
+#stuffies-ref-list canvas {border-radius:6px;background:#ffffff24}
+#stuffies-preview {display:block;max-width:100%;max-height:220px;margin:10px auto;object-fit:contain;border-radius:10px;background:repeating-conic-gradient(#e1e5e7 0% 25%,#abb7bc 0% 50%) 50%/18px 18px}
+#stuffies-preview.hidden {display:none}
+.stuffies-roster-row {display:flex;align-items:center;gap:10px;text-align:left;padding:8px;border-bottom:1px solid #ffffff20;font-weight:700;font-size:14px}
+.stuffies-roster-row img {width:58px;height:58px;object-fit:contain;background:#ffffff16;border-radius:8px}
+.stuffies-viewfinder {position:relative;width:100%;aspect-ratio:1;overflow:hidden;background:#050a13;border-radius:18px}
+.stuffies-viewfinder video {width:100%;height:100%;object-fit:cover}
+.stuffies-frame {position:absolute;inset:9%;border:3px solid #c1ffe6;border-radius:14px;box-shadow:0 0 0 100px #0004;pointer-events:none}
+#stuffies-reward-img {display:block;width:100%;max-height:53vh;object-fit:contain;border-radius:14px}
+.stuffies-hunt {position:fixed;z-index:40;bottom:max(18px,env(safe-area-inset-bottom));right:12px;background:#153e3de8;border:1px solid #b5ffdb80;color:white;border-radius:999px;padding:12px;font-weight:800;font-size:13px}
+.stuffies-binder .gallery-item img {object-fit:contain}
+.stuffies-binder .stuffies-note {margin:0}

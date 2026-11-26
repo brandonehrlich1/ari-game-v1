@@ -112,3 +112,27 @@ Card art lives in `public/assets/cards/` and the game reads
    to keep a hand-tuned name even if the file is later renamed.
 
 `npm run check:cards` verifies the manifest matches the files (handy in CI).
+
+## Real-life Stuffies (experimental)
+
+From the start screen choose **Stuffies · Create & scan**. A parent registers a
+toy with 2–4 centered reference photos. Use a full-body first photo on a plain
+contrasting background; adjust edge-based background removal, or keep the
+original. The browser renders a full-body PNG and a collectible card. No AI
+image generation or 3D mesh is used.
+
+In **Scan for stuffies**, center the actual toy in the camera square. MobileNet
+image embeddings are compared locally against the references. Three repeated
+matches above conservative similarity/margin thresholds automatically claim
+the card, once per toy. The matcher is experimental and can confuse similar
+toys or photos of toys; it is not a verified object detector or liveness check.
+There is no random spawn or manual claim for Stuffies. The existing AriMon
+cards and collection keys are unchanged; the Binder has a separate Stuffies
+section. The scan screen works with the regular phone camera, not immersive
+WebXR camera pixels.
+
+The model is downloaded from public TensorFlow.js/MobileNet hosts on first
+use (internet required); reference features, rendered images, and claims live
+in separate local IndexedDB on the playing browser. Photos are not sent to a
+server or committed to the public repo. No cross-device sync or backup yet.
+Browser data removal can erase the local collection.

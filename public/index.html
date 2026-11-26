@@ -28,6 +28,7 @@
         <li>🔎 Pan around slowly to discover nearby Ari Balls</li>
       </ul>
       <button id="start">Start hunting</button>
+      <button id="stuffies-open" class="stuffies-action" type="button">🧸 Stuffies · Create & scan</button>
       <p id="mode" class="hint">Checking AR support…</p>
       <a class="adminlink" href="admin.html">Admin tools →</a>
     </div>
@@ -64,6 +65,44 @@
       </div>
       <div id="gallery-progress" class="panel-progress">0 collected</div>
       <div id="gallery-grid" class="gallery-grid"></div>
+    </div>
+  </div>
+
+  <button id="stuffies-hunt" class="stuffies-hunt hidden" type="button">🧸 Scan stuffies</button>
+
+  <div id="stuffies-panel" class="panel hidden stuffies-panel" role="dialog" aria-modal="true" aria-labelledby="stuffies-title">
+    <div class="panel-card">
+      <div class="panel-head"><div><div class="panel-kicker">Real-world hunt</div><h2 id="stuffies-title">Stuffies</h2></div><button id="stuffies-close" class="iconbtn" type="button" aria-label="Close Stuffies">×</button></div>
+      <section data-stuffies-view="home">
+        <p id="stuffies-count" class="stuffies-note" aria-live="polite">Loading…</p>
+        <button id="stuffies-scan" class="stuffies-action primary" type="button">📷 Scan for stuffies</button>
+        <button id="stuffies-new" class="stuffies-action" type="button">＋ Create a stuffy</button>
+        <div id="stuffies-list"></div>
+        <p class="stuffies-note">Photos and collections stay on this browser. Internet is needed for the first recognition-model download.</p>
+      </section>
+      <section data-stuffies-view="creator" class="hidden">
+        <p class="stuffies-note">Parent setup: use a full-body photo on a plain contrasting background, then add a different angle or lighting. Center the toy and keep the whole body visible.</p>
+        <label class="stuffies-field">Name <input id="stuffies-name" maxlength="40" autocomplete="off" placeholder="Teddy"></label>
+        <label class="stuffies-field">Rarity <select id="stuffies-rarity"><option>Common</option><option>Rare</option><option>Legendary</option></select></label>
+        <div class="stuffies-buttons"><label class="stuffies-action file">Choose photos<input id="stuffies-files" type="file" accept="image/*" multiple></label><label class="stuffies-action file">Take photo<input id="stuffies-camera-file" type="file" accept="image/*" capture="environment"></label></div>
+        <p id="stuffies-photo-count" class="stuffies-note">0 / 4 photos</p><div id="stuffies-ref-list"></div>
+        <canvas id="stuffies-preview" class="hidden" aria-label="Full-body character preview"></canvas>
+        <label class="stuffies-field">Background removal (0 keeps original)<input id="stuffies-threshold" type="range" min="0" max="100" value="42"></label>
+        <p class="stuffies-note" id="stuffies-create-status" aria-live="polite"></p>
+        <button id="stuffies-save" class="stuffies-action primary" type="button" disabled>Save collectible</button>
+        <div class="stuffies-buttons"><button id="stuffies-reset" class="stuffies-action" type="button">Reset photos</button><button data-stuffies-home class="stuffies-action" type="button">Back</button></div>
+      </section>
+      <section data-stuffies-view="scan" class="hidden">
+        <div class="stuffies-viewfinder"><video id="stuffies-video" autoplay playsinline muted></video><div class="stuffies-frame" aria-hidden="true"></div></div>
+        <p id="stuffies-scan-status" class="stuffies-note" aria-live="polite">Starting camera…</p>
+        <p class="stuffies-note">Point at the actual toy, not a person. A strong repeated match automatically claims the digital card. Similar-looking toys may need different reference photos.</p>
+        <button id="stuffies-retry" class="stuffies-action primary" type="button">Scan again</button>
+        <button data-stuffies-home class="stuffies-action" type="button">Back</button>
+      </section>
+      <section data-stuffies-view="reward" class="hidden">
+        <h2 id="stuffies-reward-title">Claimed!</h2><img id="stuffies-reward-img" alt="Stuffies collectible card">
+        <button id="stuffies-scan-again" class="stuffies-action primary" type="button">Find another stuffy</button><button data-stuffies-home class="stuffies-action" type="button">My stuffies</button>
+      </section>
     </div>
   </div>
 

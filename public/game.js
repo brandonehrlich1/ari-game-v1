@@ -1,5 +1,6 @@
 /* AriMon Card Hunt — game logic (static / self-contained). */
 import { resolveConfig } from './storage.js';
+import { initStuffies, renderStuffiesBinder } from './stuffies.js';
 
 const FT_PER_M = 3.28084;
 const ARI_SPHERE_ASSET = 'assets/F5BAFFD4-8565-45B8-8E75-AEC99FAD12BB.png';
@@ -247,7 +248,7 @@ function setSpawnVisible(spawnId, visible) {
 }
 
 function tryCatch(spawn, entity) {
-  if (state.found.has(spawn.id)) return;
+  if (state.found.has(spawn.id) || !document.getElementById('stuffies-panel').classList.contains('hidden') || !els.gallery.classList.contains('hidden') || !els.reveal.classList.contains('hidden')) return;
   state.found.add(spawn.id);
   entity.setAttribute('animation__catch', 'property: scale; to: 0.01 0.01 0.01; dur: 280; easing: easeInBack');
   setTimeout(() => entity.remove(), 300);
@@ -292,7 +293,7 @@ async function openGallery(e) {
   try {
     await ensureDataLoaded();
     state.collection = loadCollection();
-    renderGallery();
+    await renderGallery();
     els.gallery?.classList.remove('hidden');
   } catch (err) {
     toast('Binder failed to load');
@@ -300,7 +301,7 @@ async function openGallery(e) {
   }
 }
 function closeGallery() { els.gallery?.classList.add('hidden'); }
-function renderGallery() {
+async function renderGallery() {
   if (!els.galleryGrid) return;
   const cardById = new Map(state.cards.map((card) => [String(card.id).padStart(3, '0'), card]));
   const available = state.cards.length;
@@ -347,6 +348,7 @@ function renderGallery() {
     page.appendChild(grid);
     els.galleryGrid.appendChild(page);
   }
+  await renderStuffiesBinder(els.galleryGrid);
 }
 
 function range(start, end) {
@@ -371,7 +373,7 @@ function renderBinderSlot(card, id, compact) {
 }
 
 function catchNearestScreenBall(clientX, clientY) {
-  if (!state.running || !els.reveal.classList.contains('hidden') || !els.gallery.classList.contains('hidden')) return false;
+  if (!state.running || !els.reveal.classList.contains('hidden') || !els.gallery.classList.contains('hidden') || !document.getElementById('stuffies-panel').classList.contains('hidden')) return false;
   const camera = els.cam.getObject3D('camera');
   const canvas = els.scene.canvas;
   if (!camera || !canvas) return false;
@@ -401,7 +403,7 @@ function catchNearestScreenBall(clientX, clientY) {
 function installScreenTapFallback() {
   window.addEventListener('pointerup', (e) => {
     if (!state.running) return;
-    if (e.target.closest?.('.hud, .reveal, .overlay, .panel')) return;
+    if (e.target.closest?.('.hud, .reveal, .overlay, .panel, .stuffies-hunt')) return;
     if (catchNearestScreenBall(e.clientX, e.clientY)) e.preventDefault();
   }, { passive: false });
 }
@@ -445,6 +447,7 @@ async function start() {
   }
   els.gate.classList.add('hidden');
   els.hud.classList.remove('hidden');
+  document.getElementById('stuffies-hunt').classList.remove('hidden');
   els.scene.classList.remove('hidden');
   els.cam.setAttribute('proximity-catcher', '');
   state.running = true;
@@ -475,3 +478,4 @@ els.galleryClose?.addEventListener('click', closeGallery);
 els.galleryClose?.addEventListener('touchend', (e) => { e.preventDefault(); closeGallery(); }, { passive: false });
 els.gallery?.addEventListener('click', (e) => { if (e.target === els.gallery) closeGallery(); });
 installScreenTapFallback();
+initStuffies({ closeGallery, cameraStream: () => els.video.srcObject, isImmersive: () => state.xr && els.scene.is('ar-mode'), onClaim: () => flashScreen() });
