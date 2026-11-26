@@ -152,3 +152,7 @@ A match no longer requires two different reference angles to score highly at onc
 ### Live teaching and precise tap routing
 
 Stuffies setup → Teach live captures several real camera crop sizes for the selected existing toy. Capture multiple viewpoints and return to the hunt; IDs, card art and claim status are unchanged. Virtual ball taps are limited to the projected sprite plus a small touch allowance, with behind-camera and off-screen sprites excluded. Existing reference vectors remain compatible. Physical accuracy must be tested on the device.
+
+### Adding more real-life Stuffies
+
+Any toy can be registered locally with a unique name and 2–6 photos. Existing toys can learn more views via upload or live camera. New photo enrollment includes a full-silhouette crop in addition to square crops; duplicate reference vectors are skipped, and the oldest anchor views are retained when pruning the 60-reference budget. Teach live includes a non-claiming recognition test against the whole roster; displayed similarity is a model score, not a calibrated probability. The 3D model roster remains optional: unmodeled toys use their generated photo card. No change to Ari Ball logic or collection storage.

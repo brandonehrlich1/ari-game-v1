@@ -81,15 +81,16 @@
       <section data-stuffies-view="home">
         <p id="stuffies-count" class="stuffies-note" aria-live="polite">Loading…</p>
         <button id="stuffies-scan" class="stuffies-action primary" type="button">🎯 Start / resume hunt</button>
-        <button id="stuffies-new" class="stuffies-action" type="button">＋ Create a stuffy</button>
+        <button id="stuffies-new" class="stuffies-action" type="button">＋ Add a new stuffy</button>
         <div id="stuffies-list"></div>
-        <p class="stuffies-note">Photos and collections stay on this browser. Internet is needed for the first recognition-model download.</p>
+        <p class="stuffies-note">Add any stuffed animal using its real photos. Teach new views anytime, and test recognition before hunting. Photos and collections stay on this browser.</p>
       </section>
       <section data-stuffies-view="live-teach" class="hidden">
         <h2 id="stuffies-teach-title">Teach your stuffy</h2>
         <div class="stuffies-viewfinder"><video id="stuffies-teach-video" autoplay playsinline muted></video><div class="stuffies-frame" aria-hidden="true"></div></div>
         <p id="stuffies-teach-status" class="stuffies-note" aria-live="polite"></p>
         <button id="stuffies-teach-save" class="stuffies-action primary" type="button" disabled>Capture this view</button>
+        <button id="stuffies-teach-test" class="stuffies-action" type="button" disabled>Test recognition (no catch)</button>
         <button id="stuffies-teach-done" class="stuffies-action" type="button">Return to hunt</button>
         <button data-stuffies-home class="stuffies-action" type="button">Back</button>
       </section>
@@ -98,7 +99,7 @@
         <label class="stuffies-field">Name <input id="stuffies-name" maxlength="40" autocomplete="off" placeholder="Teddy"></label>
         <label class="stuffies-field">Rarity <select id="stuffies-rarity"><option>Common</option><option>Rare</option><option>Legendary</option></select></label>
         <div class="stuffies-buttons"><label class="stuffies-action file">Choose photos<input id="stuffies-files" type="file" accept="image/*" multiple></label><label class="stuffies-action file">Take photo<input id="stuffies-camera-file" type="file" accept="image/*" capture="environment"></label></div>
-        <p id="stuffies-photo-count" class="stuffies-note">0 / 4 photos</p><div id="stuffies-ref-list"></div>
+        <p id="stuffies-photo-count" class="stuffies-note">0 / 6 photos</p><div id="stuffies-ref-list"></div>
         <canvas id="stuffies-preview" class="hidden" aria-label="Full-body character preview"></canvas>
         <label class="stuffies-field">Background removal (0 keeps original)<input id="stuffies-threshold" type="range" min="0" max="100" value="42"></label>
         <p class="stuffies-note" id="stuffies-create-status" aria-live="polite"></p>

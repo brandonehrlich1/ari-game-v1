@@ -1,8 +1,8 @@
 /* Stuffies: local creator, camera matching, and binder extension. */
-import { normalize, matchViews, frameCrop, advanceMatch, confirmMatch } from './stuffies-match.js';
+import { normalize, matchViews, frameCrop, advanceMatch, confirmMatch, mergeReferences, referenceName, rankViews } from './stuffies-match.js';
 
 const DB = 'arimon-stuffies-v1';
-const LIMIT = 4;
+const LIMIT = 6;
 const $ = id => document.getElementById(id);
 let panel, modelPromise, photos = [], original = null, art = null, active = false;
 let teaching=null, teachStream=null, teachGeneration=0;
@@ -39,7 +39,7 @@ function appendReferences(id,vectors){
   return store('readwrite',(s,set)=>{
     const req=s.get(id);req.onsuccess=()=>{
       const item=req.result;if(!item){set(false);return;}
-      item.refs=[...item.refs,...vectors].slice(-60);s.put(item);set(true);
+      item.refs=mergeReferences(item.refs,vectors);s.put(item);set(true);
     };
   });
 }
@@ -162,12 +162,12 @@ async function showHome() {
   stopScan();section('home');
   const list=$('stuffies-list');list.replaceChildren();
   try {
-    const items=await records();
+    const items=(await records()).sort((a,b)=>a.name.localeCompare(b.name));
     status('stuffies-count',items.filter(x=>x.claimed).length+' of '+items.length+' stuffed animals claimed');
     for(const r of items){
       const row=document.createElement('div');row.className='stuffies-roster-row';
       const img=document.createElement('img');img.src=asset(r,'art');img.alt='';
-      const label=document.createElement('span');label.textContent=r.name+' · '+(r.claimed?'Claimed':'Ready to find');
+      const label=document.createElement('span');label.textContent=r.name+' · '+(r.claimed?'Claimed':'Ready to find')+' · '+(r.refs?.length||0)+' reference samples';
       const train=document.createElement('label');train.className='stuffies-train';train.textContent='Teach views';
       const input=document.createElement('input');input.type='file';input.accept='image/*';input.multiple=true;
       input.setAttribute('aria-label','Add reference photos for '+r.name);
@@ -191,7 +191,7 @@ async function startLiveTeach(r){
   teaching={id:r.id,name:r.name,count:0};
   status('stuffies-teach-title','Teach '+r.name);
   status('stuffies-teach-status','Starting camera…');
-  $('stuffies-teach-save').disabled=true;
+  $('stuffies-teach-save').disabled=true;$('stuffies-teach-test').disabled=true;
   try{
     const existing=hooks.cameraStream?.();
     let stream=existing;
@@ -204,7 +204,7 @@ async function startLiveTeach(r){
     const video=$('stuffies-teach-video');video.srcObject=stream;await video.play();
     if(generation!==teachGeneration)return;
     status('stuffies-teach-status','Center only '+r.name+' in the square. Capture the front, side, and another angle.');
-    $('stuffies-teach-save').disabled=false;
+    $('stuffies-teach-save').disabled=false;$('stuffies-teach-test').disabled=false;
   }catch(e){if(generation===teachGeneration)status('stuffies-teach-status','Camera unavailable: '+e.message);}
 }
 async function captureLiveTeach(){
@@ -227,9 +227,32 @@ async function captureLiveTeach(){
   }catch(e){if(generation===teachGeneration)status('stuffies-teach-status','Could not save: '+e.message);}
   finally{busy=false;if(generation===teachGeneration)$('stuffies-teach-save').disabled=false;}
 }
+async function testLiveTeach(){
+  if(busy||!teaching)return;
+  const t=teaching,generation=teachGeneration,video=$('stuffies-teach-video');
+  if(video.readyState<2||!video.videoWidth)return;
+  busy=true;$('stuffies-teach-save').disabled=true;$('stuffies-teach-test').disabled=true;
+  try{
+    status('stuffies-teach-status','Testing this view without claiming…');
+    const rect=video.getBoundingClientRect();
+    const samples=[1,.82,.55,.35].map(r=>cropAt(video,rect.left+rect.width/2,rect.top+rect.height/2,r));
+    while(inference)await inference.catch(()=>{});
+    const m=await model(),roster=await records(),vectors=[];
+    for(const sample of samples)vectors.push(await embedding(m,sample));
+    if(generation!==teachGeneration)return;
+    const ranking=rankViews(vectors,roster),own=ranking.find(r=>r.id===t.id),best=matchViews(vectors,roster);
+    const score=own?own.score.toFixed(2):'unavailable';
+    status('stuffies-teach-status',best?.id===t.id?'Matched '+t.name+' (similarity '+score+'). Test another angle before hunting.':'Not a reliable match for '+t.name+' (similarity '+score+'). Capture a clearer view or change lighting; keep other toys out of frame.');
+  }catch(e){if(generation===teachGeneration)status('stuffies-teach-status','Test failed: '+e.message);}
+  finally{busy=false;if(generation===teachGeneration){$('stuffies-teach-save').disabled=false;$('stuffies-teach-test').disabled=false;}}
+}
 async function referenceVectors(m,p) {
   const result=[];
   for(const ratio of [1,.82,.60])result.push(await embedding(m,square(p,p.width,p.height,ratio)));
+  // Preserve the complete silhouette when a portrait photo is taller than its square crop.
+  const full=canvas(224,224),ctx=full.getContext('2d'),scale=224/Math.max(p.width,p.height);
+  ctx.fillStyle='#eee';ctx.fillRect(0,0,224,224);ctx.drawImage(p,(224-p.width*scale)/2,(224-p.height*scale)/2,p.width*scale,p.height*scale);
+  result.push(await embedding(m,full));
   return result;
 }
 async function teach(id,name,files) {
@@ -253,8 +276,8 @@ function showCreator() {
   photos=[];original=null;art=null;previewReady=false;photoGeneration++;previewGeneration++;
   $('stuffies-name').value='';$('stuffies-rarity').value='Common';$('stuffies-threshold').value='42';
   $('stuffies-preview').classList.add('hidden');$('stuffies-save').disabled=true;
-  status('stuffies-create-status','Add 2–4 photos of the same stuffy. First photo becomes its collectible.');
-  status('stuffies-photo-count','0 / 4 photos');$('stuffies-ref-list').replaceChildren();
+  status('stuffies-create-status','Add 2–6 real photos of one stuffy. First photo becomes its collectible.');
+  status('stuffies-photo-count','0 / 6 photos');$('stuffies-ref-list').replaceChildren();
 }
 async function updatePreview() {
   if(!original)return;
@@ -283,7 +306,7 @@ async function addPhotos(files) {
     await updatePreview();
     status('stuffies-create-status',photos.length>=2?'Preview the full-body cutout, then save.':'Add another view of the same animal.');
   } catch(e){status('stuffies-create-status',e.message);}
-  finally{busy=false;status('stuffies-photo-count',photos.length+' / 4 photos');$('stuffies-save').disabled=!previewReady||photos.length<2;}
+  finally{busy=false;status('stuffies-photo-count',photos.length+' / 6 photos');$('stuffies-save').disabled=!previewReady||photos.length<2;}
 }
 async function save() {
   if(busy||photos.length<2||!art||!previewReady)return;
@@ -292,10 +315,12 @@ async function save() {
   busy=true;$('stuffies-save').disabled=true;
   const source=art, refs=photos.slice(), rarity=$('stuffies-rarity').value;
   try {
+    const existing=await records();
+    if(existing.some(r=>referenceName(r.name)===referenceName(name)))throw Error('That name is already registered. Use Teach views or Teach live to improve it.');
     status('stuffies-create-status','Preparing recognition on this device. First use downloads the model…');
     const m=await model(), vectors=[];
     for(const p of refs)vectors.push(...await referenceVectors(m,p));
-    const r={id:'stuffy-'+crypto.randomUUID(),name,rarity,refs:vectors,art:await asBlob(source),card:await asBlob(drawCard(source,name,rarity)),claimed:false,createdAt:Date.now()};
+    const r={id:'stuffy-'+crypto.randomUUID(),name,rarity,refs:mergeReferences([],vectors),art:await asBlob(source),card:await asBlob(drawCard(source,name,rarity)),claimed:false,createdAt:Date.now()};
     await addRecord(r);
     busy=false;photos=[];original=null;art=null;
     await showHome();
@@ -331,11 +356,11 @@ export function pauseStuffiesHunt() {clearRecognition();huntStatus('');}
 export async function startStuffiesHunt(video) {
   stopScan();liveVideo=video;const generation=scanGeneration;
   try{
-    liveRoster=await records();if(generation!==scanGeneration)return;
+    const roster=await records();if(generation!==scanGeneration)return;liveRoster=roster;
     if(!liveRoster.some(r=>!r.claimed))return;
     if(!video?.srcObject){huntStatus('Camera unavailable · Ari Balls still work');return;}
     huntStatus('Loading stuffy recognition…');
-    liveModel=await model();if(generation!==scanGeneration)return;
+    const loadedModel=await model();if(generation!==scanGeneration)return;liveModel=loadedModel;
     active=true;
     const tick=async()=>{
       if(generation!==scanGeneration||!active)return;
@@ -419,6 +444,7 @@ export function initStuffies(options={}) {
   $('stuffies-close').addEventListener('click',close);
   $('stuffies-new').addEventListener('click',showCreator);
   $('stuffies-teach-save').addEventListener('click',captureLiveTeach);
+  $('stuffies-teach-test').addEventListener('click',testLiveTeach);
   $('stuffies-teach-done').addEventListener('click',()=>{if(!busy){close();hooks.startHunt?.();}});
   $('stuffies-scan').addEventListener('click',()=>{if(!busy){close();hooks.startHunt?.();}});
   $('stuffies-scan-again').addEventListener('click',()=>{if(!busy){close();hooks.startHunt?.();}});
