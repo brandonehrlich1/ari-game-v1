@@ -423,3 +423,5 @@ body:has(.panel:not(.hidden)) .stuffy-target,body:has(.reveal:not(.hidden)) .stu
 .stuffies-train-controls{margin-left:auto;display:flex;flex-direction:column;gap:4px;flex:none}.stuffies-train-controls .stuffies-train{margin:0;text-align:center}.stuffies-live-button{border:1px solid #b6ffd58a;border-radius:10px;background:#237560;color:white;padding:9px 8px;font-weight:800;font-size:12px;cursor:pointer}
 
 .stuffies-roster-row span{font-size:12px;line-height:1.4}
+
+#stuffies-teach-views{display:flex;gap:6px;overflow:auto;padding:4px 0;min-height:12px}#stuffies-teach-views img{width:58px;height:58px;object-fit:cover;flex:none;border-radius:8px;border:1px solid #ffffff40}

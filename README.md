@@ -160,3 +160,7 @@ Any toy can be registered locally with a unique name and 2–6 photos. Existing 
 ### Hosted starter Stuffies and repeat catches
 
 Turtwig, Pikachu and Charmander ship as a hosted catalog with two isolated reference views each. On first use the game downloads the references and computes compatible embeddings locally; prior matching-name registrations keep their IDs, art and catches. First and repeat catches both reveal the character; the binder retains one entry and tracks catch count. Camera frames, additional training and catch history remain device-local, not synced. The three procedural 3D models have refined mesh density, materials, proportions and lighting. More toys can still be added in setup.
+
+### Verified training saves
+
+Live captures and photo uploads store reference embeddings, a small view thumbnail, and a persistent trained-view count together on the existing toy record in IndexedDB. A separate read transaction verifies the save before displaying success. Reopening Teach live shows the eight most recent saved thumbnails and the lifetime count; up to 24 thumbnails and 60 embedding references are retained. Similar embeddings can be deduplicated without hiding a captured view. Older records retain their references and catches but do not have retroactive thumbnails. Training stays on this browser, separate from the hosted starter catalog.

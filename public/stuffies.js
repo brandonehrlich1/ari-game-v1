@@ -1,5 +1,5 @@
 /* Stuffies: local creator, camera matching, and binder extension. */
-import { normalize, matchViews, frameCrop, advanceMatch, confirmMatch, mergeReferences, referenceName, rankViews } from './stuffies-match.js';
+import { normalize, matchViews, frameCrop, advanceMatch, confirmMatch, mergeReferences, referenceName, rankViews, applyTraining } from './stuffies-match.js';
 import { HOSTED_VERSION, HOSTED_STUFFIES, hostedIdentity, nextCatch } from './stuffies-catalog.js';
 
 const DB = 'arimon-stuffies-v1';
@@ -81,13 +81,44 @@ async function ensureHosted() {
 }
 async function records(){await ensureHosted();return rawRecords();}
 const addRecord=r=>store('readwrite',(s)=>s.add(r));
-function appendReferences(id,vectors){
-  return store('readwrite',(s,set)=>{
+function readStuffy(id){
+  return store('readonly',(s,set)=>{const r=s.get(id);r.onsuccess=()=>set(r.result);});
+}
+async function appendReferences(id,vectors,views){
+  const written=await store('readwrite',(s,set)=>{
     const req=s.get(id);req.onsuccess=()=>{
-      const item=req.result;if(!item){set(false);return;}
-      item.refs=mergeReferences(item.refs,vectors);s.put(item);set(true);
+      try{
+        const item=applyTraining(req.result,vectors,views,Date.now(),mergeReferences);
+        const put=s.put(item);put.onsuccess=()=>set({count:item.trainingCount,refs:item.refs.length});
+      }catch(e){set({error:e.message});}
     };
   });
+  if(!written||written.error)throw Error(written?.error||'Training save did not complete');
+  // Confirm in a separate transaction, not just in memory or on a put event.
+  const saved=await readStuffy(id);
+  const ids=new Set((saved?.trainingViews||[]).map(v=>v.id));
+  if(!saved||!views.every(v=>ids.has(v.id))||saved.trainingCount<written.count)
+    throw Error('Training could not be verified in storage. Please retry.');
+  return saved;
+}
+async function trainingView(source){
+  const c=canvas(224,224),ctx=c.getContext('2d');
+  const scale=224/Math.max(source.width,source.height);
+  ctx.fillStyle='#eee';ctx.fillRect(0,0,224,224);
+  ctx.drawImage(source,(224-source.width*scale)/2,(224-source.height*scale)/2,source.width*scale,source.height*scale);
+  return {id:crypto.randomUUID(),at:Date.now(),image:await asBlob(c)};
+}
+let teachPreviewUrls=[];
+function showSavedViews(item){
+  for(const u of teachPreviewUrls)URL.revokeObjectURL(u);
+  teachPreviewUrls=[];
+  const list=$('stuffies-teach-views');list.replaceChildren();
+  for(const v of (item.trainingViews||[]).slice(-8)){
+    if(!(v.image instanceof Blob))continue;
+    const u=URL.createObjectURL(v.image);teachPreviewUrls.push(u);
+    const img=document.createElement('img');img.src=u;img.alt='Saved training view';list.append(img);
+  }
+  status('stuffies-teach-total',(item.trainingCount||0)+' saved training views · '+(item.refs?.length||0)+' reference samples');
 }
 function claim(id) {
   return store('readwrite',(s,set)=>{
@@ -214,7 +245,7 @@ async function showHome() {
     for(const r of items){
       const row=document.createElement('div');row.className='stuffies-roster-row';
       const img=document.createElement('img');img.src=asset(r,'art');img.alt='';
-      const label=document.createElement('span');label.textContent=r.name+' · '+(r.claimed?'Caught '+Math.max(1,r.catchCount||0)+' times':'Ready to find')+' · '+(r.refs?.length||0)+' reference samples';
+      const label=document.createElement('span');label.textContent=r.name+' · '+(r.claimed?'Caught '+Math.max(1,r.catchCount||0)+' times':'Ready to find')+' · '+(r.trainingCount||0)+' trained views · '+(r.refs?.length||0)+' reference samples';
       const train=document.createElement('label');train.className='stuffies-train';train.textContent='Teach views';
       const input=document.createElement('input');input.type='file';input.accept='image/*';input.multiple=true;
       input.setAttribute('aria-label','Add reference photos for '+r.name);
@@ -228,6 +259,8 @@ async function showHome() {
 }
 function stopLiveTeach(){
   teachGeneration++;teaching=null;
+  for(const u of teachPreviewUrls)URL.revokeObjectURL(u);teachPreviewUrls=[];
+  $('stuffies-teach-views')?.replaceChildren();
   const video=$('stuffies-teach-video');
   if(video){video.pause();video.srcObject=null;}
   if(teachStream){teachStream.getTracks().forEach(t=>t.stop());teachStream=null;}
@@ -235,7 +268,8 @@ function stopLiveTeach(){
 async function startLiveTeach(r){
   stopScan();stopLiveTeach();section('live-teach');
   const generation=teachGeneration;
-  teaching={id:r.id,name:r.name,count:0};
+  teaching={id:r.id,name:r.name};
+  showSavedViews(r);
   status('stuffies-teach-title','Teach '+r.name);
   status('stuffies-teach-status','Starting camera…');
   $('stuffies-teach-save').disabled=true;$('stuffies-teach-test').disabled=true;
@@ -250,6 +284,9 @@ async function startLiveTeach(r){
     if(generation!==teachGeneration)return;
     const video=$('stuffies-teach-video');video.srcObject=stream;await video.play();
     if(generation!==teachGeneration)return;
+    const saved=await readStuffy(r.id);
+    if(generation!==teachGeneration)return;
+    if(saved)showSavedViews(saved);
     status('stuffies-teach-status','Center only '+r.name+' in the square. Capture the front, side, and another angle.');
     $('stuffies-teach-save').disabled=false;$('stuffies-teach-test').disabled=false;
   }catch(e){if(generation===teachGeneration)status('stuffies-teach-status','Camera unavailable: '+e.message);}
@@ -257,22 +294,24 @@ async function startLiveTeach(r){
 async function captureLiveTeach(){
   if(busy||!teaching)return;
   const t=teaching,generation=teachGeneration,video=$('stuffies-teach-video');
-  if(video.readyState<2||!video.videoWidth)return;
-  busy=true;$('stuffies-teach-save').disabled=true;
+  if(video.readyState<2||!video.videoWidth){status('stuffies-teach-status','Camera still starting. Try again when the picture appears.');return;}
+  busy=true;$('stuffies-teach-save').disabled=true;$('stuffies-teach-test').disabled=true;
   try{
     const rect=video.getBoundingClientRect();
-    const samples=[.96,.78,.58].map(r=>cropAt(video,rect.left+rect.width/2,rect.top+rect.height/2,r));
-    status('stuffies-teach-status','Learning this view…');
+    if(!rect.width||!rect.height)throw Error('Camera view not ready');
+    const samples=[1,.82,.55,.35].map(r=>cropAt(video,rect.left+rect.width/2,rect.top+rect.height/2,r));
+    status('stuffies-teach-status','Learning and saving this view…');
+    const view=await trainingView(samples[0]);
     while(inference)await inference.catch(()=>{});
     const m=await model(),vectors=[];
     for(const sample of samples)vectors.push(await embedding(m,sample));
     if(generation!==teachGeneration)return;
-    if(!await appendReferences(t.id,vectors))throw Error('Stuffy no longer exists');
+    const saved=await appendReferences(t.id,vectors,[view]);
     if(generation!==teachGeneration)return;
-    t.count++;
-    status('stuffies-teach-status',t.count+' views saved. Turn '+t.name+' a little and capture another, or return to hunt.');
+    showSavedViews(saved);
+    status('stuffies-teach-status','Saved and verified! Turn '+t.name+' a little and capture another, or return to hunt.');
   }catch(e){if(generation===teachGeneration)status('stuffies-teach-status','Could not save: '+e.message);}
-  finally{busy=false;if(generation===teachGeneration)$('stuffies-teach-save').disabled=false;}
+  finally{busy=false;if(generation===teachGeneration){$('stuffies-teach-save').disabled=false;$('stuffies-teach-test').disabled=false;}}
 }
 async function testLiveTeach(){
   if(busy||!teaching)return;
@@ -307,14 +346,15 @@ async function teach(id,name,files) {
   try{
     status('stuffies-count','Teaching '+name+' new views…');
     while(inference)await inference.catch(()=>{});
-    const m=await model(),vectors=[];
+    const m=await model(),vectors=[],views=[];
     for(const f of files.slice(0,6)){
       if(f.size>30*1024*1024)throw Error('Use photos under 30 MB.');
       const p=fitImage(await decode(f),768);
       vectors.push(...await referenceVectors(m,p));
+      views.push(await trainingView(p));
     }
-    if(!await appendReferences(id,vectors))throw Error('Stuffy no longer exists');
-    await showHome();status('stuffies-count',name+' learned '+Math.min(files.length,6)+' new views! Resume hunting.');
+    const saved=await appendReferences(id,vectors,views);
+    await showHome();status('stuffies-count',name+': '+saved.trainingCount+' training views saved and verified. Resume hunting.');
   }catch(e){status('stuffies-count','Could not teach: '+e.message);}
   finally{busy=false;}
 }

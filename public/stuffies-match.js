@@ -63,3 +63,18 @@ export function frameCrop(vw,vh,rect,x,y,ratio) {
   const side=Math.min(vw,vh,visibleW,visibleH)*ratio;
   return {left:Math.max(0,Math.min(vw-side,px-side/2)),top:Math.max(0,Math.min(vh-side,py-side/2)),side};
 }
+
+export function applyTraining(item, incoming, views, at, merge) {
+  if(!item)throw Error('Stuffy no longer exists');
+  if(!Array.isArray(incoming)||!incoming.length||!Array.isArray(views)||!views.length)throw Error('No valid training views');
+  const before=Array.isArray(item.refs)?item.refs:[];
+  if(incoming.some(v=>!Array.isArray(v)||!v.length||!v.every(Number.isFinite)||(before.length&&v.length!==before[0].length)))throw Error('Training features incompatible with saved model');
+  const refs=merge(before,incoming);
+  if(!refs.length)throw Error('Training features unavailable');
+  const prior=Array.isArray(item.trainingViews)?item.trainingViews:[];
+  const ids=new Set(prior.map(v=>v.id));
+  const added=views.filter(v=>!ids.has(v.id));
+  const trainingViews=[...prior,...added].slice(-24);
+  const trainingCount=Math.max(prior.length,Number(item.trainingCount)||0)+added.length;
+  return {...item,refs,trainingViews,trainingCount,trainedAt:at};
+}
